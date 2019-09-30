@@ -8,7 +8,7 @@
 *                                                                        *
 *     Copyright (C) 2006 - Enrique BLANCO GARCIA                         *
 *                          Roderic GUIGO SERRA                           *
-*                          Tyler   ALIOTO                                * 
+*                          Tyler   ALIOTO                                *
 *                                                                        *
 *  This program is free software; you can redistribute it and/or modify  *
 *  it under the terms of the GNU General Public License as published by  *
@@ -21,7 +21,7 @@
 *  GNU General Public License for more details.                          *
 *                                                                        *
 *  You should have received a copy of the GNU General Public License     *
-*  along with this program; if not, write to the Free Software           * 
+*  along with this program; if not, write to the Free Software           *
 *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.             *
 *************************************************************************/
 
@@ -30,52 +30,47 @@
 #include "geneid.h"
 
 /* Fixing positions in the input sequence for the input exon */
-void CorrectExon(exonGFF *e)
-{
-  /* Correct positions of begin / end of the exon */
-  /* Stop codon included into the exon */
-  e->offset1 =
-    ((!strcmp(e->Type,"Terminal") || !strcmp(e->Type,"Single"))
-	 && e->Strand =='-') ? 
-    -LENGTHCODON + COFFSET : +COFFSET;
-  
-  e->offset2 = 
-    ((!strcmp(e->Type,"Terminal") || !strcmp(e->Type,"Single"))
-	 && e->Strand =='+')? 
-    LENGTHCODON + COFFSET : +COFFSET;
+void CorrectExon(exonGFF *e){
+    /* Correct positions of begin / end of the exon */
+    /* Stop codon included into the exon */
+    e->offset1
+        = ((!strcmp(e->Type, "Terminal") || !strcmp(e->Type, "Single"))
+           && e->Strand == '-') ?
+          -LENGTHCODON + COFFSET : +COFFSET;
+
+    e->offset2
+        = ((!strcmp(e->Type, "Terminal") || !strcmp(e->Type, "Single"))
+           && e->Strand == '+') ?
+          LENGTHCODON + COFFSET : +COFFSET;
 
 }
 /* Fixing positions in the input sequence for the input exon */
-void CorrectUTR(exonGFF *e)
-{
-  int startOffset = 0;
-  int donorOffset = 0;
-  if (!strcmp(e->Type,sUTRFIRSTHALF)||!strcmp(e->Type,sUTR5INTERNALHALF)){
-    donorOffset= -1;
-    e->offset1 = (e->Strand =='-') ? -donorOffset + COFFSET : +COFFSET;
-    e->offset2 = (e->Strand =='+')? donorOffset + COFFSET : +COFFSET;
-  }
-  if (!strcmp(e->Type,sUTRTERMINALHALF)||!strcmp(e->Type,sUTR3INTERNALHALF)){
-      startOffset= 1 + LENGTHCODON;
-      e->offset1 = (e->Strand =='+') ? startOffset + COFFSET : +COFFSET;
-      e->offset2 = (e->Strand =='-')? -startOffset + COFFSET : +COFFSET;
+void CorrectUTR(exonGFF *e){
+    int startOffset = 0;
+    int donorOffset = 0;
+
+    if (!strcmp(e->Type, sUTRFIRSTHALF) || !strcmp(e->Type, sUTR5INTERNALHALF)) {
+        donorOffset = -1;
+        e->offset1  = (e->Strand == '-') ? -donorOffset + COFFSET : +COFFSET;
+        e->offset2  = (e->Strand == '+') ? donorOffset + COFFSET : +COFFSET;
     }
- 
-  
-  /* Correct positions of begin / end of the exon */
 
+    if (!strcmp(e->Type, sUTRTERMINALHALF) || !strcmp(e->Type, sUTR3INTERNALHALF)) {
+        startOffset = 1 + LENGTHCODON;
+        e->offset1  = (e->Strand == '+') ? startOffset + COFFSET : +COFFSET;
+        e->offset2  = (e->Strand == '-') ? -startOffset + COFFSET : +COFFSET;
+    }
 
- 
+    /* Correct positions of begin / end of the exon */
+
 }
 /* Fixing positions in the input sequence for the ORF */
-void CorrectORF(exonGFF* e) 
-{
-  /* Correct positions of begin / end of the ORF */
-  /* Stop codon included into the ORF */
-  e->offset1 = (e->Strand =='+') ? 
-    COFFSET + COFFSET : -LENGTHCODON + COFFSET;
-  
-  e->offset2 = (e->Strand =='+')? 
-    LENGTHCODON + COFFSET : COFFSET - COFFSET;
-}
+void CorrectORF(exonGFF *e){
+    /* Correct positions of begin / end of the ORF */
+    /* Stop codon included into the ORF */
+    e->offset1 = (e->Strand == '+') ?
+                 COFFSET + COFFSET : -LENGTHCODON + COFFSET;
 
+    e->offset2 = (e->Strand == '+') ?
+                 LENGTHCODON + COFFSET : COFFSET - COFFSET;
+}

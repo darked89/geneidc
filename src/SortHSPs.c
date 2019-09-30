@@ -8,7 +8,7 @@
 *                                                                        *
 *     Copyright (C) 2006 - Enrique BLANCO GARCIA                         *
 *                          Roderic GUIGO SERRA                           *
-*                          Tyler   ALIOTO                                * 
+*                          Tyler   ALIOTO                                *
 *                                                                        *
 *  This program is free software; you can redistribute it and/or modify  *
 *  it under the terms of the GNU General Public License as published by  *
@@ -21,151 +21,151 @@
 *  GNU General Public License for more details.                          *
 *                                                                        *
 *  You should have received a copy of the GNU General Public License     *
-*  along with this program; if not, write to the Free Software           * 
+*  along with this program; if not, write to the Free Software           *
 *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.             *
 *************************************************************************/
 
 #include "geneid.h"
 
-int Split(HSP** hsps,int i, int j)
-{
-  long k;
-  long x,c1,c2,m;
-  long pivot;
-  long pivotPos1;
-  HSP* tmp;
-  
-  /* Choosing the random pivot: always the first one */
+int Split(HSP **hsps, int i, int j){
+    long k;
+    long x, c1, c2, m;
+    long pivot;
+    long pivotPos1;
+    HSP  *tmp;
+
+    /* Choosing the random pivot: always the first one */
 /*   k = hsps[(i+j)/2]->Pos1; */
-  k = hsps[i]->Pos1;
-  /* How many elements have less value than pivot (value "k") */
-  for(m = 0, x=i+1; x <=j; x++)
-    if (hsps[x]->Pos1 <= k)
-	m++;
-  
-  /* This will be the right place for the pivot */
-  pivot = m+i;
+    k = hsps[i]->Pos1;
+    /* How many elements have less value than pivot (value "k") */
+    for (m = 0, x = i + 1; x <= j; x++) {
+        if (hsps[x]->Pos1 <= k) {
+            m++;
+        }
+    }
 
-  tmp = hsps[i];
-  hsps[i] = hsps[pivot];
-  hsps[pivot] = tmp;
+    /* This will be the right place for the pivot */
+    pivot       = m + i;
 
-  pivotPos1 = hsps[pivot]->Pos1; 
-  c1 = i;
-  c2 = pivot+1;
-  while (c1 < m+i && c2 <= j) 
-    if (hsps[c1]->Pos1 <= pivotPos1)
-	  c1++;
-    else
-      {
-		tmp = hsps[c1];
-		hsps[c1] = hsps[c2];
-		hsps[c2] = tmp;
-		
-		c2++;
-      }
+    tmp         = hsps[i];
+    hsps[i]     = hsps[pivot];
+    hsps[pivot] = tmp;
 
-  return(pivot);
+    pivotPos1   = hsps[pivot]->Pos1;
+    c1          = i;
+    c2          = pivot + 1;
+
+    while (c1 < m + i && c2 <= j) {
+        if (hsps[c1]->Pos1 <= pivotPos1) {
+            c1++;
+        }
+        else {
+            tmp      = hsps[c1];
+            hsps[c1] = hsps[c2];
+            hsps[c2] = tmp;
+
+            c2++;
+        }
+    }
+
+    return(pivot);
 }
 
-void quickSort(HSP** hsps, int i, int j)
-{
-  long pivot;
+void quickSort(HSP **hsps, int i, int j){
+    long pivot;
 
-  if (i == j+1)
-    /* Nothing */;
-  else
-    {
-      pivot = Split(hsps,i,j);
-      
-      quickSort(hsps,i,pivot-1);
-      quickSort(hsps,pivot+1,j);
+    if (i == j + 1) {
+        /* Nothing */
+    }
+    else {
+        pivot = Split(hsps, i, j);
+
+        quickSort(hsps, i, pivot - 1);
+        quickSort(hsps, pivot + 1, j);
     }
 }
 
-int RSplit(HSP** hsps,int i, int j)
-{
-  long k;
-  long x,c1,c2,m;
-  long pivot;
-  long pivotPos1;
-  HSP* tmp;
-  
-  /* Choosing the random pivot: always the first one */
+int RSplit(HSP **hsps, int i, int j){
+    long k;
+    long x, c1, c2, m;
+    long pivot;
+    long pivotPos1;
+    HSP  *tmp;
+
+    /* Choosing the random pivot: always the first one */
 /*   k = hsps[(i+j)/2]->Pos1; */
-  k = hsps[i]->Pos1;
-  /* How many elements have a higher value than pivot (value "k") */
-  for(m = 0, x=i+1; x <=j; x++)
-    if (hsps[x]->Pos1 >= k)
-	m++;
-  
-  /* This will be the right place for the pivot */
-  pivot = m+i;
+    k = hsps[i]->Pos1;
+    /* How many elements have a higher value than pivot (value "k") */
+    for (m = 0, x = i + 1; x <= j; x++) {
+        if (hsps[x]->Pos1 >= k) {
+            m++;
+        }
+    }
 
-  tmp = hsps[i];
-  hsps[i] = hsps[pivot];
-  hsps[pivot] = tmp;
+    /* This will be the right place for the pivot */
+    pivot       = m + i;
 
-  pivotPos1 = hsps[pivot]->Pos1; 
-  c1 = i;
-  c2 = pivot+1;
-  while (c1 < m+i && c2 <= j) 
-    if (hsps[c1]->Pos1 >= pivotPos1)
-	  c1++;
-    else
-      {
-		tmp = hsps[c1];
-		hsps[c1] = hsps[c2];
-		hsps[c2] = tmp;
-		
-		c2++;
-      }
+    tmp         = hsps[i];
+    hsps[i]     = hsps[pivot];
+    hsps[pivot] = tmp;
 
-  return(pivot);
+    pivotPos1   = hsps[pivot]->Pos1;
+    c1          = i;
+    c2          = pivot + 1;
+
+    while (c1 < m + i && c2 <= j) {
+        if (hsps[c1]->Pos1 >= pivotPos1) {
+            c1++;
+        }
+        else {
+            tmp      = hsps[c1];
+            hsps[c1] = hsps[c2];
+            hsps[c2] = tmp;
+
+            c2++;
+        }
+    }
+
+    return(pivot);
 }
 
-void RquickSort(HSP** hsps, int i, int j)
-{
-  long pivot;
+void RquickSort(HSP **hsps, int i, int j){
+    long pivot;
 
-  if (i == j+1)
-    /* Nothing */;
-  else
-    {
-      pivot = RSplit(hsps,i,j);
-      
-      RquickSort(hsps,i,pivot-1);
-      RquickSort(hsps,pivot+1,j);
+    if (i == j + 1) {
+        /* Nothing */
+    }
+    else {
+        pivot = RSplit(hsps, i, j);
+
+        RquickSort(hsps, i, pivot - 1);
+        RquickSort(hsps, pivot + 1, j);
     }
 }
 
-void SortHSPs(packHSP* p)
-{
-  int frame;
-  char mess[MAXSTRING];
+void SortHSPs(packHSP *p){
+    int  frame;
+    char mess[MAXSTRING];
 
-  for (frame=0; frame < FRAMES; frame++)
-	{
-	  sprintf(mess,"Quicksorting FWD HSPs in frame %d",frame);
-	  printMess(mess);
-	  
-	  quickSort(p->sPairs[frame],
-				0,p->nSegments[frame]-1);
+    for (frame = 0; frame < FRAMES; frame++) {
+        sprintf(mess, "Quicksorting FWD HSPs in frame %d", frame);
+        printMess(mess);
 
-	  sprintf(mess,"\t%ld HSPs successfully quicksorted",p->nSegments[frame]);
-	  printMess(mess);
-	}
+        quickSort(p->sPairs[frame],
+                  0, p->nSegments[frame] - 1);
 
-  for (frame=FRAMES; frame < 2*FRAMES; frame++)
-	{
-	  sprintf(mess,"R-Quicksorting RVS HSPs in frame %d",frame);
-	  printMess(mess);
-	  
-	  RquickSort(p->sPairs[frame],
-				 0,p->nSegments[frame]-1);
+        sprintf(mess, "\t%ld HSPs successfully quicksorted", p->nSegments[frame]);
+        printMess(mess);
+    }
 
-	  sprintf(mess,"\t%ld HSPs successfully r-quicksorted",p->nSegments[frame]);
-	  printMess(mess);
-	}
+    for (frame = FRAMES; frame < 2 * FRAMES; frame++) {
+        sprintf(mess, "R-Quicksorting RVS HSPs in frame %d", frame);
+        printMess(mess);
+
+        RquickSort(p->sPairs[frame],
+                   0, p->nSegments[frame] - 1);
+
+        sprintf(mess, "\t%ld HSPs successfully r-quicksorted", p->nSegments[frame]);
+        printMess(mess);
+    }
 }
-
