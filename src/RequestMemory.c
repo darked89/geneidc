@@ -26,11 +26,14 @@
 *************************************************************************/
 
 /*  $Id: RequestMemory.c,v 1.19 2011-01-13 11:06:16 talioto Exp $  */
+#include <assert.h>
+#include <stdlib.h>
 
 #include "geneid.h"
 
 /* Predicted amount of sites and exons found in one split */
-extern long  NUMSITES, NUMU12SITES, NUMU12EXONS, NUMU12U12EXONS, NUMEXONS, MAXBACKUPSITES, MAXBACKUPEXONS;
+extern long  NUMSITES, NUMEXONS, MAXBACKUPSITES, MAXBACKUPEXONS;
+extern long  NUMU12SITES, NUMU12EXONS, NUMU12U12EXONS;
 extern int   scanORF;
 extern int   SRP, EVD, UTR, GENEID, U12GTAG, U12ATAC;
 extern short SPLICECLASSES;
@@ -71,24 +74,29 @@ packSites *RequestMemorySites(){
     if ((allSites->StartCodons
              = (struct s_site *) calloc(NUMSITES, sizeof(struct s_site))) == NULL) {
         printError("Not enough memory: start codons");
+        exit(EXIT_FAILURE);
     }
 
     /* Acceptor sites */
     if ((allSites->AcceptorSites
              = (struct s_site *) calloc(NUMSITES, sizeof(struct s_site))) == NULL) {
         printError("Not enough memory: acceptor sites");
+        exit(EXIT_FAILURE);
     }
 
     /* Donor sites */
     if ((allSites->DonorSites
              = (struct s_site *) calloc(NUMSITES, sizeof(struct s_site))) == NULL) {
         printError("Not enough memory: donor sites");
+        exit(EXIT_FAILURE);
+
     }
 
     /* Stop codons */
     if ((allSites->StopCodons
              = (struct s_site *) calloc(NUMSITES, sizeof(struct s_site))) == NULL) {
         printError("Not enough memory: stop codons");
+        exit(EXIT_FAILURE);
     }
 
     if (UTR) {
@@ -96,12 +104,14 @@ packSites *RequestMemorySites(){
         if ((allSites->TS
                  = (struct s_site *) calloc(NUMSITES, sizeof(struct s_site))) == NULL) {
             printError("Not enough memory: TSS");
+            exit(EXIT_FAILURE);
         }
 
         /* TES */
         if ((allSites->TE
                  = (struct s_site *) calloc(NUMSITES, sizeof(struct s_site))) == NULL) {
             printError("Not enough memory: TES");
+            exit(EXIT_FAILURE);
         }
     }
 
@@ -117,6 +127,7 @@ packExons *RequestMemoryExons(){
     if ((allExons
              = (struct s_packExons *) malloc(sizeof(struct s_packExons))) == NULL) {
         printError("Not enough memory: pack of exons");
+        exit(EXIT_FAILURE);
     }
 
     /* InitialExons */
@@ -125,6 +136,7 @@ packExons *RequestMemoryExons(){
     if ((allExons->InitialExons
              = (exonGFF *) calloc(HowMany, sizeof(exonGFF))) == NULL) {
         printError("Not enough memory: first exons");
+        exit(EXIT_FAILURE);
     }
 
     /* InternalExons */
@@ -133,6 +145,7 @@ packExons *RequestMemoryExons(){
     if ((allExons->InternalExons
              = (exonGFF *) calloc(HowMany, sizeof(exonGFF))) == NULL) {
         printError("Not enough memory: internal exons");
+        exit(EXIT_FAILURE);
     }
 
     /* ZeroLengthExons */
@@ -141,6 +154,7 @@ packExons *RequestMemoryExons(){
     if ((allExons->ZeroLengthExons
              = (exonGFF *) calloc(HowMany, sizeof(exonGFF))) == NULL) {
         printError("Not enough memory: zero length exons");
+        exit(EXIT_FAILURE);
     }
 
     /* TerminalExons */
@@ -149,6 +163,7 @@ packExons *RequestMemoryExons(){
     if ((allExons->TerminalExons
              = (exonGFF *) calloc(HowMany, sizeof(exonGFF))) == NULL) {
         printError("Not enough memory: terminal exons");
+        exit(EXIT_FAILURE);
     }
 
     /* SingleExons */
@@ -157,6 +172,7 @@ packExons *RequestMemoryExons(){
     if ((allExons->Singles
              = (exonGFF *) calloc(HowMany, sizeof(exonGFF))) == NULL) {
         printError("Not enough memory: single genes");
+        exit(EXIT_FAILURE);
     }
 
     if (UTR) {
@@ -166,6 +182,7 @@ packExons *RequestMemoryExons(){
         if ((allExons->UtrInitialExons
                  = (exonGFF *) calloc(HowMany, sizeof(exonGFF))) == NULL) {
             printError("Not enough memory: UtrInitialExons");
+            exit(EXIT_FAILURE);
         }
 
         HowMany = (long) (NUMEXONS / RUTR);
@@ -173,6 +190,7 @@ packExons *RequestMemoryExons(){
         if ((allExons->UtrInitialHalfExons
                  = (exonGFF *) calloc(HowMany, sizeof(exonGFF))) == NULL) {
             printError("Not enough memory: UtrInitialhalfExons");
+            exit(EXIT_FAILURE);
         }
 
         HowMany = (long) (NUMEXONS / RUTR);
@@ -180,6 +198,7 @@ packExons *RequestMemoryExons(){
         if ((allExons->UtrInternalExons
                  = (exonGFF *) calloc(HowMany, sizeof(exonGFF))) == NULL) {
             printError("Not enough memory: UtrInternalExons");
+            exit(EXIT_FAILURE);
         }
 
         HowMany = (long) (NUMEXONS / RUTR);
@@ -187,6 +206,7 @@ packExons *RequestMemoryExons(){
         if ((allExons->Utr5InternalHalfExons
                  = (exonGFF *) calloc(HowMany, sizeof(exonGFF))) == NULL) {
             printError("Not enough memory: Utr5InternalHalfExons");
+            exit(EXIT_FAILURE);
         }
 
         HowMany = (long) (NUMEXONS / RUTR);
@@ -194,6 +214,7 @@ packExons *RequestMemoryExons(){
         if ((allExons->Utr3InternalHalfExons
                  = (exonGFF *) calloc(HowMany, sizeof(exonGFF))) == NULL) {
             printError("Not enough memory: Utr3InternalHalfExons");
+            exit(EXIT_FAILURE);
         }
 
         HowMany = (long) (NUMEXONS / RUTR);
@@ -208,6 +229,7 @@ packExons *RequestMemoryExons(){
         if ((allExons->UtrTerminalExons
                  = (exonGFF *) calloc(HowMany, sizeof(exonGFF))) == NULL) {
             printError("Not enough memory: UtrTerminalExons");
+            exit(EXIT_FAILURE);
         }
     }
 
@@ -218,6 +240,7 @@ packExons *RequestMemoryExons(){
         if ((allExons->ORFs
                  = (exonGFF *) calloc(HowMany, sizeof(exonGFF))) == NULL) {
             printError("Not enough memory: Open Reading Frames");
+            exit(EXIT_FAILURE);
         }
     }
 
@@ -251,6 +274,7 @@ exonGFF *RequestMemorySortExons(){
         printError("Not enough memory: table to sort exons");
     }
 
+    assert(exons != NULL);
     return(exons);
 }
 
@@ -265,8 +289,10 @@ site *RequestMemorySortSites(){
     if ((sites
              = (site *) calloc(HowMany, sizeof(site))) == NULL) {
         printError("Not enough memory: table to sort sites");
+        exit(EXIT_FAILURE);
     }
 
+    assert(sites != NULL);
     return(sites);
 }
 
@@ -284,12 +310,14 @@ packEvidence *RequestMemoryEvidence(){
     if ((p->vSites
              = (struct s_site *) calloc(3 * MAXEVIDENCES, sizeof(struct s_site))) == NULL) {
         printError("Not enough memory: evidences sites");
+        exit(EXIT_FAILURE);
     }
 
     /* Evidences exons (records) */
     if ((p->vExons
              = (exonGFF *) calloc(MAXEVIDENCES, sizeof(exonGFF))) == NULL) {
         printError("Not enough memory: evidences exons");
+        exit(EXIT_FAILURE);
     }
 
     /* Set counters */
@@ -305,6 +333,7 @@ HSP *RequestNewHSP(){
     /* New HSP */
     if ((p = (HSP *) malloc(sizeof(HSP))) == NULL) {
         printError("Not enough space to hold one new HSP");
+        exit(EXIT_FAILURE);
     }
 
     return(p);
@@ -323,18 +352,22 @@ packHSP *RequestMemoryHomology(){
     if ((p
              = (struct s_packHSP *) malloc(sizeof(struct s_packHSP))) == NULL) {
         printError("Not enough memory: pack of homology information");
+        exit(EXIT_FAILURE);
     }
+    assert(p != NULL);
 
     /* For each (strand,frame) a list of HSPs will be used */
     if ((p->sPairs
              = (HSP ***) calloc(HowMany, sizeof(HSP * *))) == NULL) {
         printError("Not enough memory: general array of HSPs");
+        exit(EXIT_FAILURE);
     }
 
     for (i = 0; i < HowMany; i++) {
         if ((p->sPairs[i]
                  = (HSP **) calloc(MAXHSP, sizeof(HSP *))) == NULL) {
             printError("Not enough space: individual array of pointers to HSP");
+            exit(EXIT_FAILURE);
         }
     }
 
@@ -342,6 +375,7 @@ packHSP *RequestMemoryHomology(){
     if ((p->nSegments
              = (long *) calloc(HowMany, sizeof(long))) == NULL) {
         printError("Not enough memory: HSP global counter (frame/strand)");
+        exit(EXIT_FAILURE);
     }
 
     /* Set counters */
@@ -370,11 +404,15 @@ packExternalInformation *RequestMemoryExternalInformation(){
              = (struct s_packExternalInformation *)
                malloc(sizeof(struct s_packExternalInformation))) == NULL) {
         printError("Not enough memory: pack of external information");
+        exit(EXIT_FAILURE);
     }
+
+    assert(p != NULL);
 
     /* 1. Dictionary of exon features */
     if ((p->locusNames = (dict *) malloc(sizeof(dict))) == NULL) {
         printError("Not enough memory: dictionary of locus names");
+        exit(EXIT_FAILURE);
     }
 
     resetDict(p->locusNames);
@@ -384,6 +422,7 @@ packExternalInformation *RequestMemoryExternalInformation(){
         if ((p->evidence
                  = (packEvidence **) calloc(MAXNSEQUENCES, sizeof(packEvidence *))) == NULL) {
             printError("Not enough memory: array of evidence information");
+            exit(EXIT_FAILURE);
         }
 
         for (i = 0; i < MAXNSEQUENCES; i++) {
@@ -395,6 +434,7 @@ packExternalInformation *RequestMemoryExternalInformation(){
         if ((p->homology
                  = (packHSP **) calloc(MAXNSEQUENCES, sizeof(packHSP *))) == NULL) {
             printError("Not enough memory: array of homology information");
+            exit(EXIT_FAILURE);
         }
 
         for (i = 0; i < MAXNSEQUENCES; i++) {
@@ -414,6 +454,7 @@ packExternalInformation *RequestMemoryExternalInformation(){
         if ((p->iSegments
                  = (long *) calloc(HowMany, sizeof(long))) == NULL) {
             printError("Not enough memory: HSP partial counter (frame/strand)");
+            exit(EXIT_FAILURE);
         }
 
         /* Set counters */
@@ -425,12 +466,14 @@ packExternalInformation *RequestMemoryExternalInformation(){
         if ((p->sr
                  = (float **) calloc(HowMany, sizeof(float *))) == NULL) {
             printError("Not enough memory: general preprocessing array of HSPs");
+            exit(EXIT_FAILURE);
         }
 
         for (i = 0; i < HowMany; i++) {
             if ((p->sr[i]
                      = (float *) calloc(LENGTHSi, sizeof(float))) == NULL) {
-                printError("Not enough space: individual preprocessing array of HSPs");
+                printError("Not enough memory: individual preprocessing array of HSPs");
+                exit(EXIT_FAILURE);
             }
         }
 
@@ -439,12 +482,14 @@ packExternalInformation *RequestMemoryExternalInformation(){
             if ((p->readcount
                      = (float **) calloc(HowMany, sizeof(float *))) == NULL) {
                 printError("Not enough memory: general preprocessing array of read counts");
+                exit(EXIT_FAILURE);
             }
 
             for (i = 0; i < HowMany; i++) {
                 if ((p->readcount[i]
                          = (float *) calloc(LENGTHSi, sizeof(float))) == NULL) {
                     printError("Not enough space: individual preprocessing array of read counts");
+                    exit(EXIT_FAILURE);
                 }
             }
         }
@@ -461,18 +506,26 @@ packGC *RequestMemoryGC(){
     if ((p
              = (struct s_packGC *) malloc(sizeof(struct s_packGC))) == NULL) {
         printError("Not enough memory: GC information");
+        exit(EXIT_FAILURE);
     }
+
+    assert(p != NULL);
 
     /* GC content array */
     if ((p->GC = (long *) calloc(LENGTHSi, sizeof(long))) == NULL) {
         printError("Not enough memory: packGC (GC array)");
+        exit(EXIT_FAILURE);
     }
+
+    assert(p->GC != NULL);
 
     /* N's content array */
     if ((p->N = (long *) calloc(LENGTHSi, sizeof(long))) == NULL) {
         printError("Not enough memory: packGC (N array)");
+        exit(EXIT_FAILURE);
     }
 
+    assert(p->N != NULL);
     return (p);
 }
 
@@ -484,75 +537,102 @@ gparam *RequestMemoryParams(){
     /* 0. Main structure: gparam */
     if ((gp = (gparam *) malloc(sizeof(gparam))) == NULL) {
         printError("Not enough memory: isochore model");
+        exit(EXIT_FAILURE);
     }
+    assert(gp != NULL);
 
     /* 1. Profiles for signals */
     if ((gp->PolyASignalProfile = (profile *) malloc(sizeof(profile))) == NULL) {
         printError("Not enough memory: polyA profile");
+        exit(EXIT_FAILURE);
     }
+
+    assert(gp->PolyASignalProfile != NULL);
 
     if ((gp->StartProfile = (profile *) malloc(sizeof(profile))) == NULL) {
         printError("Not enough memory: start profile");
+        exit(EXIT_FAILURE);
     }
 
     if ((gp->AcceptorProfile = (profile *) malloc(sizeof(profile))) == NULL) {
         printError("Not enough memory: acceptor profile");
+        exit(EXIT_FAILURE);
     }
+
+    assert(gp->AcceptorProfile != NULL);
 
     if ((gp->U12gtagAcceptorProfile = (profile *) malloc(sizeof(profile))) == NULL) {
         printError("Not enough memory: u12gtag acceptor profile");
+        exit(EXIT_FAILURE);
     }
 
     if ((gp->U12atacAcceptorProfile = (profile *) malloc(sizeof(profile))) == NULL) {
         printError("Not enough memory: u12atac acceptor profile");
+        exit(EXIT_FAILURE);
     }
+
+    assert(gp->U12atacAcceptorProfile != NULL);
 
     if ((gp->PolyPTractProfile = (profile *) malloc(sizeof(profile))) == NULL) {
         printError("Not enough memory: acceptor Poly Pyrimidine Tract profile");
+        exit(EXIT_FAILURE);
     }
 
     if ((gp->BranchPointProfile = (profile *) malloc(sizeof(profile))) == NULL) {
         printError("Not enough memory: acceptor Branch Point profile");
+        exit(EXIT_FAILURE);
     }
 
     if ((gp->U12BranchPointProfile = (profile *) malloc(sizeof(profile))) == NULL) {
         printError("Not enough memory: u12 acceptor Branch Point profile");
+        exit(EXIT_FAILURE);
     }
 
     if ((gp->DonorProfile = (profile *) malloc(sizeof(profile))) == NULL) {
         printError("Not enough memory: U2 donor profile");
+        exit(EXIT_FAILURE);
     }
 
     if ((gp->U2gcagDonorProfile = (profile *) malloc(sizeof(profile))) == NULL) {
         printError("Not enough memory: U2 GCAG donor profile");
+        exit(EXIT_FAILURE);
     }
 
-    if ((gp->U2gcagDonorProfile = (profile *) malloc(sizeof(profile))) == NULL) {
-        printError("Not enough memory: U2 GCAG donor profile");
-    }
+    assert(gp->U2gcagDonorProfile != NULL);
+    /* dk 2016.03.14 memory leak above
+
+if ((gp->U2gcagDonorProfile = (profile *) malloc(sizeof(profile))) == NULL)
+printError("Not enough memory: U2 GCAG donor profile");
+    duplicated malloc??? */
 
     if ((gp->U2gtaDonorProfile = (profile *) malloc(sizeof(profile))) == NULL) {
         printError("Not enough memory: U2 GTA donor profile");
+        exit(EXIT_FAILURE);
     }
 
     if ((gp->U2gtgDonorProfile = (profile *) malloc(sizeof(profile))) == NULL) {
         printError("Not enough memory: U2 GTG donor profile");
+        exit(EXIT_FAILURE);
     }
 
     if ((gp->U2gtyDonorProfile = (profile *) malloc(sizeof(profile))) == NULL) {
         printError("Not enough memory: U2 GTY donor profile");
+        exit(EXIT_FAILURE);
     }
 
     if ((gp->U12gtagDonorProfile = (profile *) malloc(sizeof(profile))) == NULL) {
         printError("Not enough memory: U12 GTAG donor profile");
+        exit(EXIT_FAILURE);
     }
 
     if ((gp->U12atacDonorProfile = (profile *) malloc(sizeof(profile))) == NULL) {
         printError("Not enough memory: U12 ATAC donor profile");
+        exit(EXIT_FAILURE);
     }
 
     if ((gp->StopProfile = (profile *) malloc(sizeof(profile))) == NULL) {
         printError("Not enough memory: stop profile");
+        exit(EXIT_FAILURE);
     }
 
     /* 2. Markov model: initial and transition values */
@@ -560,14 +640,17 @@ gparam *RequestMemoryParams(){
 
     if ((gp->OligoLogsIni[0] = (float *) calloc(OligoDim, sizeof(float))) == NULL) {
         printError("Not enough memory: Markov initial pentanucleotides (0)");
+        exit(EXIT_FAILURE);
     }
 
     if ((gp->OligoLogsIni[1] = (float *) calloc(OligoDim, sizeof(float))) == NULL) {
         printError("Not enough memory: Markov initial pentanucleotides (1)");
+        exit(EXIT_FAILURE);
     }
 
     if ((gp->OligoLogsIni[2] = (float *) calloc(OligoDim, sizeof(float))) == NULL) {
         printError("Not enough memory: Markov initial pentanucleotides (2)");
+        exit(EXIT_FAILURE);
     }
 
     if ((gp->OligoLogsTran[0] = (float *) calloc(OligoDim, sizeof(float))) == NULL) {
@@ -576,64 +659,80 @@ gparam *RequestMemoryParams(){
 
     if ((gp->OligoLogsTran[1] = (float *) calloc(OligoDim, sizeof(float))) == NULL) {
         printError("Not enough memory: Markov chains - hexanucleotides (1)");
+        exit(EXIT_FAILURE);
     }
 
     if ((gp->OligoLogsTran[2] = (float *) calloc(OligoDim, sizeof(float))) == NULL) {
         printError("Not enough memory: Markov chains - hexanucleotides (2)");
+        exit(EXIT_FAILURE);
     }
 
     /* 3. Markov temporary data structures to compute every split: LENGTHSi */
     if ((gp->OligoDistIni[0]
              = (float *) calloc(LENGTHSi, sizeof(float))) == NULL) {
         printError("Not enough memory: temp. initial pentanucleotides sum (0)");
+        exit(EXIT_FAILURE);
     }
 
     if ((gp->OligoDistIni[1]
              = (float *) calloc(LENGTHSi, sizeof(float))) == NULL) {
         printError("Not enough memory: temp. initial pentanucleotides sum (1)");
+        exit(EXIT_FAILURE);
     }
 
     if ((gp->OligoDistIni[2]
              = (float *) calloc(LENGTHSi, sizeof(float))) == NULL) {
         printError("Not enough memory: temp. initial pentanucleotides sum (2)");
+        exit(EXIT_FAILURE);
     }
 
     if ((gp->OligoDistTran[0]
              = (float *) calloc(LENGTHSi, sizeof(float))) == NULL) {
         printError("Not enough memory: temp. Markov hexanucleotides sum (0)");
+        exit(EXIT_FAILURE);
     }
 
     if ((gp->OligoDistTran[1]
              = (float *) calloc(LENGTHSi, sizeof(float))) == NULL) {
         printError("Not enough memory: temp. Markov hexanucleotides sum (1)");
+        exit(EXIT_FAILURE);
     }
 
     if ((gp->OligoDistTran[2]
              = (float *) calloc(LENGTHSi, sizeof(float))) == NULL) {
         printError("Not enough memory: temp. Markov hexanucleotides sum (2)");
+        exit(EXIT_FAILURE);
     }
 
     /* 4. Exons score parameters */
     if ((gp->Initial = (paramexons *) malloc(sizeof(paramexons))) == NULL) {
         printError("Not enough memory: exons scoring parameters (first)");
+        exit(EXIT_FAILURE);
     }
 
     if ((gp->Internal = (paramexons *) malloc(sizeof(paramexons))) == NULL) {
         printError("Not enough memory: exons scoring parameters (internal)");
+        exit(EXIT_FAILURE);
     }
 
     if ((gp->Terminal = (paramexons *) malloc(sizeof(paramexons))) == NULL) {
         printError("Not enough memory: exons scoring parameters (terminal)");
+        exit(EXIT_FAILURE);
     }
 
     if ((gp->Single = (paramexons *) malloc(sizeof(paramexons))) == NULL) {
         printError("Not enough memory: exons scoring parameters (single)");
+        exit(EXIT_FAILURE);
     }
 
     if ((gp->utr = (paramexons *) malloc(sizeof(paramexons))) == NULL) {
         printError("Not enough memory: exons scoring parameters (utr)");
+        exit(EXIT_FAILURE);
     }
 
+    /* zeros in allocated mem dk 20160314*/
+    assert(gp->utr != NULL);
+    memset(gp->utr, 0, (sizeof(paramexons)));
     return(gp);
 }
 
@@ -645,7 +744,9 @@ gparam **RequestMemoryIsochoresParams(){
     /* Allocating the array of isochores */
     if ((isochores = (gparam **) calloc(MAXISOCHORES, sizeof(gparam *))) == NULL) {
         printError("Not enough memory: isochores array");
+        exit(EXIT_FAILURE);
     }
+    assert(isochores != NULL);
 
     /* Allocating every separate isochore */
     for (i = 0; i < MAXISOCHORES; i++) {
@@ -655,22 +756,27 @@ gparam **RequestMemoryIsochoresParams(){
     /* Allocating space for global parameters (gene model) */
     if ((isochores[0]->D = (dict *) malloc(sizeof(dict))) == NULL) {
         printError("Not enough memory: dictionary of exon types");
+        exit(EXIT_FAILURE);
     }
 
     if ((isochores[0]->nc = (int *) calloc(MAXENTRY, sizeof(int))) == NULL) {
         printError("Not enough memory: nc-array (gene model)");
+        exit(EXIT_FAILURE);
     }
 
     if ((isochores[0]->ne = (int *) calloc(MAXENTRY, sizeof(int))) == NULL) {
         printError("Not enough memory: ne-array (gene model)");
+        exit(EXIT_FAILURE);
     }
 
     if ((isochores[0]->md = (long *) calloc(MAXENTRY, sizeof(long))) == NULL) {
         printError("Not enough memory: minDist (gene model)");
+        exit(EXIT_FAILURE);
     }
 
     if ((isochores[0]->Md = (long *) calloc(MAXENTRY, sizeof(long))) == NULL) {
         printError("Not enough memory: maxDist (gene model)");
+        exit(EXIT_FAILURE);
     }
 
     return(isochores);
@@ -688,6 +794,7 @@ void RequestMemoryProfile(profile *p){
         if ((p->transitionValues[i]
                  = (float *) calloc(p->dimensionTrans, sizeof(float))) == NULL) {
             printError("Not enough memory: signal profile transition values");
+            exit(EXIT_FAILURE);
         }
     }
 }
@@ -701,19 +808,23 @@ packGenes *RequestMemoryGenes(){
     if ((pg
              = (struct s_packGenes *) malloc(sizeof(struct s_packGenes))) == NULL) {
         printError("Not enough memory: pack of genes");
+        exit(EXIT_FAILURE);
     }
 
     /* 1. Allocating memory space for Ghost Exon */
     if (( pg->Ghost = (exonGFF *) malloc(sizeof(exonGFF))) == NULL) {
         printError("Not enough memory: Ghost Exon");
+        exit(EXIT_FAILURE);
     }
 
     if ((pg->Ghost->Acceptor = (site *) malloc(sizeof(site))) == NULL) {
         printError("Not enough memory: Ghost Exon acceptor");
+        exit(EXIT_FAILURE);
     }
 
     if ((pg->Ghost->Donor = (site *) malloc(sizeof(site))) == NULL) {
         printError("Not enough memory: Ghost Exon donor");
+        exit(EXIT_FAILURE);
     }
 
     /* Mark this exon as Ghost Exon */
@@ -739,6 +850,7 @@ packGenes *RequestMemoryGenes(){
     /* Ga is the array of best predicted genes (in every gene class) */
     if ((pg->Ga = (exonGFF ****) calloc(MAXENTRY, sizeof(exonGFF * * *))) == NULL) {
         printError("Not enough memory: Ga array of genes");
+        exit(EXIT_FAILURE);
     }
 
     /* Initialize Ga-exons: everybody looking at the Ghost exon */
@@ -746,6 +858,7 @@ packGenes *RequestMemoryGenes(){
     for (aux = 0; aux < MAXENTRY; aux++) {
         if ((pg->Ga[aux] = (exonGFF ***) calloc(FRAMES, sizeof(exonGFF * *))) == NULL) {
             printError("Not enough memory: 6 frames in Ga array of genes");
+            exit(EXIT_FAILURE);
         }
 
         for (aux2 = 0; aux2 < FRAMES; aux2++) {
@@ -764,21 +877,25 @@ packGenes *RequestMemoryGenes(){
     /* Memory for the array of sorting by donor functions (one per class) */
     if ((pg->d = (exonGFF ***) calloc(MAXENTRY, sizeof(exonGFF * *))) == NULL) {
         printError("Not enough memory: set of d-arrays (sort by donor)");
+        exit(EXIT_FAILURE);
     }
 
     /* Memory for every sorting function (alone) */
     for (aux = 0; aux < MAXENTRY; aux++) {
         if ((pg->d[aux] = (exonGFF **) calloc(FDARRAY * NUMEXONS, sizeof(exonGFF *))) == NULL) {
             printError("Not enough memory: sort-by-donor functions");
+            exit(EXIT_FAILURE);
         }
     }
 
     if ((pg->km = (long *) calloc(MAXENTRY, sizeof(long))) == NULL) {
         printError("Not enough memory: total counters of sort-by-donor functions");
+        exit(EXIT_FAILURE);
     }
 
     if ((pg->je = (long *) calloc(MAXENTRY, sizeof(long))) == NULL) {
         printError("Not enough memory: partial counters of sort-by-donor functions");
+        exit(EXIT_FAILURE);
     }
 
     return(pg);
@@ -794,24 +911,28 @@ packDump *RequestMemoryDumpster(){
     if ((d
              = (struct s_packDump *) malloc(sizeof(struct s_packDump))) == NULL) {
         printError("Not enough memory: dumpster");
+        exit(EXIT_FAILURE);
     }
 
     /* 1. Temporary dumpster Sites */
     if ((d->dumpSites
              = (struct s_site *) calloc(MAXBACKUPSITES, sizeof(struct s_site))) == NULL) {
         printError("Not enough memory: backup sites");
+        exit(EXIT_FAILURE);
     }
 
     /* 2. Temporary dumpster exons */
     if ((d->dumpExons
              = (exonGFF *) calloc(MAXBACKUPEXONS, sizeof(struct s_exonGFF))) == NULL) {
         printError("Not enough memory: backup exons");
+        exit(EXIT_FAILURE);
     }
 
     /* 3. Dumpster hash to find backup exons quickly */
     if ((d->h
              = (dumpHash *) malloc(sizeof(struct s_dumpHash))) == NULL) {
         printError("Not enough memory: dumpster hash table structure");
+        exit(EXIT_FAILURE);
     }
 
     HowMany = (long) (MAXBACKUPEXONS / HASHFACTOR);
@@ -819,6 +940,7 @@ packDump *RequestMemoryDumpster(){
     if ((d->h->T
              = (dumpNode **) calloc(HowMany, sizeof(dumpNode *))) == NULL) {
         printError("Not enough memory: dumpster hash table");
+        exit(EXIT_FAILURE);
     }
 
     /* 4. Set counters */
@@ -836,6 +958,7 @@ dict *RequestMemoryAaDictionary(){
     /* 1. Allocating memory for aminoacid dictionary */
     if ((dAA = (dict *) malloc(sizeof(dict))) == NULL) {
         printError("Not enough memory: aa-dictionary");
+        exit(EXIT_FAILURE);
     }
 
     /* 2. Reset dictionary */

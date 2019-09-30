@@ -27,18 +27,22 @@
 
 /*  $Id: ReadSequence.c,v 1.8 2011-01-13 11:06:16 talioto Exp $  */
 
+#include <assert.h>
 #include "geneid.h"
 
 extern int VRB;
 
 /* Predicting the length of a sequence before loading it */
-long analizeFile(char *SequenceFile){
+int64_t analizeFile(char *SequenceFile){
+
     struct stat *buf;
-    long        size;
+    size_t      size;
 
     if ((buf = (struct stat *) malloc(sizeof(struct stat))) == NULL) {
         printError("Not enough memory: analizing input sequence file");
     }
+
+    assert(buf != NULL);
 
     if (stat(SequenceFile, buf) != 0) {
         printError("Impossible to access sequence file");
@@ -58,7 +62,8 @@ long analizeFile(char *SequenceFile){
 
 /* Get the header of the first DNA sequence (Name) */
 /* The sequence file is allowed to contain more than one fasta sequence */
-int IniReadSequence(FILE *seqfile, char *line){
+int IniReadSequence(FILE *seqfile,
+                    char *line){
     int  res;
     char sAux[MAXSTRING];
     char cAux;
@@ -100,7 +105,9 @@ int IniReadSequence(FILE *seqfile, char *line){
 }
 
 /* Reading content of current DNA sequence and the header of next one */
-int ReadSequence(FILE *seqfile, char *Sequence, char *nextLocus){
+int ReadSequence(FILE *seqfile,
+                 char *Sequence,
+                 char *nextLocus){
     long pos;
     int  res;
     char mess[MAXSTRING];

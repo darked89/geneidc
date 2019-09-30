@@ -36,7 +36,7 @@ PRODUCT= $(BIN)/$(PROGRAM)
 #run:
 #scan-build make
 CC= clang
-OPTS=-I$(INCLUDE) -std=c11 -ggdb -g2 -march=native -Weverything -Wshadow -Wstrict-overflow -fno-strict-aliasing  -Weverything #-fsanitize=address
+OPTS=-I$(INCLUDE) -std=c11 -ggdb -g2 -march=native -Weverything -Wshadow -Wstrict-overflow -fno-strict-aliasing  #-fsanitize=address
 
 
 #debug gcc 6.0
