@@ -40,7 +40,7 @@ Installation, setup and basic usage of geneid is fairly easy. The command line o
 #### Platforms/compilers
 The program is written in ANSI C, but started moving towards the C11 C standard. It compiles on multiple Linux/Unix system with default compilers. The lists below contain only a subset of platforms /compiler versions, just to give an idea about recent distributions on which the builds were tested.
 
-- Linux: Debian 8.2; Lubuntu 15.04; Centos 7; Manjaro 15.09;
+- Linux: Debian 8.2; Lubuntu 15.04; Centos 7; Manjaro 15.09, Manjaro 18.1;
 - OpenIndiana (Solarix x64 fork): ver20151003
 - FreeBSD: 10.2
 [](- MacOS?)
@@ -48,10 +48,12 @@ The program is written in ANSI C, but started moving towards the C11 C standard.
 
 #### Programs and libraries
 Tested with following compilers:
-- gcc: 5.2.0 on Manjaro 15.09; 4.9.2 on Lubuntu 15.04/Debian 8.2; 4.8.3 on Centos 7; 4.8.5 OpenIndiana 20151003
-- clang: 3.6.0 on Lubuntu 15.04; 3.7.0 on Manjaro 15.09, 3.4.1?? on FreeBSD 10.2
-[] (icc: 12.1.0 )
-- cc (from Oracle Solaris Studio): 12.4 on Centos 7; 12.1 on OpenIndiana 20151003
+- gcc: 9.1.0 on Manjaro 18.1;
+- *old* gcc: 5.2.0 on Manjaro 15.09; 4.9.2 on Lubuntu 15.04/Debian 8.2; 4.8.3 on Centos 7; 4.8.5 OpenIndiana 20151003
+- clang: 8.0.1 on Manjaro 18.1;
+- *old* clang: 3.6.0 on Lubuntu 15.04; 3.7.0 on Manjaro 15.09, 3.4.1?? on FreeBSD 10.2
+
+- *old* cc (from Oracle Solaris Studio): 12.4 on Centos 7; 12.1 on OpenIndiana 20151003
 
 TODO
 - Python for testing (future)
@@ -59,7 +61,7 @@ TODO
 ### Obtaining the sources
 
 Options:
-- git clone AAA/BBB
+- git clone https://github.com/darked89/geneidc.git
 
 - http/ftp from FFF/GGG (geneid_latests.tar.gz)
 
