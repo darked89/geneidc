@@ -398,7 +398,10 @@ long CookingInfo(exonGFF *eorig,
                  double  *artScore){
     /* Identifier of current gene */
     long    igen;
-    int     stop, stop1, stop2, currentIsUTR;
+    int     stop;
+    int     stop1;
+    int     stop2;
+    int     currentIsUTR;
     exonGFF *e;
 
 /*   char mess[MAXSTRING]; */
@@ -496,7 +499,7 @@ long CookingInfo(exonGFF *eorig,
                          || !strcmp(e->Type, sBEGIN)
                          || !strcmp(e->Type, sUTRFIRST)
                          || !strcmp(e->Type, sUTRFIRSTHALF)
-                         || !strcmp(e->Type, sBEGIN)
+                         /*|| !strcmp(e->Type, sBEGIN) dupl 20170710 */
                          || e->Strand == '+');
 
                 while ( !stop && !stop1 ) {
@@ -990,7 +993,9 @@ void CookingGenes(exonGFF *e,
     char   *prot;
     char   *tmpDNA;
     char   *tmpTDNA;
-    long   nAA, nNN, nTN;
+    long   nAA;
+    long   nNN;
+    long   nTN;
     int    **tAA;
     double artificialScore;
     long   i;
@@ -1015,11 +1020,13 @@ void CookingGenes(exonGFF *e,
     /* according to the protein product for that gene */
     if ((tAA = (int **) calloc(MAXEXONGENE, sizeof(int *))) == NULL) {
         printError("Not enough memory: tAA general structure");
+        exit(EXIT_FAILURE);
     }
 
     for (i = 0; i < MAXEXONGENE; i++) {
         if ((tAA[i] = (int *) calloc(2, sizeof(int))) == NULL) {
             printError("Not enough memory: tAA[] structure");
+            exit(EXIT_FAILURE);
         }
     }
 
@@ -1030,6 +1037,7 @@ void CookingGenes(exonGFF *e,
     /* if (PSEQ) */
     if ((prot = (char *) calloc(MAXAA, sizeof(char))) == NULL) {
         printError("Not enough memory: protein product");
+        exit(EXIT_FAILURE);
     }
 
     /* cDNA memory if required */
@@ -1043,6 +1051,7 @@ void CookingGenes(exonGFF *e,
     if (tDNA) {
         if ((tmpTDNA = (char *) calloc(MAXCDNA, sizeof(char))) == NULL) {
             printError("Not enough memory: tDNA product");
+            exit(EXIT_FAILURE);
         }
     }
 
@@ -1228,24 +1237,39 @@ void CookingGenes(exonGFF *e,
     }
 
     /* Freedom operations */
-    if (PSEQ) {
+    /* if (PSEQ)
+      free(prot);
+      * dk: not working before !*/
+    /*dk 2016.03.12 test */
+    if (prot) {
         free(prot);
     }
 
-    free(info);
+    if (info) {
+        free(info);
+    }
     for (i = 0; i < MAXEXONGENE; i++) {
         free(tAA[i]);
     }
 
+    if (tAA) {
+        free(tAA);
+    }
     if (cDNA) {
         free(tmpDNA);
+    }
+
+    if (tmpTDNA) {
+        free(tmpTDNA);
     }
 }
 
 /*************************************************************************/
 
 /* DEBUG: quick-printing of exons */
-void PrintExonGFF(exonGFF *e, char Name[], char Source[]){
+void PrintExonGFF(exonGFF *e,
+                  char    Name[],
+                  char    Source[]){
     printf("%s\t%s\t%s\t%ld\t%ld\t%f\t%c\t%hd\t(%s)\n",
            Name,
            Source,
@@ -1259,7 +1283,9 @@ void PrintExonGFF(exonGFF *e, char Name[], char Source[]){
 }
 
 /* DEBUG: quick-printing of genes */
-void PrintGeneGFF(exonGFF *e, char Name[], char Source[]){
+void PrintGeneGFF(exonGFF *e,
+                  char    Name[],
+                  char    Source[]){
     if ((e->PreviousExon)->Strand != '*') {
         PrintGeneGFF(e->PreviousExon, Name, Source);
     }

@@ -389,6 +389,7 @@ A. DEFINITIONS
 /* Macros (functions)                       */
 #define MIN(a, b) (a < b) ? a : b;
 #define MAX(a, b) (a > b) ? a : b;
+#define FREE(p)   do { free(p); (p) = NULL; } while (0)
 
 /*************************************************************************
 B. DATA TYPES
@@ -605,22 +606,42 @@ typedef struct s_packDump
 
 typedef struct s_account
 {
-    long starts, starts_r,
-         stops, stops_r,
-         acc, acc_r,
-         don, don_r,
-         tss, tss_r,
-         tes, tes_r;
+    long starts,
+         starts_r,
+         stops,
+         stops_r,
+         acc,
+         acc_r,
+         don,
+         don_r,
+         tss,
+         tss_r,
+         tes,
+         tes_r;
 
-    long first, first_r,
-         internal, internal_r,
-         terminal, terminal_r,
-         single, single_r,
-         orf, orf_r, zle, zle_r, utr, utr_r;
+    long first,
+         first_r,
+         internal,
+         internal_r,
+         terminal,
+         terminal_r,
+         single,
+         single_r,
+         orf,
+         orf_r,
+         zle,
+         zle_r,
+         utr,
+         utr_r;
 
     long totalExons;
 
-    int    tSites, tExons, tGenes, tSort, tScore, tBackup;
+    int tSites,
+        tExons,
+        tGenes,
+        tSort,
+        tScore,
+        tBackup;
     time_t tStart;
 
 } account;
@@ -701,11 +722,16 @@ typedef struct s_gparam
 /*************************************************************************
 C. IMPORTED HEADERS
 *************************************************************************/
-float strtof(const char *nptr, char **endptr);
+float strtof(const char *nptr,
+             char       **endptr);
 
-void PrintExonGFF(exonGFF *e, char *Name, char *Source);
+void PrintExonGFF(exonGFF *e,
+                  char    *Name,
+                  char    *Source);
 
-void PrintGeneGFF(exonGFF *e, char *Name, char *Source);
+void PrintGeneGFF(exonGFF *e,
+                  char    *Name,
+                  char    *Source);
 
 void printError(char *s);
 
@@ -715,44 +741,55 @@ void printRes(char *s);
 
 void printReadingInfo(char *s);
 
-long GetSitesWithProfile(char *s, profile *p, site *st, long l1, long l2);
+long GetSitesWithProfile(char    *s,
+                         profile *p,
+                         site    *st,
+                         long    l1,
+                         long    l2);
 
-long GetTSS(site *sc,
-            site *Acceptors, long nAcceptors,
+long GetTSS(site                    *sc,
+            site                    *Acceptors,
+            long                    nAcceptors,
             packExternalInformation *external,
-            packHSP *hsp,
-            int Strand,
-            long LengthSequence,
-            long l1,
-            long l2
+            packHSP                 *hsp,
+            int                     Strand,
+            long                    LengthSequence,
+            long                    l1,
+            long                    l2
             );
 
-long GetTES(site *sc,
-            site *Donors, long nDonors,
+long GetTES(site                    *sc,
+            site                    *Donors,
+            long                    nDonors,
             packExternalInformation *external,
-            packHSP *hsp,
-            int Strand,
-            long LengthSequence,
-            long l1,
-            long l2,
-            long ns
+            packHSP                 *hsp,
+            int                     Strand,
+            long                    LengthSequence,
+            long                    l1,
+            long                    l2,
+            long                    ns
             );
 
-long BuildDonors(char *s, short class, char *type,
-                 char *subtype,
-                 profile *p,
-                 site *st,
-                 long l1,
-                 long l2,
-                 long ns,
-                 long nsites,
-                 int Strand,
+long BuildDonors(char                    *s,
+                 short                   xxspl_class,
+                 char                    *type,
+                 char                    *subtype,
+                 profile                 *p,
+                 site                    *st,
+                 long                    l1,
+                 long                    l2,
+                 long                    ns,
+                 long                    nsites,
+                 int                     Strand,
                  packExternalInformation *external
                  );
-float PeakEdgeScore(long Position,
-                    int Strand,
+
+float PeakEdgeScore(long                    Position,
+                    int                     Strand,
                     packExternalInformation *external,
-                    long l1, long l2, int win);
+                    long                    l1,
+                    long                    l2,
+                    int                     win);
 
 /* long BuildU12Donors(char* s, */
 /*                  char* type, */
@@ -765,59 +802,88 @@ float PeakEdgeScore(long Position,
 int ClusterEdge(long Position,
                 int Strand,
                 packExternalInformation *external,
-                long l1, long l2);
-long GetStopCodons(char *s, profile *p, site *sc, long l1, long l2);
+                long                    l1,
+                long                    l2);
 
-long BuildInitialExons(site *Start, long nStarts,
-                       site *Donor, long nDonors,
-                       site *Stop, long nStops,
-                       int MaxDonors,
-                       char *ExonType,
-                       char *Sequence,
-                       exonGFF *Exon, long nexons );
+long GetStopCodons(char    *s,
+                   profile *p,
+                   site    *sc,
+                   long    l1,
+                   long    l2);
 
-long BuildInternalExons(site *Acceptor, long nAcceptors,
-                        site *Donor, long nDonors,
-                        site *Stop, long nStops,
-                        int MaxDonors,
-                        char *ExonType,
-                        char *Sequence,
-                        exonGFF *Exon, long nexons);
+long BuildInitialExons(site    *Start,
+                       long    nStarts,
+                       site    *Donor,
+                       long    nDonors,
+                       site    *Stop,
+                       long    nStops,
+                       int     MaxDonors,
+                       char    *ExonType,
+                       char    *Sequence,
+                       exonGFF *Exon,
+                       long    nexons );
 
-long BuildZeroLengthExons(site *Acceptor, long nAcceptors,
-                          site *Donor, long nDonors,
-                          site *Stop, long nStops,
-                          int MaxDonors,
-                          char *ExonType,
-                          char *Sequence,
-                          exonGFF *Exon, long nexons);
+long BuildInternalExons(site    *Acceptor,
+                        long    nAcceptors,
+                        site    *Donor,
+                        long    nDonors,
+                        site    *Stop,
+                        long    nStops,
+                        int     MaxDonors,
+                        char    *ExonType,
+                        char    *Sequence,
+                        exonGFF *Exon,
+                        long    nexons);
 
-long BuildTerminalExons (site *Acceptor, long nAcceptors,
-                         site *Stop, long nStops,
-                         long LengthSequence,
-                         long cutPoint,
-                         char *ExonType,
-                         char *Sequence,
-                         exonGFF *Exon, long nexons);
+long BuildZeroLengthExons(site    *Acceptor,
+                          long    nAcceptors,
+                          site    *Donor,
+                          long    nDonors,
+                          site    *Stop,
+                          long    nStops,
+                          int     MaxDonors,
+                          char    *ExonType,
+                          char    *Sequence,
+                          exonGFF *Exon,
+                          long    nexons);
 
-long BuildSingles(site *Start, long nStarts,
-                  site *Stop, long nStops,
-                  long cutPoint,
-                  char *Sequence,
+long BuildTerminalExons (site    *Acceptor,
+                         long    nAcceptors,
+                         site    *Stop,
+                         long    nStops,
+                         long    LengthSequence,
+                         long    cutPoint,
+                         char    *ExonType,
+                         char    *Sequence,
+                         exonGFF *Exon,
+                         long    nexons);
+
+long BuildSingles(site    *Start,
+                  long    nStarts,
+                  site    *Stop,
+                  long    nStops,
+                  long    cutPoint,
+                  char    *Sequence,
                   exonGFF *Exon);
 
-long BuildORFs(site *Start, long nStarts,
-               site *Stop, long nStops,
-               long cutPoint,
-               char *Sequence,
+long BuildORFs(site    *Start,
+               long    nStarts,
+               site    *Stop,
+               long    nStops,
+               long    cutPoint,
+               char    *Sequence,
                exonGFF *Exon);
 
-long BuildUTRExons(site *Start, long nStarts,
-                   site *Donor, long nDonors,
-                   int MaxDonors,
-                   int MaxExonLength, long cutPoint,
-                   char *ExonType,
-                   exonGFF *Exon, long nexons);
+long BuildUTRExons(site    *Start,
+                   long    nStarts,
+                   site    *Donor,
+                   long    nDonors,
+                   int     MaxDonors,
+                   int     MaxExonLength,
+                   long    cutPoint,
+                   char    *ExonType,
+                   exonGFF *Exon,
+                   long    nexons);
 
 packSites *RequestMemorySites();
 packExons *RequestMemoryExons();
@@ -871,10 +937,20 @@ void SortSites(site *Sites, long nSites, site *sortedSites,
 
 void SwitchCounters(packExternalInformation *external);
 
-void Output(packSites *allSites, packSites *allSites_r,
-            packExons *allExons, packExons *allExons_r,
-            exonGFF *exons, long nExons, char *Locus,
-            long l1, long l2, long lowerlimit, char *Sequence, gparam *gp, dict *dAA, char *GenePrefix);
+void Output(packSites *allSites,
+            packSites *allSites_r,
+            packExons *allExons,
+            packExons *allExons_r,
+            exonGFF   *exons,
+            long      nExons,
+            char      *Locus,
+            long      l1,
+            long      l2,
+            long      lowerlimit,
+            char      *Sequence,
+            gparam    *gp,
+            dict      *dAA,
+            char      *GenePrefix);
 
 void updateTotals(account   *m,
                   packSites *allSites,
@@ -882,19 +958,33 @@ void updateTotals(account   *m,
                   packExons *allExons,
                   packExons *allExons_r);
 
-void genamic(exonGFF *E, long nExons, packGenes *pg, gparam *gp);
+void genamic(exonGFF   *E,
+             long      nExons,
+             packGenes *pg,
+             gparam    *gp);
 
-void BackupGenes(packGenes *pg, int nclass, packDump *d);
+void BackupGenes(packGenes *pg,
+                 int       nclass,
+                 packDump  *d);
 
-void BackupArrayD(packGenes *pg, long accSearch,
-                  gparam *gp, packDump *dumpster);
+void BackupArrayD(packGenes *pg,
+                  long      accSearch,
+                  gparam    *gp,
+                  packDump  *dumpster);
 
-void cleanGenes(packGenes *pg, int nclass, packDump *dumpster);
+void cleanGenes(packGenes *pg,
+                int       nclass,
+                packDump  *dumpster);
 
 void cleanDumpHash(dumpHash *h);
 
-void OutputGene(packGenes *pg, long nExons, char *Locus,
-                char *Sequence, gparam *gp, dict *dAA, char *GenePrefix);
+void OutputGene(packGenes *pg,
+                long      nExons,
+                char      *Locus,
+                char      *Sequence,
+                gparam    *gp,
+                dict      *dAA,
+                char      *GenePrefix);
 
 void OutputStats(char *Locus);
 void OutputTime();
@@ -915,32 +1005,56 @@ long ReadGeneModel (FILE *file,
                     long Md[],
                     int  block[]);
 
-long ForceGeneModel (dict *d,
-                     int nc[], int ne[],
-                     int UC[][MAXENTRY],
-                     int DE[][MAXENTRY],
-                     long md[], long Md[],
-                     int block[]);
+long ForceGeneModel(dict *d,
+                    int  nc[],
+                    int  ne[],
+                    int  UC[][MAXENTRY],
+                    int  DE[][MAXENTRY],
+                    long md[],
+                    long Md[],
+                    int  block[]);
 
-void PrintSites (site *s, long ns, int type,
-                 char Name[], int Strand,
-                 long l1, long l2, long lowerlimit,
-                 char *seq,
+void PrintSites (site    *s,
+                 long    ns,
+                 int     type,
+                 char    Name[],
+                 int     Strand,
+                 long    l1,
+                 long    l2,
+                 long    lowerlimit,
+                 char    *seq,
                  profile *p);
 
-void PrintExons (exonGFF *e, long ne, int type, char Name[],
-                 long l1, long l2, char *Sequence, dict *dAA, char *GenePrefix);
+void PrintExons (exonGFF *e,
+                 long    ne,
+                 int     type,
+                 char    Name[],
+                 long    l1,
+                 long    l2,
+                 char    *Sequence,
+                 dict    *dAA,
+                 char    *GenePrefix);
 
 void resetDict(dict *d);
 
-int setkeyDict(dict *d, char s[]);
+int setkeyDict(dict *d,
+               char s[]);
 
-int getkeyDict(dict *d, char s[]);
+int getkeyDict(dict *d,
+               char s[]);
 
-int Translate(long p1, long p2, short fra, short rmd,
-              char *s, dict *dAA, char sAux[]);
+int Translate(long  p1,
+              long  p2,
+              short fra,
+              short rmd,
+              char  *s,
+              dict  *dAA,
+              char  sAux[]);
 
-void ReverseSubSequence(long p1, long p2, char *s, char *r);
+void ReverseSubSequence(long p1,
+                        long p2,
+                        char *s,
+                        char *r);
 
 void CorrectExon(exonGFF *e);
 
@@ -948,43 +1062,93 @@ void CorrectUTR(exonGFF *e);
 
 void CorrectORF(exonGFF *e);
 
-void SwitchFrames(exonGFF *e, long n);
+void SwitchFrames(exonGFF *e,
+                  long    n);
 
-void SwitchFramesDa(packGenes *pg, int nclass);
+void SwitchFramesDa(packGenes *pg,
+                    int       nclass);
 
-void SwitchFramesDb(packGenes *pg, int nclass);
+void SwitchFramesDb(packGenes *pg,
+                    int       nclass);
 
-void UndoFrames(exonGFF *e, long n);
+void UndoFrames(exonGFF *e,
+                long    n);
 
-void BuildSort(dict *D, int nc[], int ne[], int UC[][MAXENTRY],
-               int DE[][MAXENTRY], int nclass, long km[],
-               exonGFF ***d, exonGFF *E, long nexons);
+void BuildSort(dict    *D,
+               int     nc[],
+               int     ne[],
+               int     UC[][MAXENTRY],
+               int     DE[][MAXENTRY],
+               int     nclass,
+               long    km[],
+               exonGFF ***d,
+               exonGFF *E,
+               long    nexons);
 
-void PrintSite(site *s, int type, char Name[], int Strand,
-               char *seq, profile *p);
+void PrintSite(site    *s,
+               int     type,
+               char    Name[],
+               int     Strand,
+               char    *seq,
+               profile *p);
 
-void PrintGCDS(exonGFF *e, char Name[], char *s, dict *dAA,
-               long ngen, int AA1, int AA2, int nAA,
-               int numInt, char *GenePrefix);
+void PrintGCDS(exonGFF *e,
+               char    Name[],
+               char    *s,
+               dict    *dAA,
+               long    ngen,
+               int     AA1,
+               int     AA2,
+               int     nAA,
+               int     numInt,
+               char    *GenePrefix);
 
-void PrintGUTR(exonGFF *e, char Name[], char *s, long ngen,
-               int numInt, char *GenePrefix);
+void PrintGUTR(exonGFF *e,
+               char    Name[],
+               char    *s,
+               long    ngen,
+               int     numInt,
+               char    *GenePrefix);
 
-void PrintGExon(exonGFF *a, int nSegments, char Name[], long ngen,
-                int numInt, char *GenePrefix, int evidence, float score);
+void PrintGExon(exonGFF *a,
+                int     nSegments,
+                char    Name[],
+                long    ngen,
+                int     numInt,
+                char    *GenePrefix,
+                int     evidence,
+                float   score);
 
-void PrintGIntron(exonGFF *d, exonGFF *a, char Name[], long ngen,
-                  int numInt, char *GenePrefix, int evidence, float score, char *eType);
+void PrintGIntron(exonGFF *d,
+                  exonGFF *a,
+                  char    Name[],
+                  long    ngen,
+                  int     numInt,
+                  char    *GenePrefix,
+                  int     evidence,
+                  float   score,
+                  char    *eType);
 
-void PrintGGene(exonGFF *s, exonGFF *e, char Name[],
-                long ngen, float score, char *GenePrefix);
+void PrintGGene(exonGFF *s,
+                exonGFF *e,
+                char    Name[],
+                long    ngen,
+                float   score,
+                char    *GenePrefix);
 
-void PrintGmRNA(exonGFF *s, exonGFF *e, char Name[],
-                long ngen, float score, char *GenePrefix);
+void PrintGmRNA(exonGFF *s,
+                exonGFF *e,
+                char    Name[],
+                long    ngen,
+                float   score,
+                char    *GenePrefix);
 
-void PrintXMLExon(exonGFF *e, char Name[],
-                  long ngen, long nExon,
-                  int type1, int type2,
+void PrintXMLExon(exonGFF *e,
+                  char    Name[],
+                  long    ngen,
+                  long    nExon,
+                  int     type1,
+                  int     type2,
                   char *GenePrefix);
 
 void TranslateGene(exonGFF *e,
@@ -997,18 +1161,29 @@ void TranslateGene(exonGFF *e,
 
 void resetDumpHash(dumpHash *h);
 
-void setExonDumpHash(exonGFF *E, dumpHash *h);
+void setExonDumpHash(exonGFF  *E,
+                     dumpHash *h);
 
-exonGFF *getExonDumpHash(exonGFF *E, dumpHash *h);
+exonGFF *getExonDumpHash(exonGFF  *E,
+                         dumpHash *h);
 
-void setAADict(dict *d, char s[], char aA);
+void setAADict(dict *d,
+               char s[],
+               char aA);
 
-char getAADict(dict *d, char s[]);
+char getAADict(dict *d,
+               char s[]);
 
-void CookingGenes(exonGFF *e, char Name[], char *s,
-                  gparam *gp, dict *dAA, char *GenePrefix);
+void CookingGenes(exonGFF *e,
+                  char    Name[],
+                  char    *s,
+                  gparam  *gp,
+                  dict    *dAA,
+                  char    *GenePrefix);
 
-float MeasureSequence(long l1, long l2, char *s);
+float MeasureSequence(long l1,
+                      long l2,
+                      char *s);
 
 gparam **RequestMemoryIsochoresParams();
 
@@ -1037,10 +1212,17 @@ void ScoreExons(char                    *Sequence,
                 int                     nIsochores,
                 packGC                  *GCInfo);
 
-void GetcDNA(exonGFF *e, char *s, long nExons, char *cDNA, long *nNN);
-void GetTDNA(exonGFF *e, char *s, long nExons, char *tDNA, long *nTN);
+void GetcDNA(exonGFF *e,
+             char    *s,
+             long    nExons,
+             char    *cDNA,
+             long    *nNN);
 
-float ComputeGC(packGC *GCInfo, long inigc, long endgc);
+void GetTDNA(exonGFF *e,
+             char    *s,
+             long    nExons,
+             char    *tDNA,
+             long    *nTN);
 
 void GCScan(char *s, packGC *GCInfo, long l1, long l2);
 
@@ -1058,21 +1240,25 @@ packGC *RequestMemoryGC();
 
 int SelectIsochore(float percent, gparam **isochores);
 
-void  manager(char *Sequence, long LengthSequence,
-              packSites *allSites,
-              packExons *allExons,
-              long l1, long l2, long lower, long upper,
-              int Strand,
+void  manager(char                    *Sequence,
+              long                    LengthSequence,
+              packSites               *allSites,
+              packExons               *allExons,
+              long                    l1,
+              long                    l2,
+              long                    lower,
+              long                    upper,
+              int                     Strand,
               packExternalInformation *external,
-              packHSP *hsp,
-              gparam *gp,
-              gparam **isochores,
-              int nIsochores,
-              packGC *GCInfo,
-              site *acceptorsites,
-              site *donorsites,
-              site *tssites,
-              site *tesites
+              packHSP                 *hsp,
+              gparam                  *gp,
+              gparam                  **isochores,
+              int                     nIsochores,
+              packGC                  *GCInfo,
+              site                    *acceptorsites,
+              site                    *donorsites,
+              site                    *tssites,
+              site                    *tesites
               );
 
 void resetEvidenceCounters(packExternalInformation *external);
