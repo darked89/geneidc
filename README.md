@@ -1,6 +1,6 @@
 
 
-** Caveat: unoficial geneid repository**
+** Caveat: unofficial geneid repository**
 
 
 # geneid 
@@ -99,7 +99,7 @@ geneid -h
 
 #running with predictions
 
-./bin/geneid  -GP param/dictyostelium.param ../geneid_dk_changes/samples/dict_1chr.fa
+./bin/geneid  -GP param/dictyostelium.param ./samples/dict_1chr.fa
 
 ```
 
