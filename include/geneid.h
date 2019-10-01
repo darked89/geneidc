@@ -30,22 +30,26 @@
 
 /* $Id: geneid.h,v 1.54 2010/11/25 20:48:06 talioto Exp $ */
 
+#pragma once
 /* Required libraries */
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdint.h>
+#include <float.h>
+#include <stdbool.h>
 #include <unistd.h>
 #include <string.h>
-#include <time.h>
 #include <math.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 
+#include <time.h>
 /*************************************************************************
 A. DEFINITIONS
 *************************************************************************/
 
 /* The name of the game                     */
-#define VERSION   "geneid_v1.4"
+#define VERSION   "1.5_alpha"
 #define SITES     "geneid_v1.4"
 #define EXONS     "geneid_v1.4"
 #define EVIDENCE  "evidence"
@@ -395,6 +399,7 @@ B. DATA TYPES
 *************************************************************************/
 
 typedef struct s_node *pnode;
+
 typedef struct s_node
 {
     char  s[MAXSTRING];
@@ -605,22 +610,42 @@ typedef struct s_packDump
 
 typedef struct s_account
 {
-    long starts, starts_r,
-         stops, stops_r,
-         acc, acc_r,
-         don, don_r,
-         tss, tss_r,
-         tes, tes_r;
+    long starts,
+         starts_r,
+         stops,
+         stops_r,
+         acc,
+         acc_r,
+         don,
+         don_r,
+         tss,
+         tss_r,
+         tes,
+         tes_r;
 
-    long first, first_r,
-         internal, internal_r,
-         terminal, terminal_r,
-         single, single_r,
-         orf, orf_r, zle, zle_r, utr, utr_r;
+    long first,
+         first_r,
+         internal,
+         internal_r,
+         terminal,
+         terminal_r,
+         single,
+         single_r,
+         orf,
+         orf_r,
+         zle,
+         zle_r,
+         utr,
+         utr_r;
 
     long totalExons;
 
-    int    tSites, tExons, tGenes, tSort, tScore, tBackup;
+    int tSites,
+        tExons,
+        tGenes,
+        tSort,
+        tScore,
+        tBackup;
     time_t tStart;
 
 } account;
@@ -701,11 +726,16 @@ typedef struct s_gparam
 /*************************************************************************
 C. IMPORTED HEADERS
 *************************************************************************/
-float strtof(const char *nptr, char **endptr);
+float strtof(const char *nptr,
+             char       **endptr);
 
-void PrintExonGFF(exonGFF *e, char *Name, char *Source);
+void PrintExonGFF(exonGFF *e,
+                  char    *Name,
+                  char    *Source);
 
-void PrintGeneGFF(exonGFF *e, char *Name, char *Source);
+void PrintGeneGFF(exonGFF *e,
+                  char    *Name,
+                  char    *Source);
 
 void printError(char *s);
 
@@ -715,10 +745,15 @@ void printRes(char *s);
 
 void printReadingInfo(char *s);
 
-long GetSitesWithProfile(char *s, profile *p, site *st, long l1, long l2);
+long GetSitesWithProfile(char    *s,
+                         profile *p,
+                         site    *st,
+                         long    l1,
+                         long    l2);
 
-long GetTSS(site *sc,
-            site *Acceptors, long nAcceptors,
+long GetTSS(site                    *sc,
+            site                    *Acceptors,
+            long                    nAcceptors,
             packExternalInformation *external,
             packHSP *hsp,
             int Strand,
@@ -727,8 +762,9 @@ long GetTSS(site *sc,
             long l2
             );
 
-long GetTES(site *sc,
-            site *Donors, long nDonors,
+long GetTES(site                    *sc,
+            site                    *Donors,
+            long                    nDonors,
             packExternalInformation *external,
             packHSP *hsp,
             int Strand,
@@ -738,7 +774,9 @@ long GetTES(site *sc,
             long ns
             );
 
-long BuildDonors(char *s, short class, char *type,
+long BuildDonors(char                    *s,
+                 short                   xxspl_class,
+                 char                    *type,
                  char *subtype,
                  profile *p,
                  site *st,
@@ -749,10 +787,12 @@ long BuildDonors(char *s, short class, char *type,
                  int Strand,
                  packExternalInformation *external
                  );
-float PeakEdgeScore(long Position,
-                    int Strand,
+float PeakEdgeScore(long                    Position,
+                    int                     Strand,
                     packExternalInformation *external,
-                    long l1, long l2, int win);
+                    long                    l1,
+                    long                    l2,
+                    int                     win);
 
 /* long BuildU12Donors(char* s, */
 /*                  char* type, */
