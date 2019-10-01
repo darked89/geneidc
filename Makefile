@@ -13,8 +13,7 @@ HEADERS = $(INCLUDE)/geneid.h
 PROGRAM= geneid
 PRODUCT= $(BIN)/$(PROGRAM)
 CC=gcc
-OPTS=-I$(INCLUDE) -Wall -O0 -ggdb -Wpedantic -Wextra -Wuninitialized -Walloc-zero -fsanitize=address -fsanitize=bounds-strict  -fno-omit-frame-pointer #-fsanitize=address 
-#OPTS=-I$(INCLUDE) -Wall -O3 -ggdb -Wpedantic -Wextra
+OPTS=-I$(INCLUDE) -Wall -O3
 #OPTS=-I$(INCLUDE) -Wall -g
 #######
 
