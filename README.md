@@ -74,7 +74,7 @@ tar -xvfz geneid.tar.gz
 ### Compilation
 Go to geneid directory and type:
 
-'''
+```
 #gcc
 make
 
@@ -83,7 +83,7 @@ make --file=Makefile.clang
 
 #Oracle CC
 make --file=Makefile.oracle_cc
-'''
+```
 
 Executable will be created as bin/geneid
 
