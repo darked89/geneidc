@@ -18,6 +18,8 @@ PRODUCT= $(BIN)/$(PROGRAM)
 #tested with:
 #clang version 8.0.1 (tags/RELEASE_801/final)
 #Target: x86_64-pc-linux-gnu
+#also:
+#AMD AOCC.LLVM.2.0.0.B191.2019_07_19 clang version 8.0.0
 #Manjaro 18.1
 
 CC= clang
