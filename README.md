@@ -48,13 +48,17 @@ Installation, setup and basic usage of geneid is fairly easy. The command line o
 The program is written in ANSI C, but started moving towards the C11 C standard. 
 It compiles on multiple Linux/Unix system with default compilers. The lists below contain only a subset of platforms /compiler versions, just to give an idea about recent distributions on which the builds were tested.
 
-- Linux: Manjaro 18.1 (M_18.1)
-
+- Linux: 
+    - Manjaro 18.1 (M_18.1)
+    - Ubuntu 18.04.1 (U_18.0)
 #### Programs and libraries
 Tested with following compilers:
-- gcc: 9.1.0 (M_18.1)
+- gcc: 
+    - 9.1.0 (M_18.1)
+    - 7.4.0 (U_18.0)
 - clang:  8.0.1  (M_18.1)
 - cc (from Oracle Solaris Studio): 12.6 (M_18.1)
+- icc (Intel): 19.0.5.281 (U_18.0)
 
 TODO
 - Python for testing (future)
