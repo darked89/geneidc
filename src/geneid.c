@@ -35,25 +35,43 @@
 /* #include <mcheck.h> */
 
 /* geneid setup flags */
-int
 /* sites to print */
-    SFP = 0, SDP = 0, SAP = 0, STP = 0,
+int SFP      = 0,
+    SDP      = 0,
+    SAP      = 0,
+    STP      = 0;
 /* exons to print */
-    EFP = 0, EIP = 0, ETP = 0, EXP = 0, ESP = 0, EOP = 0,
+int EFP      = 0,
+    EIP      = 0,
+    ETP      = 0,
+    EXP      = 0,
+    ESP      = 0,
+    EOP      = 0;
 /* introns to print */
-    PRINTINT = 0,
+int PRINTINT = 0;
 /* Partial or full prediction engine */
-    GENAMIC = 1, GENEID = 1,
+int GENAMIC  = 1,
+    GENEID   = 1,
 /* Only forward or reverse prediction engine */
-    FWD = 1, RVS = 1,
+    FWD      = 1,
+    RVS      = 1,
 /* switch ORF prediction on */
-    scanORF = 0,
+    scanORF  = 0,
 /* Input annotations or homology to protein information/reads to UTR prediction */
-    EVD = 0, SRP = 0, UTR = 0,
+    EVD      = 0,
+    SRP      = 0,
+    UTR      = 0,
 /* Output formats */
-    GFF = 0, GFF3 = 0, X10 = 0, XML = 0, cDNA = 0, PSEQ = 0, tDNA = 0,
+    GFF      = 0,
+    GFF3     = 0,
+    X10      = 0,
+    XML      = 0,
+    cDNA     = 0,
+    PSEQ     = 0,
+    tDNA     = 0;
 /* Verbose flag (memory/processing information) */
-    BEG = 0, VRB = 0,
+int BEG      = 0,
+    VRB      = 0,
 /* Score for regions not-supported by protein homology */
     NO_SCORE,
 /* Force single prediction: 1 gene */
@@ -63,9 +81,9 @@ int
 /* Detection of BranchPoints in Acceptors */
     BP                         = 0,
 /* Detection of recursive splice sites */
-    RSS                        = 0,
+    RSS                        = 0;
 /* Detection of U12 introns */
-    U12                        = 0,
+int U12                        = 0,
 /* Detection of U12gtag sites (acceptor uses BranchPoint)*/
     U12GTAG                    = 0,
 /* Detection of U12atac sites (acceptor uses BranchPoint)*/
@@ -77,25 +95,22 @@ int
 /* Detection of U2gtg donor sites */
     U2GTG                      = 0,
 /* Detection of U2gty donor sites */
-    U2GTY                      = 0,
+    U2GTY                      = 0;
 /* Detection of PolyA Signal */
-    PAS                        = 0,
+int PAS                        = 0;
 /* Length of flank around exons to subtract background RNA-seq signal */
-    BKGD_SUBTRACT_FLANK_LENGTH = 0;
+int BKGD_SUBTRACT_FLANK_LENGTH = 0;
 
-short
 /* Splice classes: the number of compatible splice site combinations used in genamic for joining exons */
-    SPLICECLASSES = 1;
+unsigned short SPLICECLASSES = 1;
 
-long
 /* User defined lower limit */
-    LOW = 0,
+long LOW = 0;
 /* User defined upper limit */
-    HI  = 0;
+long HI  = 0;
 
-float
 /* Millions of reads mapped */
-    MRM = 15.0;
+float MRM = 15.0;
 
 /* Optional Predicted Gene Prefix */
 char GenePrefix[MAXSTRING] = "";
@@ -114,7 +129,13 @@ float RSSDON         = RDT;
 float RSSACC         = RAT;
 
 /* Generic maximum values: sites, exons and backup elements */
-long NUMSITES, NUMEXONS, MAXBACKUPSITES, MAXBACKUPEXONS, NUMU12SITES, NUMU12EXONS, NUMU12U12EXONS;
+long NUMSITES;
+long NUMEXONS;
+long MAXBACKUPSITES;
+long MAXBACKUPEXONS;
+long NUMU12SITES;
+long NUMU12EXONS;
+long NUMU12U12EXONS;
 
 /* Accounting time and results */
 account *m;
@@ -123,7 +144,9 @@ account *m;
                             geneid MAIN program
 ************************************************************************/
 
-int main(int argc, char *argv[]){
+int main(int  argc,
+         char *argv[]){
+
     /* DNA sequence data structures */
     FILE *seqfile;
     char *Sequence;
@@ -131,7 +154,8 @@ int main(int argc, char *argv[]){
     long LengthSequence;
 
     /* Current split ends */
-    long      l1, l2;
+    long l1;
+    long l2;
     long      upperlimit;
     long      lowerlimit;
     /* Forward semse data structures */
@@ -171,10 +195,10 @@ int main(int argc, char *argv[]){
     gparam **isochores;
 
     /* Input Filenames */
-    char SequenceFile[FILENAMELENGTH],
-         ExonsFile[FILENAMELENGTH],
-         HSPFile[FILENAMELENGTH],
-         ParamFile[FILENAMELENGTH] = "";
+    char SequenceFile[FILENAMELENGTH] = "";
+    char ParamFile[FILENAMELENGTH]    = "";
+    char ExonsFile[FILENAMELENGTH]    = "";
+    char HSPFile[FILENAMELENGTH]      = "";
 
     /* Locus sequence name */
     char Locus[LOCUSLENGTH];
@@ -208,8 +232,15 @@ int main(int argc, char *argv[]){
     m = (account *) InitAcc();
 
     /* 0.c. Read setup options */
-    readargv(argc, argv, ParamFile, SequenceFile, ExonsFile, HSPFile, GenePrefix);
-    printRes("\n\n\t\t\t** Running geneid 1.4 2003 geneid@crg.es **\n\n");
+    readargv(argc,
+             argv,
+             ParamFile,
+             SequenceFile,
+             ExonsFile,
+             HSPFile,
+             GenePrefix);
+
+    printRes("\n\n\t\t\t** Running geneid 1.4.5+ 2019 geneid@crg.es **\n\n");
 
     /* 0.d. Prediction of DNA sequence length to request memory */
     LengthSequence = analizeFile(SequenceFile);
@@ -236,15 +267,19 @@ int main(int argc, char *argv[]){
     printMess("Request Memory Sequence\n");
     Sequence   = (char *) RequestMemorySequence(LengthSequence);
     RSequence  = (char *) RequestMemorySequence(LengthSequence);
+
     printMess("Request Memory Sites\n");
     allSites   = (packSites *) RequestMemorySites();
     allSites_r = (packSites *) RequestMemorySites();
+
     printMess("Request Memory Exons\n");
     allExons   = (packExons *) RequestMemoryExons();
     allExons_r = (packExons *) RequestMemoryExons();
+
     printMess("Request Memory Sort Exons\n");
 
     exons         = (exonGFF *) RequestMemorySortExons();
+
     printMess("Request Memory Sort Sites\n");
     donorsites    = (site *) RequestMemorySortSites();      /* Temporary structure for sorting donor sites */
     acceptorsites = (site *) RequestMemorySortSites();      /* Temporary structure for sorting acceptor sites */
@@ -419,13 +454,25 @@ int main(int argc, char *argv[]){
                     /* Forward strand predictions */
                     sprintf(mess, "Running FWD  %s: %ld - %ld", Locus, l1, l2);
                     printMess(mess);
-                    manager(Sequence, LengthSequence,
-                            allSites, allExons,
-                            l1, l2, lowerlimit, upperlimit,
+                    manager(Sequence,
+                            LengthSequence,
+                            allSites,
+                            allExons,
+                            l1,
+                            l2,
+                            lowerlimit,
+                            upperlimit,
                             FORWARD,
-                            external, hsp, gp,
-                            isochores, nIsochores,
-                            GCInfo, acceptorsites, donorsites, tssites, tesites);
+                            external,
+                            hsp,
+                            gp,
+                            isochores,
+                            nIsochores,
+                            GCInfo,
+                            acceptorsites,
+                            donorsites,
+                            tssites,
+                            tesites);
                 }
 
                 if (RVS) {
@@ -434,6 +481,7 @@ int main(int argc, char *argv[]){
                             Locus, LengthSequence - 1 - l2,
                             LengthSequence - 1 - l1, l1, l2);
                     printMess(mess);
+
                     manager(RSequence, LengthSequence,
                             allSites_r, allExons_r,
                             LengthSequence - 1 - l2,
@@ -497,7 +545,8 @@ int main(int argc, char *argv[]){
                           external,
                           evidence,
                           exons,
-                          l1, l2,
+                          l1,
+                          l2,
                           lowerlimit,
                           upperlimit);
                 sprintf(mess, "Finished sorting %ld exons\n", nExons);
@@ -613,6 +662,8 @@ int main(int argc, char *argv[]){
         OutputGene(genes, external->evidence[0]->nvExons,
                    Locus, Sequence, isochores[0], dAA, GenePrefix);
     } /* end only gene assembling from exons file */
+
+    /* CHECK_LEAKS(); */
 
     /* 4. The End */
     OutputTime();
