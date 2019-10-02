@@ -31,12 +31,18 @@
 /* $Id: geneid.h,v 1.54 2010/11/25 20:48:06 talioto Exp $ */
 
 #pragma once
+
 /* Required libraries */
+
+/*  #include <strings.h> */
+
 #include <stdlib.h>
 #include <stdio.h>
+
 #include <stdint.h>
 #include <float.h>
 #include <stdbool.h>
+
 #include <unistd.h>
 #include <string.h>
 #include <math.h>
@@ -197,7 +203,8 @@ A. DEFINITIONS
 #define FASTALINE 60
 
 /* Maximum length for strings (mess)        */
-#define MAXSTRING 1600
+#define MAXSTRING 2000
+/* 20190930 dk: changed since 600 dumped core/got gcc warnings */
 
 /* Mark rules up as blocking in Gene model  */
 #define BLOCK 1
@@ -372,7 +379,8 @@ A. DEFINITIONS
 #define SINFI "Infinity"
 
 /* Infinity: score functions                */
-#define INF  1.7976931348623157E+308
+#define INF  FLT_MAX
+/* 1.7976931348623157E+308 */
 
 /* Score (annotations with score=".")       */
 #define MAXSCORE 10000.0
@@ -393,6 +401,7 @@ A. DEFINITIONS
 /* Macros (functions)                       */
 #define MIN(a, b) (a < b) ? a : b;
 #define MAX(a, b) (a > b) ? a : b;
+#define FREE(p)   do { free(p); (p) = NULL; } while (0)
 
 /*************************************************************************
 B. DATA TYPES
@@ -425,7 +434,6 @@ typedef struct s_profile
     int   dist;
     int   opt_dist;
     float penalty_factor;
-
     long  dimensionTrans;
     float *transitionValues[PROFILEDIM];
 } profile;
@@ -459,7 +467,6 @@ typedef struct s_packSites
     long nStopCodons;
     long nTS;
     long nTE;
-
     long nSites;
 } packSites;
 
@@ -787,6 +794,7 @@ long BuildDonors(char                    *s,
                  int Strand,
                  packExternalInformation *external
                  );
+
 float PeakEdgeScore(long                    Position,
                     int                     Strand,
                     packExternalInformation *external,
@@ -905,24 +913,36 @@ packDump *RequestMemoryDumpster(void);
 dict *RequestMemoryAaDictionary(void);
 
 void RequestMemoryProfile(profile *p);
-account *RequestMemoryAccounting();
-packExternalInformation *RequestMemoryExternalInformation();
 
-void readargv (int argc, char *argv[],
-               char *ParamFile, char *SequenceFile,
-               char *ExonsFile, char *HSPFile, char *GenePrefix);
+account *RequestMemoryAccounting(void);
 
-int readparam (char *name, gparam **isochores);
+packExternalInformation *RequestMemoryExternalInformation(void);
 
-account *InitAcc();
+void readargv (int  argc,
+               char *argv[],
+               char *ParamFile,
+               char *SequenceFile,
+               char *ExonsFile,
+               char *HSPFile,
+               char *GenePrefix);
 
-void OutputHeader(char *locus, long l);
+int readparam (char   *name,
+               gparam **isochores);
 
-int IniReadSequence(FILE *seqfile, char *line);
+account *InitAcc(void);
 
-int ReadSequence (FILE *seqfile, char *Sequence, char *nextLocus);
+void OutputHeader(char *locus,
+                  long l);
 
-long FetchSequence(char *s, char *r);
+int IniReadSequence(FILE *seqfile,
+                    char *line);
+
+int ReadSequence (FILE *seqfile,
+                  char *Sequence,
+                  char *nextLocus);
+
+long FetchSequence(char *s,
+                   char *r);
 
 long ReadExonsGFF (char                    *FileName,
                    packExternalInformation *external,
@@ -1002,13 +1022,15 @@ void OutputGene(packGenes *pg,
                 char      *GenePrefix);
 
 void OutputStats(char *Locus);
-void OutputTime();
+void OutputTime(void);
 
-void RecomputePositions(packSites *allSites, long l);
+void RecomputePositions(packSites *allSites,
+                        long      l);
 
 void cleanAcc(account *m);
 
-void PrintProfile (profile *p, char *signal);
+void PrintProfile (profile *p,
+                   char    *signal);
 
 long ReadGeneModel (FILE *file,
                     dict *d,
@@ -1020,32 +1042,56 @@ long ReadGeneModel (FILE *file,
                     long Md[],
                     int  block[]);
 
-long ForceGeneModel (dict *d,
-                     int nc[], int ne[],
-                     int UC[][MAXENTRY],
-                     int DE[][MAXENTRY],
-                     long md[], long Md[],
-                     int block[]);
+long ForceGeneModel(dict *d,
+                    int  nc[],
+                    int  ne[],
+                    int  UC[][MAXENTRY],
+                    int  DE[][MAXENTRY],
+                    long md[],
+                    long Md[],
+                    int  block[]);
 
-void PrintSites (site *s, long ns, int type,
-                 char Name[], int Strand,
-                 long l1, long l2, long lowerlimit,
-                 char *seq,
+void PrintSites (site    *s,
+                 long    ns,
+                 int     type,
+                 char    Name[],
+                 int     Strand,
+                 long    l1,
+                 long    l2,
+                 long    lowerlimit,
+                 char    *seq,
                  profile *p);
 
-void PrintExons (exonGFF *e, long ne, int type, char Name[],
-                 long l1, long l2, char *Sequence, dict *dAA, char *GenePrefix);
+void PrintExons (exonGFF *e,
+                 long    ne,
+                 int     type,
+                 char    Name[],
+                 long    l1,
+                 long    l2,
+                 char    *Sequence,
+                 dict    *dAA,
+                 char    *GenePrefix);
 
 void resetDict(dict *d);
 
-int setkeyDict(dict *d, char s[]);
+int setkeyDict(dict *d,
+               char s[]);
 
-int getkeyDict(dict *d, char s[]);
+int getkeyDict(dict *d,
+               char s[]);
 
-int Translate(long p1, long p2, short fra, short rmd,
-              char *s, dict *dAA, char sAux[]);
+int Translate(long  p1,
+              long  p2,
+              short fra,
+              short rmd,
+              char  *s,
+              dict  *dAA,
+              char  sAux[]);
 
-void ReverseSubSequence(long p1, long p2, char *s, char *r);
+void ReverseSubSequence(long p1,
+                        long p2,
+                        char *s,
+                        char *r);
 
 void CorrectExon(exonGFF *e);
 
@@ -1053,20 +1099,35 @@ void CorrectUTR(exonGFF *e);
 
 void CorrectORF(exonGFF *e);
 
-void SwitchFrames(exonGFF *e, long n);
+void SwitchFrames(exonGFF *e,
+                  long    n);
 
-void SwitchFramesDa(packGenes *pg, int nclass);
+void SwitchFramesDa(packGenes *pg,
+                    int       nclass);
 
-void SwitchFramesDb(packGenes *pg, int nclass);
+void SwitchFramesDb(packGenes *pg,
+                    int       nclass);
 
-void UndoFrames(exonGFF *e, long n);
+void UndoFrames(exonGFF *e,
+                long    n);
 
-void BuildSort(dict *D, int nc[], int ne[], int UC[][MAXENTRY],
-               int DE[][MAXENTRY], int nclass, long km[],
-               exonGFF ***d, exonGFF *E, long nexons);
+void BuildSort(dict    *D,
+               int     nc[],
+               int     ne[],
+               int     UC[][MAXENTRY],
+               int     DE[][MAXENTRY],
+               int     nclass,
+               long    km[],
+               exonGFF ***d,
+               exonGFF *E,
+               long    nexons);
 
-void PrintSite(site *s, int type, char Name[], int Strand,
-               char *seq, profile *p);
+void PrintSite(site    *s,
+               int     type,
+               char    Name[],
+               int     Strand,
+               char    *seq,
+               profile *p);
 
 void PrintGCDS(exonGFF *e, char Name[], char *s, dict *dAA,
                long ngen, int AA1, int AA2, int nAA,
