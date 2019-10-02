@@ -151,8 +151,10 @@ void BackupGenes(packGenes *pg, int nclass, packDump *d){
 }
 
 /* It saves information about d-exons: exons needed the next iteration */
-void BackupArrayD(packGenes *pg, long accSearch,
-                  gparam *gp, packDump *dumpster){
+void BackupArrayD(packGenes *pg, 
+                  long 		accSearch,
+                  gparam 	*gp, 
+                  packDump 	*dumpster){
     int   i;
     long  j;
     long  jUpdate, jMaxdist;
@@ -226,8 +228,12 @@ void BackupArrayD(packGenes *pg, long accSearch,
 }
 
 /* Reset counters and pointers for the next input sequence */
-void cleanGenes(packGenes *pg, int nclass, packDump *dumpster){
-    int aux, aux2, aux3;
+void cleanGenes(packGenes *pg, 
+                int nclass, 
+                packDump *dumpster){
+    int aux;
+    int aux2; 
+    int aux3;
 
 /*   for(aux=0; aux<nclass; aux++) */
     for (aux = 0; aux < nclass; aux++) {
