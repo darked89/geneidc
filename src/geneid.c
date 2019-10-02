@@ -31,6 +31,7 @@
 
 /* $Id: geneid.c,v 1.27 2011-01-13 11:06:16 talioto Exp $ */
 
+#include <assert.h>
 #include "geneid.h"
 /* #include <mcheck.h> */
 
@@ -158,6 +159,7 @@ int main(int  argc,
     long l2;
     long      upperlimit;
     long      lowerlimit;
+
     /* Forward semse data structures */
     packSites *allSites;
     packExons *allExons;
@@ -625,6 +627,7 @@ int main(int  argc,
         /* open the Sequence File */
         if ((seqfile = fopen(SequenceFile, "rb")) == NULL) {
             printError("The Sequence file can not be open for read");
+            exit(EXIT_FAILURE);
         }
 
         printMess("Reading DNA sequence");
@@ -667,7 +670,6 @@ int main(int  argc,
 
     /* 4. The End */
     OutputTime();
+    exit(EXIT_SUCCESS);
 
-    exit(0);
-    return(0);
 }
