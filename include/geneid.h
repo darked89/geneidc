@@ -1129,29 +1129,64 @@ void PrintSite(site    *s,
                char    *seq,
                profile *p);
 
-void PrintGCDS(exonGFF *e, char Name[], char *s, dict *dAA,
-               long ngen, int AA1, int AA2, int nAA,
-               int numInt, char *GenePrefix);
+void PrintGCDS(exonGFF *e,
+               char    Name[],
+               char    *s,
+               dict    *dAA,
+               long    ngen,
+               int     AA1,
+               int     AA2,
+               int     nAA,
+               int     numInt,
+               char    *GenePrefix);
 
-void PrintGUTR(exonGFF *e, char Name[], char *s, long ngen,
-               int numInt, char *GenePrefix);
+void PrintGUTR(exonGFF *e,
+               char    Name[],
+               char    *s,
+               long    ngen,
+               int     numInt,
+               char    *GenePrefix);
 
-void PrintGExon(exonGFF *a, int nSegments, char Name[], long ngen,
-                int numInt, char *GenePrefix, int evidence, float score);
+void PrintGExon(exonGFF *a,
+                int     nSegments,
+                char    Name[],
+                long    ngen,
+                int     numInt,
+                char    *GenePrefix,
+                int     evidence,
+                float   score);
 
-void PrintGIntron(exonGFF *d, exonGFF *a, char Name[], long ngen,
-                  int numInt, char *GenePrefix, int evidence, float score, char *eType);
+void PrintGIntron(exonGFF *d,
+                  exonGFF *a,
+                  char    Name[],
+                  long    ngen,
+                  int     numInt,
+                  char    *GenePrefix,
+                  int     evidence,
+                  float   score,
+                  char    *eType);
 
-void PrintGGene(exonGFF *s, exonGFF *e, char Name[],
-                long ngen, float score, char *GenePrefix);
+void PrintGGene(exonGFF *s,
+                exonGFF *e,
+                char    Name[],
+                long    ngen,
+                float   score,
+                char    *GenePrefix);
 
-void PrintGmRNA(exonGFF *s, exonGFF *e, char Name[],
-                long ngen, float score, char *GenePrefix);
+void PrintGmRNA(exonGFF *s,
+                exonGFF *e,
+                char    Name[],
+                long    ngen,
+                float   score,
+                char    *GenePrefix);
 
-void PrintXMLExon(exonGFF *e, char Name[],
-                  long ngen, long nExon,
-                  int type1, int type2,
-                  char *GenePrefix);
+void PrintXMLExon(exonGFF *e,
+                  char    Name[],
+                  long    ngen,
+                  long    nExon,
+                  int     type1,
+                  int     type2,
+                  char    *GenePrefix);
 
 void TranslateGene(exonGFF *e,
                    char    *s,
@@ -1163,20 +1198,31 @@ void TranslateGene(exonGFF *e,
 
 void resetDumpHash(dumpHash *h);
 
-void setExonDumpHash(exonGFF *E, dumpHash *h);
+void setExonDumpHash(exonGFF  *E,
+                     dumpHash *h);
 
-exonGFF *getExonDumpHash(exonGFF *E, dumpHash *h);
+exonGFF *getExonDumpHash(exonGFF  *E,
+                         dumpHash *h);
 
-void setAADict(dict *d, char s[], char aA);
+void setAADict(dict *d,
+               char s[],
+               char aA);
 
-char getAADict(dict *d, char s[]);
+char getAADict(dict *d,
+               char s[]);
 
-void CookingGenes(exonGFF *e, char Name[], char *s,
-                  gparam *gp, dict *dAA, char *GenePrefix);
+void CookingGenes(exonGFF *e,
+                  char    Name[],
+                  char    *s,
+                  gparam  *gp,
+                  dict    *dAA,
+                  char    *GenePrefix);
 
-float MeasureSequence(long l1, long l2, char *s);
+float MeasureSequence(long l1,
+                      long l2,
+                      char *s);
 
-gparam **RequestMemoryIsochoresParams();
+gparam **RequestMemoryIsochoresParams(void);
 
 long ReadHSP (char *FileName, packExternalInformation *external);
 
@@ -1243,7 +1289,8 @@ void  manager(char *Sequence, long LengthSequence,
 
 void resetEvidenceCounters(packExternalInformation *external);
 
-void ComputeStopInfo(exonGFF *e, char *s);
+void ComputeStopInfo(exonGFF *e,
+                     char    *s);
 
 packHSP *SelectHSP(packExternalInformation *external,
                    char                    *Locus,
@@ -1254,7 +1301,7 @@ packEvidence *SelectEvidence(packExternalInformation *external,
 
 void SortHSPs(packHSP *p);
 
-HSP *RequestNewHSP();
+HSP *RequestNewHSP(void);
 
 long  BuildU12Acceptors(char                    *s,
                         short                   class,
