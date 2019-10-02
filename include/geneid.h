@@ -1224,13 +1224,17 @@ float MeasureSequence(long l1,
 
 gparam **RequestMemoryIsochoresParams(void);
 
-long ReadHSP (char *FileName, packExternalInformation *external);
+long ReadHSP (char                    *FileName,
+              packExternalInformation *external);
 
-void shareGeneModel(gparam **isochores, int n);
+void shareGeneModel(gparam **isochores,
+                    int    n);
 
-long OligoToInt(char *s, int ls, int cardinal);
+long OligoToInt(char *s,
+                int  ls,
+                int  cardinal);
 
-char *RequestMemorySequence(long L);
+char *RequestMemorySequence(int64_t seq_length);
 
 void ProcessHSPs(long                    l1,
                  long                    l2,
@@ -1249,12 +1253,26 @@ void ScoreExons(char                    *Sequence,
                 int                     nIsochores,
                 packGC                  *GCInfo);
 
-void GetcDNA(exonGFF *e, char *s, long nExons, char *cDNA, long *nNN);
-void GetTDNA(exonGFF *e, char *s, long nExons, char *tDNA, long *nTN);
+void GetcDNA(exonGFF *e,
+             char    *s,
+             long    nExons,
+             char    *cDNA,
+             long    *nNN);
 
-float ComputeGC(packGC *GCInfo, long inigc, long endgc);
+void GetTDNA(exonGFF *e,
+             char    *s,
+             long    nExons,
+             char    *tDNA,
+             long    *nTN);
 
-void GCScan(char *s, packGC *GCInfo, long l1, long l2);
+float ComputeGC(packGC  *GCInfo,
+                int64_t inigc,
+                int64_t endgc);
+
+void GCScan(char    *s,
+            packGC  *GCInfo,
+            int64_t l1,
+            int64_t l2);
 
 void beggar(long L);
 
@@ -1264,17 +1282,22 @@ void SetRatios(long *NUMSITES,
                long *MAXBACKUPEXONS,
                long L);
 
-long analizeFile(char *SequenceFile);
+int64_t analizeFile(char *SequenceFile);
 
-packGC *RequestMemoryGC();
+packGC *RequestMemoryGC(void);
 
-int SelectIsochore(float percent, gparam **isochores);
+int SelectIsochore(float  percent,
+                   gparam **isochores);
 
-void  manager(char *Sequence, long LengthSequence,
-              packSites *allSites,
-              packExons *allExons,
-              long l1, long l2, long lower, long upper,
-              int Strand,
+void  manager(char                    *Sequence,
+              long                    LengthSequence,
+              packSites               *allSites,
+              packExons               *allExons,
+              long                    l1,
+              long                    l2,
+              long                    lower,
+              long                    upper,
+              int                     Strand,
               packExternalInformation *external,
               packHSP *hsp,
               gparam *gp,
