@@ -1,4 +1,4 @@
-./bin/
+./bin/geneid
 *.o
 param/.DS_Store
 scripts/.DS_Store
