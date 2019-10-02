@@ -1234,7 +1234,7 @@ long OligoToInt(char *s,
                 int  ls,
                 int  cardinal);
 
-char *RequestMemorySequence(int64_t seq_length);
+char *RequestMemorySequence(long L);
 
 void ProcessHSPs(long                    l1,
                  long                    l2,
@@ -1266,13 +1266,13 @@ void GetTDNA(exonGFF *e,
              long    *nTN);
 
 float ComputeGC(packGC  *GCInfo,
-                int64_t inigc,
-                int64_t endgc);
+                long inigc,
+                long endgc);
 
 void GCScan(char    *s,
             packGC  *GCInfo,
-            int64_t l1,
-            int64_t l2);
+            long l1,
+            long l2);
 
 void beggar(long L);
 
