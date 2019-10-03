@@ -35,12 +35,22 @@ extern int   RSS;
 extern float U12_SPLICE_SCORE_THRESH;
 extern float U12_EXON_SCORE_THRESH;
 
-void genamic(exonGFF *E, long nExons, packGenes *pg, gparam *gp){
-    long  i, j, j2;
-    short frame, remainder, spliceclass, dclass;
+void genamic(exonGFF   *E,
+             long      nExons,
+             packGenes *pg,
+             gparam    *gp){
+
+    long  i;
+    long  j;
+    long  j2;
+    short frame;
+    long  remainder;
+    long  spliceclass;
+    long  dclass;
     int   h;
     char  saux[MAXTYPE];
-    int   type, etype;
+    int   type;
+    int   etype;
     long  MaxDist;
     long  MinDist;
     char  mess[MAXSTRING];
@@ -94,7 +104,9 @@ void genamic(exonGFF *E, long nExons, packGenes *pg, gparam *gp){
             current_exon_is_u12   = 0;
             spliceclass           = (E + i)->Acceptor->class;
 
-            if (!strcmp((E + i)->Type, sEND) || !strcmp((E + i)->Type, sBEGIN) || !strcmp((E + i)->Type, sSINGLE)) {
+            if (!strcmp((E + i)->Type, sEND)
+                || !strcmp((E + i)->Type, sBEGIN)
+                || !strcmp((E + i)->Type, sSINGLE)) {
                 current_exon_is_u12 = 0;
             }
             else {
@@ -102,7 +114,8 @@ void genamic(exonGFF *E, long nExons, packGenes *pg, gparam *gp){
                     current_exon_is_u12 = 0;
                 }
                 else {
-                    if (((E + i)->Acceptor->class == U12gtag) || ((E + i)->Acceptor->class == U12atac)) {
+                    if (((E + i)->Acceptor->class == U12gtag)
+                        || ((E + i)->Acceptor->class == U12atac)) {
                         current_exon_is_u12 = 1;
                     }
                 }
@@ -268,7 +281,11 @@ void genamic(exonGFF *E, long nExons, packGenes *pg, gparam *gp){
 
                 /* Updating the best gene assembled (final gene) */
                 if ((((E + i)->GeneScore) > (pg->GOptim->GeneScore))) {
-                    if (((E + i)->PreviousExon->Strand == '*') && (!strcmp((E + i)->Type, sINTRON) || !strcmp((E + i)->Type, sUTRINTRON) || !strcmp((E + i)->Type, sUTR5INTRON) || !strcmp((E + i)->Type, sUTR3INTRON))) {
+                    if (((E + i)->PreviousExon->Strand == '*')
+                        && (!strcmp((E + i)->Type, sINTRON)
+                            || !strcmp((E + i)->Type, sUTRINTRON)
+                            || !strcmp((E + i)->Type, sUTR5INTRON)
+                            || !strcmp((E + i)->Type, sUTR3INTRON))) {
                     }
                     else {
                         pg->GOptim = (E + i);
@@ -294,3 +311,4 @@ void genamic(exonGFF *E, long nExons, packGenes *pg, gparam *gp){
     /* Finishing process */
     printMess("-- Finishing gene assembling (genamic) --\n");
 }
+
