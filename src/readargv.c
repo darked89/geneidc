@@ -50,7 +50,7 @@ extern int  optind;
 char        *USAGE = "NAME\n\tgeneid - a program to annotate genomic sequences\nSYNOPSIS\n\tgeneid\t[-bdaefitnxszru]\n\t\t[-TDAZU]\n\t\t[-p gene_prefix]\n\t\t[-G] [-3] [-X] [-M] [-m]\n\t\t[-WCF] [-o]\n\t\t[-j lower_bound_coord]\n\t\t[-k upper_bound_coord]\n\t\t[-N numer_nt_mapped]\n\t\t[-O <gff_exons_file>]\n\t\t[-R <gff_annotation-file>]\n\t\t[-S <gff_homology_file>]\n\t\t[-P <parameter_file>]\n\t\t[-E exonweight]\n\t\t[-V evidence_exonweight]\n\t\t[-Bv] [-h]\n\t\t<locus_seq_in_fasta_format>\nRELEASE\n\tgeneid v 1.4\n";
 
 void printHelp(){
-    printf(USAGE);
+    printf("%s", USAGE);
 
     printf("OPTIONS\n");
 

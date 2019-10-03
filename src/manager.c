@@ -55,8 +55,11 @@ void  manager(char *Sequence,
               long LengthSequence,
               packSites *allSites,
               packExons *allExons,
-              long l1, long l2, long lowerlimit, long upperlimit,
-              int Strand,
+              long                    l1,
+              long                    l2,
+              long                    lowerlimit,
+              long                    upperlimit,
+              int                     Strand,
               packExternalInformation *external,
               packHSP *hsp,
               gparam *gp,
@@ -73,9 +76,12 @@ void  manager(char *Sequence,
     /* For sorting sites */
 /*   site* acceptorsites;  */
 /*   site* donorsites;  */
-    long l1a, l1b,
-         l2a, l2b,
-         l1c, l2c;
+    long l1a;
+    long l1b;
+    long l2a;
+    long l2b;
+    long l1c;
+    long l2c;
 
     long cutPoint;
 
@@ -151,6 +157,7 @@ void  manager(char *Sequence,
                          l1a, l2a, numAccsites, NUMSITES, Strand, external);
 
     sprintf(mess, "Acceptor Sites \t\t%8ld", allSites->nAcceptorSites - numAccsites);
+
     numAccsites = allSites->nAcceptorSites;
     printRes(mess);
 

@@ -36,6 +36,9 @@
 
 /*  #include <strings.h> */
 
+#define _POSIX_C_SOURCE 2
+
+
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -55,7 +58,7 @@ A. DEFINITIONS
 *************************************************************************/
 
 /* The name of the game                     */
-#define VERSION   "1.5_alpha"
+#define VERSION   "geneid_v1.5a"
 #define SITES     "geneid_v1.4"
 #define EXONS     "geneid_v1.4"
 #define EVIDENCE  "evidence"
