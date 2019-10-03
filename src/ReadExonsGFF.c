@@ -65,6 +65,7 @@ packEvidence *SelectEvidence(packExternalInformation *external,
 long ReadExonsGFF(char                    *FileName,
                   packExternalInformation *external,
                   dict                    *d){
+
     /* File handle */
     FILE *file;
 
@@ -74,15 +75,16 @@ long ReadExonsGFF(char                    *FileName,
     /* Split every input line into several tokens (gff records) */
     char line[MAXLINE];
     char lineCopy[MAXLINE];
-    char *line1;
-    char *line2;
-    char *line3;
-    char *line4;
-    char *line5;
-    char *line6;
-    char *line7;
-    char *line8;
-    char *line9;
+
+    char *column_1;
+    char *column_2;
+    char *column_3;
+    char *column_4;
+    char *column_5;
+    char *column_6;
+    char *column_7;
+    char *column_8;
+    char *column_9;
 
     /* Control of good sorting property: starting position, increasing */
     long lastAcceptor[MAXNSEQUENCES];
@@ -135,26 +137,27 @@ long ReadExonsGFF(char                    *FileName,
             strcpy(lineCopy, line);
 
             /* Extracting GFF features */
-            line1 = (char *) strtok(line, "\t");
-            line2 = (char *) strtok(NULL, "\t");
-            line3 = (char *) strtok(NULL, "\t");
-            line4 = (char *) strtok(NULL, "\t");
-            line5 = (char *) strtok(NULL, "\t");
-            line6 = (char *) strtok(NULL, "\t");
-            line7 = (char *) strtok(NULL, "\t");
-            line8 = (char *) strtok(NULL, "\t");
-            line9 = (char *) strtok(NULL, "\n");
+            /* Extracting GFF features */
+            column_1 = (char *) strtok(line, "\t");
+            column_2 = (char *) strtok(NULL, "\t");
+            column_3 = (char *) strtok(NULL, "\t");
+            column_4 = (char *) strtok(NULL, "\t");
+            column_5 = (char *) strtok(NULL, "\t");
+            column_6 = (char *) strtok(NULL, "\t");
+            column_7 = (char *) strtok(NULL, "\t");
+            column_8 = (char *) strtok(NULL, "\t");
+            column_9 = (char *) strtok(NULL, "\n");
 
             /* There are 8 mandatory columns and the last one is optional */
-            if (line1 == NULL || line2 == NULL || line3 == NULL
-                || line4 == NULL || line5 == NULL || line6 == NULL
-                || line7 == NULL || line8 == NULL) {
-                sprintf(mess, "Wrong GFF format in annotations (number of records):\n-->%s\n", lineCopy);
+            if (column_1 == NULL || column_2 == NULL || column_3 == NULL
+                || column_4 == NULL || column_5 == NULL || column_6 == NULL
+                || column_7 == NULL || column_8 == NULL) {
+                sprintf(mess, "Wrong GFF format in HSPs (number of records):\n-->%s\n", lineCopy);
                 printError(mess);
             }
 
             /* 1. Locusname: leave the exon into the correct array */
-            if (sscanf(line1, "%s", Locusname) != 1) {
+            if (sscanf(column_1, "%s", Locusname) != 1) {
                 sprintf(mess, "Wrong GFF format in annotations (locusname):\n-->%s\n", lineCopy);
                 printError(mess);
             }
@@ -167,29 +170,29 @@ long ReadExonsGFF(char                    *FileName,
             }
 
             /* 3. Exon feature: Single, First, Internal, Terminal, ... */
-            if (sscanf(line3, "%s",
+            if (sscanf(column_3, "%s",
                        (external->evidence[a]->vExons + external->evidence[a]->nvExons)->Type) != 1) {
                 sprintf(mess, "Wrong GFF format in annotations (feature):\n-->%s\n", lineCopy);
                 printError(mess);
             }
 
             /* 4. Starting position */
-            if (sscanf(line4, "%ld",
+            if (sscanf(column_4, "%ld",
                        &((external->evidence[a]->vSites + external->evidence[a]->nvSites)->Position)) != 1) {
                 sprintf(mess, "Wrong GFF format in annotations (starting position):\n-->%s\n", lineCopy);
                 printError(mess);
             }
 
             /* 5. Finishing position */
-            if (sscanf(line5, "%ld",
+            if (sscanf(column_5, "%ld",
                        &((external->evidence[a]->vSites + external->evidence[a]->nvSites + 1)->Position)) != 1) {
                 sprintf(mess, "Wrong GFF format in annotations (finishing position):\n-->%s\n", lineCopy);
                 printError(mess);
             }
 
-            /* 6. Score = float value or '.'(infinitum) */
-            if (sscanf(line6, "%f", &((external->evidence[a]->vExons + external->evidence[a]->nvExons)->Score)) != 1) {
-                if ((sscanf(line6, "%c", &c) != 1) || (c != '.')) {
+            /* 6. Score = double value or '.'(infinitum) */
+            if (sscanf(column_6, "%f", &((external->evidence[a]->vExons + external->evidence[a]->nvExons)->Score)) != 1) {
+                if ((sscanf(column_6, "%c", &c) != 1) || (c != '.')) {
                     sprintf(mess, "Wrong GFF format in annotations (score):\n-->%s\n", lineCopy);
                     printError(mess);
                 }
@@ -201,7 +204,7 @@ long ReadExonsGFF(char                    *FileName,
             }
 
             /* 7. Strand (reading sense) [+|-] */
-            if ((sscanf(line7, "%c",
+            if ((sscanf(column_7, "%c",
                         &((external->evidence[a]->vExons + external->evidence[a]->nvExons)->Strand)) != 1)
                 ||
                 (((external->evidence[a]->vExons + external->evidence[a]->nvExons)->Strand != '+')
@@ -218,10 +221,10 @@ long ReadExonsGFF(char                    *FileName,
                     && (HI ? ((external->evidence[a]->vSites + external->evidence[a]->nvSites + 1)->Position < HI) : 1)
                     )) {
                 /* 8. Frame = integer or '.' */
-                if (sscanf(line8, "%hd",
+                if (sscanf(column_8, "%hd",
                            &((external->evidence[a]->vExons + external->evidence[a]->nvExons)->Frame)) != 1) {
                     /* Is it a dot? */
-                    if ((sscanf(line8, "%c", &c) != 1) || (c != '.')) {
+                    if ((sscanf(column_8, "%c", &c) != 1) || (c != '.')) {
                         sprintf(mess, "Wrong GFF format in annotations (frame):\n-->%s\n", lineCopy);
                         printError(mess);
                     }
@@ -240,8 +243,8 @@ long ReadExonsGFF(char                    *FileName,
                 }
 
                 /* 9. Group: optional, string */
-                if (line9 != NULL) {
-                    if (sscanf(line9, "%s",
+                if (column_9 != NULL) {
+                    if (sscanf(column_9, "%s",
                                (external->evidence[a]->vExons + external->evidence[a]->nvExons)->Group) != 1) {
                         sprintf(mess, "Wrong GFF value in annotations (group):\n-->%s\n", lineCopy);
                         printError(mess);
@@ -255,7 +258,7 @@ long ReadExonsGFF(char                    *FileName,
                         /* Handle GFF3 format here*/
                         /* Parse group field into tokens delimited by '=;' */
                         /* copy the field first so as not to screw it up */
-                        strcpy(groupCopy, line9);
+                        strcpy(groupCopy, column_9);
                         k = (char *) strtok(groupCopy, "=");
 
                         if (k != NULL) {
@@ -632,3 +635,4 @@ long ReadExonsGFF(char                    *FileName,
 
     return(i);
 }
+
