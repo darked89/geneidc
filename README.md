@@ -1,5 +1,8 @@
 
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/043eeacbb72e462d9604bfaed06d8ca8)](https://www.codacy.com/manual/darked89/geneidc?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=darked89/geneidc&amp;utm_campaign=Badge_Grade)
+
+
 ** Caveat: unofficial geneid repository**
 
 
