@@ -149,7 +149,7 @@ void printDTD(){
 
 void readargv(int argc,
               char *argv[],
-              char *ParamFile, 
+              char *param_fn, 
               char *fasta_fn,
               char *ExonsFile, 
               char *HSPFile, 
@@ -219,7 +219,7 @@ void readargv(int argc,
                 strcpy(ExonsFile, optarg);
                 break;
             case 'P':
-                strcpy(ParamFile, optarg);
+                strcpy(param_fn, optarg);
                 break;
             case 'R':
                 EVD++;
@@ -399,7 +399,7 @@ void readargv(int argc,
     }
 
     /* Default parameter file selected if option -P not used */
-    if (!strcmp(ParamFile, "")) {
-        strcpy(ParamFile, PARAMETERFILE);
+    if (!strcmp(param_fn, "")) {
+        strcpy(param_fn, PARAMETERFILE);
     }
 }

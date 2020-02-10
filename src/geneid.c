@@ -198,7 +198,7 @@ int main(int  argc,
 
     /* Input Filenames */
     char fasta_fn[FILENAMELENGTH] = "";
-    char ParamFile[FILENAMELENGTH]    = "";
+    char param_fn[FILENAMELENGTH]    = "";
     char ExonsFile[FILENAMELENGTH]    = "";
     char HSPFile[FILENAMELENGTH]      = "";
 
@@ -237,7 +237,7 @@ int main(int  argc,
     /* 0.c. Read setup options */
     readargv(argc,
              argv,
-             ParamFile,
+             param_fn,
              fasta_fn,
              ExonsFile,
              HSPFile,
@@ -311,7 +311,7 @@ int main(int  argc,
 
     /** 2. Reading statistical model parameters file **/
     printMess("Reading parameters...");
-    nIsochores = readparam(ParamFile, isochores);
+    nIsochores = readparam(param_fn, isochores);
 
     if (U12) {
         if ((!U12GTAG) && (!U12ATAC)) {

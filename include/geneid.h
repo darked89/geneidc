@@ -924,7 +924,7 @@ packExternalInformation *RequestMemoryExternalInformation(void);
 
 void readargv (int  argc,
                char *argv[],
-               char *ParamFile,
+               char *param_fn,
                char *fasta_fn,
                char *ExonsFile,
                char *HSPFile,
