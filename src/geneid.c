@@ -149,7 +149,7 @@ int main(int  argc,
          char *argv[]){
 
     /* DNA sequence data structures */
-    FILE *seqfile;
+    FILE *fasta_fptr;
     char *Sequence;
     char *RSequence;
     long LengthSequence;
@@ -197,10 +197,10 @@ int main(int  argc,
     gparam **isochores;
 
     /* Input Filenames */
-    char fasta_fn[FILENAMELENGTH] = "";
-    char param_fn[FILENAMELENGTH]    = "";
-    char ExonsFile[FILENAMELENGTH]    = "";
-    char HSPFile[FILENAMELENGTH]      = "";
+    char fasta_fn[FILENAMELENGTH]   = "";
+    char param_fn[FILENAMELENGTH]   = "";
+    char ExonsFile[FILENAMELENGTH]  = "";
+    char HSPFile[FILENAMELENGTH]    = "";
 
     /* Locus sequence name */
     char Locus[LOCUSLENGTH];
@@ -246,7 +246,7 @@ int main(int  argc,
     printRes("\n\n\t\t\t** Running geneid 1.4.5+ 2019 geneid@crg.es **\n\n");
 
     /* 0.d. Prediction of DNA sequence length to request memory */
-    LengthSequence = analizeFile(fasta_fn);
+    LengthSequence = get_fasta_size(fasta_fn);
     sprintf(mess, "DNA sequence file size = %ld bytes", LengthSequence);
     printMess(mess);
 
@@ -356,16 +356,16 @@ int main(int  argc,
         }
 
         /** A.3. Input DNA sequences (perhaps more than one) **/
-        if ((seqfile = fopen(fasta_fn, "rb")) == NULL) {
+        if ((fasta_fptr = fopen(fasta_fn, "rb")) == NULL) {
             printError("The input sequence file can not be accessed");
         }
 
         /* reading the locusname of sequence (in Fasta format) */
-        reading = IniReadSequence(seqfile, Locus);
+        reading = IniReadSequence(fasta_fptr, Locus);
 
         while (reading != EOF) {
             printMess("Loading DNA sequence");
-            reading = ReadSequence(seqfile, Sequence, nextLocus);
+            reading = ReadSequence(fasta_fptr, Sequence, nextLocus);
 
             /* A.3. Prepare sequence to work on */
             printMess("Processing DNA sequence");
@@ -626,16 +626,16 @@ int main(int  argc,
 
         /* B.0. Reading DNA sequence to make the translations */
         /* open the Sequence File */
-        if ((seqfile = fopen(fasta_fn, "rb")) == NULL) {
+        if ((fasta_fptr = fopen(fasta_fn, "rb")) == NULL) {
             printError("The Sequence file can not be open for read");
             exit(EXIT_FAILURE);
         }
 
         printMess("Reading DNA sequence");
-        reading = IniReadSequence(seqfile, Locus);
+        reading = IniReadSequence(fasta_fptr, Locus);
 
         if (reading != EOF) {
-            reading        = ReadSequence(seqfile, Sequence, nextLocus);
+            reading        = ReadSequence(fasta_fptr, Sequence, nextLocus);
             LengthSequence = FetchSequence(Sequence, RSequence);
         }
 

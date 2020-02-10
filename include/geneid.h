@@ -938,10 +938,10 @@ account *InitAcc(void);
 void OutputHeader(char *locus,
                   long l);
 
-int IniReadSequence(FILE *seqfile,
+int IniReadSequence(FILE *fasta_fptr,
                     char *line);
 
-int ReadSequence (FILE *seqfile,
+int ReadSequence (FILE *fasta_fptr,
                   char *Sequence,
                   char *nextLocus);
 
@@ -1286,7 +1286,7 @@ void SetRatios(long *NUMSITES,
                long *MAXBACKUPEXONS,
                long L);
 
-int64_t analizeFile(char *fasta_fn);
+long get_fasta_size(char *fasta_fn);
 
 packGC *RequestMemoryGC(void);
 
