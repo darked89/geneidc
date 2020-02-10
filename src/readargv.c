@@ -151,8 +151,8 @@ void readargv(int argc,
               char *argv[],
               char *param_fn, 
               char *fasta_fn,
-              char *ExonsFile, 
-              char *HSPFile, 
+              char *exons_gff_fn, 
+              char *blastHSP_gff_fn, 
               char *GenePrefix){
     int  c;
     int  error        = 0;
@@ -216,19 +216,19 @@ void readargv(int argc,
                 break;
             case 'O':
                 GENEID--;
-                strcpy(ExonsFile, optarg);
+                strcpy(exons_gff_fn, optarg);
                 break;
             case 'P':
                 strcpy(param_fn, optarg);
                 break;
             case 'R':
                 EVD++;
-                strcpy(ExonsFile, optarg);
+                strcpy(exons_gff_fn, optarg);
                 geneidOpts++;
                 break;
             case 'S':
                 SRP++;
-                strcpy(HSPFile, optarg);
+                strcpy(blastHSP_gff_fn, optarg);
                 geneidOpts++;
                 break;
             case 'u':

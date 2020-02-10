@@ -62,15 +62,16 @@ packEvidence *SelectEvidence(packExternalInformation *external,
 /* Read annotations (exons) to improve or fixed some gene prediction */
 /* GFF format: tab "\t" is the field separator and # for comments */
 /* Name  Source  Type  Begin  End  Score  Strand  Frame  [group] */
-long ReadExonsGFF(char                    *FileName,
+long ReadExonsGFF(char                    *exons_gff_fn,
                   packExternalInformation *external,
                   dict                    *d){
 
     /* File handle */
-    FILE *file;
+    FILE *exons_gff_fptr;
 
     /* Final number of exons loaded from file (including copies) */
-    long i, j;
+    long i; 
+    long j;
 
     /* Split every input line into several tokens (gff records) */
     char line[MAXLINE];
@@ -114,7 +115,7 @@ long ReadExonsGFF(char                    *FileName,
     exonGFF *original;
 
     /* 0. Open exons file to read the information */
-    if ((file = fopen(FileName, "r")) == NULL) {
+    if ((exons_gff_fptr = fopen(exons_gff_fn, "r")) == NULL) {
         printError("The exonsGFF file can not be opened to read");
     }
 
@@ -126,7 +127,7 @@ long ReadExonsGFF(char                    *FileName,
     }
 
     /* 2. Read while there are exons left in the input file */
-    while (fgets(line, MAXLINE, file) != NULL) {
+    while (fgets(line, MAXLINE, exons_gff_fptr) != NULL) {
         /* 2.a. Comment or empty line: forget it */
         if (line[0] == '#' || line[0] == '\n') {
             printMess("Skipping comment line in evidences file");
@@ -622,7 +623,7 @@ long ReadExonsGFF(char                    *FileName,
         } /* End of checkpoint for comments (#) */
 
     } /* End of while (input exons) */
-    fclose(file);
+    fclose(exons_gff_fptr);
 
     /* Obtain the number of different sequences */
     external->nSequences = external->locusNames->nextFree;

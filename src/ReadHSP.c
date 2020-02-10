@@ -83,9 +83,11 @@ packHSP *SelectHSP(packExternalInformation *external,
 }
 
 /* Input blast HSPs from external file */
-long ReadHSP(char *FileName, packExternalInformation *external){
-    long i, j;
-    FILE *file;
+long ReadHSP(char                    *blastHSP_gff_fn, 
+             packExternalInformation *external){
+    long i; 
+    long j;
+    FILE *blastHSP_gff_fptr;
     char line[MAXLINE];
     char lineCopy[MAXLINE];
     char *column_1;
@@ -107,7 +109,7 @@ long ReadHSP(char *FileName, packExternalInformation *external){
     char  mess[MAXSTRING];
     long  pos1;
     long  pos2;
-    float score;
+    float  score;
     char  strand;
     short frame;
     char  c;
@@ -117,16 +119,16 @@ long ReadHSP(char *FileName, packExternalInformation *external){
     /* group is allowed but skipped */
 
     /* 0. Opening the HSP file */
-    if ((file = fopen(FileName, "r")) == NULL) {
+    if ((blastHSP_gff_fptr = fopen(blastHSP_gff_fn, "r")) == NULL) {
         printError("The homology file can not be opened to read");
     }
 
-    /* 1. Read HSPs */
+    /* 1. Read BLAST High Scoring Pairs (HSPa) */
     i     = 0;
     three = 0;
     for (i = 0; i < MAXNSEQUENCES; i++) {
 
-        while (fgets(line, MAXLINE, file) != NULL) {
+        while (fgets(line, MAXLINE, blastHSP_gff_fptr) != NULL) {
             /* 2.a. Comment or empty line: forget it */
             if (line[0] == '#' || line[0] == '\n') {
                 printMess("Skipping comment line in HSPs file");
@@ -305,7 +307,7 @@ long ReadHSP(char *FileName, packExternalInformation *external){
         } /* end of while*/
 
     }
-    fclose(file);
+    fclose(blastHSP_gff_fptr);
 
     /* Obtain the number of different sequences */
     external->nSequences = external->locusNames->nextFree;

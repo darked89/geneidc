@@ -197,10 +197,10 @@ int main(int  argc,
     gparam **isochores;
 
     /* Input Filenames */
-    char fasta_fn[FILENAMELENGTH]   = "";
-    char param_fn[FILENAMELENGTH]   = "";
-    char ExonsFile[FILENAMELENGTH]  = "";
-    char HSPFile[FILENAMELENGTH]    = "";
+    char fasta_fn[FILENAMELENGTH]     = "";
+    char param_fn[FILENAMELENGTH]     = "";
+    char exons_gff_fn[FILENAMELENGTH]  = "";
+    char blastHSP_gff_fn[FILENAMELENGTH]      = "";
 
     /* Locus sequence name */
     char Locus[LOCUSLENGTH];
@@ -239,11 +239,11 @@ int main(int  argc,
              argv,
              param_fn,
              fasta_fn,
-             ExonsFile,
-             HSPFile,
+             exons_gff_fn,
+             blastHSP_gff_fn,
              GenePrefix);
 
-    printRes("\n\n\t\t\t** Running geneid 1.4.5+ 2019 geneid@crg.es **\n\n");
+    printRes("\n\n\t\t\t** Running geneid 1.4.5+ 2020 geneid@crg.es **\n\n");
 
     /* 0.d. Prediction of DNA sequence length to request memory */
     LengthSequence = get_fasta_size(fasta_fn);
@@ -334,7 +334,7 @@ int main(int  argc,
         if (EVD) {
             printMess("Reading evidence (annotations)...");
             external->nvExons
-                = ReadExonsGFF(ExonsFile, external, isochores[0]->D);
+                = ReadExonsGFF(exons_gff_fn, external, isochores[0]->D);
             sprintf(mess, "%ld annotations acquired from file\n",
                     external->nvExons);
             printMess(mess);
@@ -343,7 +343,7 @@ int main(int  argc,
         /* A.2. Reading external information II: homology information */
         if (SRP) {
             printMess("Reading homology information...");
-            external->nHSPs = ReadHSP(HSPFile, external);
+            external->nHSPs = ReadHSP(blastHSP_gff_fn, external);
             sprintf(mess, "%ld HSPs acquired from file",
                     external->nHSPs);
             printMess(mess);
@@ -645,7 +645,7 @@ int main(int  argc,
         /* B.1. Reading exons in GFF format */
         printMess("Reading exonsGFF from file");
         external->nvExons
-            = ReadExonsGFF(ExonsFile, external, isochores[0]->D);
+            = ReadExonsGFF(exons_gff_fn, external, isochores[0]->D);
         sprintf(mess, "%ld exons acquired from file\n",
                 external->nvExons);
         printMess(mess);

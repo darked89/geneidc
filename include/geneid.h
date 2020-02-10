@@ -948,7 +948,7 @@ int ReadSequence (FILE *fasta_fptr,
 long FetchSequence(char *s,
                    char *r);
 
-long ReadExonsGFF (char                    *FileName,
+long ReadExonsGFF (char                    *exons_gff_fn,
                    packExternalInformation *external,
                    dict                    *d);
 
