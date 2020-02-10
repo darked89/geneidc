@@ -147,9 +147,13 @@ void printDTD(){
     printf("\tscore    CDATA   #REQUIRED>\n\n");
 }
 
-void readargv(int argc, char *argv[],
-              char *ParamFile, char *SequenceFile,
-              char *ExonsFile, char *HSPFile, char *GenePrefix){
+void readargv(int argc,
+              char *argv[],
+              char *ParamFile, 
+              char *fasta_fn,
+              char *ExonsFile, 
+              char *HSPFile, 
+              char *GenePrefix){
     int  c;
     int  error        = 0;
     int  geneidOpts   = 0;
@@ -381,7 +385,7 @@ void readargv(int argc, char *argv[],
     /* Setup Errors (b): Wrong number of filenames */
     /* Read the name of the input fasta file */
     if (optind < argc) {
-        strcpy(SequenceFile, argv[optind]);
+        strcpy(fasta_fn, argv[optind]);
         optind++;
 
         if (optind < argc) {

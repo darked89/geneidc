@@ -925,7 +925,7 @@ packExternalInformation *RequestMemoryExternalInformation(void);
 void readargv (int  argc,
                char *argv[],
                char *ParamFile,
-               char *SequenceFile,
+               char *fasta_fn,
                char *ExonsFile,
                char *HSPFile,
                char *GenePrefix);
@@ -1286,7 +1286,7 @@ void SetRatios(long *NUMSITES,
                long *MAXBACKUPEXONS,
                long L);
 
-int64_t analizeFile(char *SequenceFile);
+int64_t analizeFile(char *fasta_fn);
 
 packGC *RequestMemoryGC(void);
 

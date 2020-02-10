@@ -32,7 +32,7 @@
 extern int VRB;
 
 /* Predicting the length of a sequence before loading it */
-long analizeFile(char *SequenceFile){
+long analizeFile(char *fasta_fn){
     struct stat *buf;
     long        size;
 
@@ -40,7 +40,7 @@ long analizeFile(char *SequenceFile){
         printError("Not enough memory: analizing input sequence file");
     }
 
-    if (stat(SequenceFile, buf) != 0) {
+    if (stat(fasta_fn, buf) != 0) {
         printError("Impossible to access sequence file");
     }
 

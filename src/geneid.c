@@ -37,66 +37,66 @@
 
 /* geneid setup flags */
 /* sites to print */
-int SFP      = 0,
-    SDP      = 0,
-    SAP      = 0,
-    STP      = 0;
+int SFP      = 0;
+int    SDP      = 0;
+int    SAP      = 0;
+int    STP      = 0;
 /* exons to print */
-int EFP      = 0,
-    EIP      = 0,
-    ETP      = 0,
-    EXP      = 0,
-    ESP      = 0,
-    EOP      = 0;
+int EFP      = 0;
+int    EIP      = 0;
+int    ETP      = 0;
+int    EXP      = 0;
+int    ESP      = 0;
+int    EOP      = 0;
 /* introns to print */
 int PRINTINT = 0;
 /* Partial or full prediction engine */
-int GENAMIC  = 1,
-    GENEID   = 1,
+int GENAMIC  = 1;
+int    GENEID   = 1;
 /* Only forward or reverse prediction engine */
-    FWD      = 1,
-    RVS      = 1,
+int    FWD      = 1;
+int    RVS      = 1;
 /* switch ORF prediction on */
-    scanORF  = 0,
+int    scanORF  = 0;
 /* Input annotations or homology to protein information/reads to UTR prediction */
-    EVD      = 0,
-    SRP      = 0,
-    UTR      = 0,
+int    EVD      = 0;
+int    SRP      = 0;
+int    UTR      = 0;
 /* Output formats */
-    GFF      = 0,
-    GFF3     = 0,
-    X10      = 0,
-    XML      = 0,
-    cDNA     = 0,
-    PSEQ     = 0,
-    tDNA     = 0;
+int    GFF      = 0;
+int    GFF3     = 0;
+int    X10      = 0;
+int    XML      = 0;
+int    cDNA     = 0;
+int    PSEQ     = 0;
+int    tDNA     = 0;
 /* Verbose flag (memory/processing information) */
-int BEG      = 0,
-    VRB      = 0,
+int BEG      = 0;
+int    VRB      = 0;
 /* Score for regions not-supported by protein homology */
-    NO_SCORE,
+int   NO_SCORE;
 /* Force single prediction: 1 gene */
-    SGE                        = 0,
+int    SGE                        = 0;
 /* Detection of PolyPTracts in Acceptors */
-    PPT                        = 0,
+int    PPT                        = 0;
 /* Detection of BranchPoints in Acceptors */
-    BP                         = 0,
+int    BP                         = 0;
 /* Detection of recursive splice sites */
-    RSS                        = 0;
+int    RSS                        = 0;
 /* Detection of U12 introns */
-int U12                        = 0,
+int U12                        = 0;
 /* Detection of U12gtag sites (acceptor uses BranchPoint)*/
-    U12GTAG                    = 0,
+int U12GTAG                    = 0;
 /* Detection of U12atac sites (acceptor uses BranchPoint)*/
-    U12ATAC                    = 0,
+int U12ATAC                    = 0;
 /* Detection of U2gcag sites */
-    U2GCAG                     = 0,
+int U2GCAG                     = 0;
 /* Detection of U2gta donor sites */
-    U2GTA                      = 0,
+int U2GTA                      = 0;
 /* Detection of U2gtg donor sites */
-    U2GTG                      = 0,
+int U2GTG                      = 0;
 /* Detection of U2gty donor sites */
-    U2GTY                      = 0;
+int U2GTY                      = 0;
 /* Detection of PolyA Signal */
 int PAS                        = 0;
 /* Length of flank around exons to subtract background RNA-seq signal */
@@ -197,7 +197,7 @@ int main(int  argc,
     gparam **isochores;
 
     /* Input Filenames */
-    char SequenceFile[FILENAMELENGTH] = "";
+    char fasta_fn[FILENAMELENGTH] = "";
     char ParamFile[FILENAMELENGTH]    = "";
     char ExonsFile[FILENAMELENGTH]    = "";
     char HSPFile[FILENAMELENGTH]      = "";
@@ -209,7 +209,8 @@ int main(int  argc,
     /* Measure of C+G content to select the isochore */
     packGC *GCInfo;
     packGC *GCInfo_r;
-    int    inigc, endgc;
+    int    inigc;
+    int    endgc;
     float   percentGC;
     int    currentIsochore;
     int    nIsochores;
@@ -237,7 +238,7 @@ int main(int  argc,
     readargv(argc,
              argv,
              ParamFile,
-             SequenceFile,
+             fasta_fn,
              ExonsFile,
              HSPFile,
              GenePrefix);
@@ -245,7 +246,7 @@ int main(int  argc,
     printRes("\n\n\t\t\t** Running geneid 1.4.5+ 2019 geneid@crg.es **\n\n");
 
     /* 0.d. Prediction of DNA sequence length to request memory */
-    LengthSequence = analizeFile(SequenceFile);
+    LengthSequence = analizeFile(fasta_fn);
     sprintf(mess, "DNA sequence file size = %ld bytes", LengthSequence);
     printMess(mess);
 
@@ -355,7 +356,7 @@ int main(int  argc,
         }
 
         /** A.3. Input DNA sequences (perhaps more than one) **/
-        if ((seqfile = fopen(SequenceFile, "rb")) == NULL) {
+        if ((seqfile = fopen(fasta_fn, "rb")) == NULL) {
             printError("The input sequence file can not be accessed");
         }
 
@@ -625,7 +626,7 @@ int main(int  argc,
 
         /* B.0. Reading DNA sequence to make the translations */
         /* open the Sequence File */
-        if ((seqfile = fopen(SequenceFile, "rb")) == NULL) {
+        if ((seqfile = fopen(fasta_fn, "rb")) == NULL) {
             printError("The Sequence file can not be open for read");
             exit(EXIT_FAILURE);
         }
