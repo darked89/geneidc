@@ -695,7 +695,9 @@ void RequestMemoryProfile(profile *p){
 /* Allocating memory for the best set of predicted genes and extra info */
 packGenes *RequestMemoryGenes(){
     packGenes *pg;
-    int       aux, aux2, aux3;
+    int       aux;
+    int       aux2;
+    int       aux3;
 
     /* 0. Allocating memory for pack of genes (main structure) */
     if ((pg
