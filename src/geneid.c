@@ -160,7 +160,7 @@ int main(int  argc,
     long      upperlimit;
     long      lowerlimit;
 
-    /* Forward semse data structures */
+    /* Forward sense data structures */
     packSites *allSites;
     packExons *allExons;
 
@@ -210,7 +210,7 @@ int main(int  argc,
     packGC *GCInfo;
     packGC *GCInfo_r;
     int    inigc, endgc;
-    float  percentGC;
+    float   percentGC;
     int    currentIsochore;
     int    nIsochores;
     int    reading;
