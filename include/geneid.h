@@ -164,7 +164,7 @@ A. DEFINITIONS
 /* Region around exon to measure G+C        */
 #define ISOCONTEXT 1000
 
-/* Number of nucloetides to scan for PPTs   */
+/* Number of nucleotides to scan for PPTs   */
 /* or Branch Points before the Acceptor site*/
 /* #define ACCEPTOR_CONTEXT 25*/
 #define ACCEPTOR_CONTEXT 50
@@ -287,7 +287,8 @@ A. DEFINITIONS
 
 /* Intron Subtypes                           */
 #define MAXSUBTYPE 10
-#define MAXSPLICETYPE 5
+// 20200210dk change the subtype size to 8 from 5
+#define MAXSPLICETYPE 8
 #define sU2 "U2"
 #define sU2gcag "U2gcag"
 #define sU12gtag "U12gtag"
