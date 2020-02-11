@@ -29,7 +29,7 @@
 
 #include "geneid.h"
 
-/* According to Locusname, select a group of HSPs to be sorted */
+/* According to contig_name, select a group of HSPs to be sorted */
 packHSP *SelectHSP(packExternalInformation *external,
                    char                    *Locus,
                    long                    LengthSequence){
@@ -105,7 +105,7 @@ long ReadHSP(char                    *blastHSP_gff_fn,
 
     /* If frame = '.' then make three copies of current SR (3 frames) */
     int   three;
-    char  Locusname[LOCUSLENGTH];
+    char  contig_name[CONTIG_NAME_MAX_LENGTH];
     char  mess[MAXSTRING];
     long  pos1;
     long  pos2;
@@ -156,14 +156,14 @@ long ReadHSP(char                    *blastHSP_gff_fn,
                     printError(mess);
                 }
 
-                /* 1. Locusname: leave the exon into the correct array */
-                if (sscanf(column_1, "%s", Locusname) != 1) {
+                /* 1. contig_name: leave the exon into the correct array */
+                if (sscanf(column_1, "%s", contig_name) != 1) {
                     sprintf(mess, "Wrong GFF format in HSPs (locusname):\n-->%s\n", lineCopy);
                     printError(mess);
                 }
 
                 /* Look-up the ID for that sequence */
-                a = setkeyDict(external->locusNames, Locusname);
+                a = setkeyDict(external->locusNames, contig_name);
 
                 if (a >= MAXNSEQUENCES) {
                     printError("Too many DNA sequences: increase MAXNSEQUENCES parameter");
