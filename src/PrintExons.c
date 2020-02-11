@@ -36,19 +36,25 @@ extern int   PPT;
 extern int   U12;
 extern int   SRP;
 extern int   UTR;
-extern float EvidenceFactor;
-extern float EvidenceEW;
-extern float MRM;
+extern float  EvidenceFactor;
+extern float  EvidenceEW;
+extern float  MRM;
 
 /* Print a predicted exon from a list of exons */
-void PrintExon(exonGFF *e, char Name[], char *s, dict *dAA, char *GenePrefix){
-    char  sAux[MAXAA];
+void PrintExon(exonGFF *e, 
+               char     Name[], 
+               char    *s, 
+               dict    *dAA, 
+               char    *GenePrefix){
+
+    char   sAux[MAXAA];
     char  *rs;
-    long  p1, p2;
-    float kb                   = 1000.000;
-    int   nAA                  = 0;
-    char  attribute[MAXSTRING] = "";
-    char  tmpstr[MAXSTRING]    = "";
+    long   p1; 
+    long   p2;
+    float   kb                   = 1000.000;
+    int    nAA                  = 0;
+    char   attribute[MAXSTRING] = "";
+    char   tmpstr[MAXSTRING]    = "";
 
 /*   char saux[MAXTYPE]; */
 /*   char saux2[MAXTYPE]; */
@@ -251,13 +257,14 @@ void PrintExon(exonGFF *e, char Name[], char *s, dict *dAA, char *GenePrefix){
 
 /* Print a list of exons of the same type */
 void PrintExons(exonGFF *e,
-                long ne,
-                int type,
-                char Name[],
-                long l1, long l2,
-                char *Sequence,
-                dict *dAA,
-                char *GenePrefix){
+                long     ne,
+                int      type,
+                char     Name[],
+                long     l1, 
+                long     l2,
+                char    *Sequence,
+                dict    *dAA,
+                char    *GenePrefix){
     long i;
     char Type[MAXTYPE];
     char strand;
@@ -325,19 +332,20 @@ void PrintExons(exonGFF *e,
 
 /* Print a predicted exon from a assembled gene: gff/geneid format */
 void PrintGCDS(exonGFF *e,
-               char    Name[],
+               char     Name[],
                char    *s,
                dict    *dAA,
-               long    ngen,
-               int     AA1,
-               int     AA2,
-               int     nAA,
-               int     nExon,
+               long     ngen,
+               int      AA1,
+               int      AA2,
+               int      nAA,
+               int      nExon,
                char    *GenePrefix
                ){
 /*   float onekb = 1000; */
-    long  p1, p2;
-    float kb = 1000.000;
+    long  p1;
+    long  p2;
+    float  kb = 1000.000;
 
     p1 = e->Acceptor->Position + e->offset1 - COFFSET;
     p2 = e->Donor->Position + e->offset2 - COFFSET;
@@ -602,18 +610,20 @@ void PrintGCDS(exonGFF *e,
 }
 /* Print a predicted exon from a assembled gene: gff/geneid format */
 void PrintGUTR(exonGFF *e,
-               char    Name[],
+               char     Name[],
                char    *s,
-               long    ngen,
-               int     nExon,
+               long     ngen,
+               int      nExon,
                char    *GenePrefix
                ){
     if (e->Donor->Position == e->Acceptor->Position - 1) {
         return;
     }
 
-    long  p1, p2;
+    long  p1;
+    long  p2;
     float kb = 1000.000;
+    
     p1 = e->Acceptor->Position + e->offset1 - COFFSET;
     p2 = e->Donor->Position + e->offset2 - COFFSET;
 
@@ -778,9 +788,9 @@ void PrintGUTR(exonGFF *e,
 /* Print a predicted gene from a assembled gene: gff/geneid format */
 void PrintGGene(exonGFF *s,
                 exonGFF *e,
-                char    Name[],
-                long    ngen,
-                float   score,
+                char     Name[],
+                long     ngen,
+                float     score,
                 char    *GenePrefix){
     if (GFF3) {
         /* GFF3 format */
@@ -826,9 +836,9 @@ void PrintGGene(exonGFF *s,
 /* Print a predicted mRNA from a assembled gene: gff/geneid format */
 void PrintGmRNA(exonGFF *s,
                 exonGFF *e,
-                char    Name[],
-                long    ngen,
-                float   score,
+                char     Name[],
+                long     ngen,
+                float     score,
                 char    *GenePrefix){
     if (GFF3) {
 
@@ -876,13 +886,14 @@ void PrintGmRNA(exonGFF *s,
 /* Print a predicted intron from an assembled gene: gff/geneid format */
 void PrintGIntron(exonGFF *d,
                   exonGFF *a,
-                  char    Name[],
-                  long    ngen,
-                  int     numInt,
+                  char     Name[],
+                  long     ngen,
+                  int      numInt,
                   char    *GenePrefix,
-                  int     evidence,
-                  float   score,
+                  int      evidence,
+                  float     score,
                   char    *eType){
+                      
     char attribute[MAXSTRING] = "";
     char tmpstr[MAXSTRING]    = "";
     /* float score = 0.0; */
@@ -1017,28 +1028,29 @@ void PrintGIntron(exonGFF *d,
 }
 /* Print a predicted intron from an assembled gene: gff/geneid format */
 void PrintGExon(  exonGFF *a,
-                  int     nSegments,
-                  char    Name[],
-                  long    ngen,
-                  int     nExon,
+                  int      nSegments,
+                  char     Name[],
+                  long     ngen,
+                  int      nExon,
                   char    *GenePrefix,
-                  int     evidence,
-                  float   score){
-    exonGFF *d                   = a;
-    exonGFF *e                   = a;
-    char    attribute[MAXSTRING] = "";
-    char    tmpstr[MAXSTRING]    = "";
-    float   kb                   = 1000.000;
+                  int      evidence,
+                  float     score){
+                      
+    exonGFF *d                    = a;
+    exonGFF *e                    = a;
+    char     attribute[MAXSTRING] = "";
+    char     tmpstr[MAXSTRING]    = "";
+    float     kb                   = 1000.000;
 
     if (a->Donor->Position == a->Acceptor->Position - 1) {
         return;
     }
 
-    float homology_score = 0.0;
-    float rpkm           = 0.0;
+    float homology_score  = 0.0;
+    float rpkm            = 0.0;
     long  start          = 0;
     long  end            = 0;
-    float partialScore   = 0.0;
+    float partialScore    = 0.0;
 
     if (nSegments == 1) {
         homology_score = (a->HSPScore);
@@ -1252,12 +1264,13 @@ void PrintGExon(  exonGFF *a,
 
 /* Print a predicted exon from a assembled gene: XML format */
 void PrintXMLExon(exonGFF *e,
-                  char    Name[],
-                  long    ngen,
-                  long    nExon,
-                  int     type1,
-                  int     type2,
+                  char     Name[],
+                  long     ngen,
+                  long     nExon,
+                  int      type1,
+                  int      type2,
                   char    *GenePrefix){
+                      
     char Type[MAXTYPE];
 
     /* XML format */
