@@ -48,8 +48,8 @@ long IncrMod(long x, long Modulus){
 }
 
 /* Saving exon information (features) into the dumpster */
-exonGFF *backupExon(exonGFF *E, 
-                    exonGFF *Prev, 
+exonGFF *backupExon(exonGFF  *E, 
+                    exonGFF  *Prev, 
                     packDump *d){
     /* back-up acceptor */
     d->dumpSites[d->ndumpSites].Position        = E->Acceptor->Position;
@@ -105,7 +105,8 @@ exonGFF *backupExon(exonGFF *E,
 }
 
 /* Saving all about a gene: exons, sites, properties */
-exonGFF *backupGene(exonGFF *E, packDump *d){
+exonGFF *backupGene(exonGFF  *E, 
+                    packDump *d){
     exonGFF *PrevExon;
     exonGFF *ResExon;
 
@@ -151,10 +152,10 @@ void BackupGenes(packGenes *pg, int nclass, packDump *d){
 }
 
 /* It saves information about d-exons: exons needed the next iteration */
-void BackupArrayD(packGenes *pg, 
-                  long 		accSearch,
-                  gparam 	*gp, 
-                  packDump 	*dumpster){
+void BackupArrayD(packGenes  *pg, 
+                  long        accSearch,
+                  gparam     *gp, 
+                  packDump   *dumpster){
     int   i;
     long  j;
     long  jUpdate, jMaxdist;
@@ -229,8 +230,8 @@ void BackupArrayD(packGenes *pg,
 
 /* Reset counters and pointers for the next input sequence */
 void cleanGenes(packGenes *pg, 
-                int nclass, 
-                packDump *dumpster){
+                int        nclass, 
+                packDump  *dumpster){
     int aux;
     int aux2; 
     int aux3;
