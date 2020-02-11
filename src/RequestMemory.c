@@ -26,24 +26,31 @@
 *************************************************************************/
 
 /*  $Id: RequestMemory.c,v 1.19 2011-01-13 11:06:16 talioto Exp $  */
+#include <assert.h>
+#include <stdlib.h>
 
 #include "geneid.h"
 
 /* Predicted amount of sites and exons found in one split */
-extern long  NUMSITES, NUMU12SITES, NUMU12EXONS, NUMU12U12EXONS, NUMEXONS, MAXBACKUPSITES, MAXBACKUPEXONS;
+extern long  NUMSITES, NUMEXONS, MAXBACKUPSITES, MAXBACKUPEXONS;
+extern long  NUMU12SITES, NUMU12EXONS, NUMU12U12EXONS;
 extern int   scanORF;
 extern int   SRP, EVD, UTR, GENEID, U12GTAG, U12ATAC;
 extern short SPLICECLASSES;
 
 /* Allocating accounting data structure in memory */
-account *RequestMemoryAccounting(){
-    account *m;
+account *RequestMemoryAccounting() {
+    account *mem_acc;
 
-    if ((m = (account *) malloc(sizeof(account))) == NULL) {
+    /*account *mem_acc = malloc(sizeof(account)); */
+
+    if ((mem_acc = (account *) malloc(sizeof(account))) == NULL) {
         printError("Not enough memory: account");
+        exit(EXIT_FAILURE);
     }
 
-    return(m);
+    memset(mem_acc, 0, (sizeof(account)));
+    return (mem_acc);
 }
 
 /* Allocating input sequence in memory */
