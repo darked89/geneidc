@@ -1,0 +1,137 @@
+#20200207 
+www.viva64.com/en/w	1	err	Help: The documentation for all analyzer warnings is available here: https://www.viva64.com/en/w/.
+geneidc/src/geneid.c	83	warn	V707 Giving short names to global variables is considered to be bad practice. It is suggested to rename 'BP' variable.
+geneidc/src/geneid.c	111	warn	V707 Giving short names to global variables is considered to be bad practice. It is suggested to rename 'HI' variable.
+geneidc/src/geneid.c	120	warn	V707 Giving short names to global variables is considered to be bad practice. It is suggested to rename 'EW' variable.
+geneidc/src/geneid.c	142	warn	V707 Giving short names to global variables is considered to be bad practice. It is suggested to rename 'm' variable.
+geneidc/src/geneid.c	317	warn	V1048 The 'U12GTAG' variable was assigned the same value.
+geneidc/src/geneid.c	318	warn	V1048 The 'U12ATAC' variable was assigned the same value.
+geneidc/src/geneid.c	424	warn	V1048 The 'lowerlimit' variable was assigned the same value.
+geneidc/src/geneid.c	442	err	V501 There are identical sub-expressions to the left and to the right of the '-' operator: l1 - l1
+geneidc/src/BackupGenes.c	229	warn	V1048 The 'j' variable was assigned the same value.
+geneidc/src/BuildAcceptors.c	38	warn	V707 Giving short names to global variables is considered to be bad practice. It is suggested to rename 'BP' variable.
+geneidc/src/BuildU12Acceptors.c	38	warn	V707 Giving short names to global variables is considered to be bad practice. It is suggested to rename 'BP' variable.
+geneidc/src/BuildU12Acceptors.c	171	warn	V547 Expression 'ns < NUMSITES' is always true.
+geneidc/src/BuildU12Acceptors.c	237	warn	V547 Expression 'ns < NUMSITES' is always true.
+geneidc/src/BuildU12Acceptors.c	299	warn	V547 Expression 'ns < NUMSITES' is always true.
+geneidc/src/BuildU12Acceptors.c	360	warn	V547 Expression 'ns < NUMSITES' is always true.
+geneidc/src/BuildInitialExons.c	105	warn	V769 The 'LocalExon' pointer in the 'LocalExon + nLocalExons' expression could be nullptr. In such case, resulting value will be senseless and it should not be used. Check lines: 105, 61.
+geneidc/src/BuildInternalExons.c	117	warn	V769 The 'LocalExon' pointer in the 'LocalExon + nLocalExons' expression could be nullptr. In such case, resulting value will be senseless and it should not be used. Check lines: 117, 70.
+geneidc/src/BuildZeroLengthExons.c	109	warn	V769 The 'LocalExon' pointer in the 'LocalExon + nLocalExons' expression could be nullptr. In such case, resulting value will be senseless and it should not be used. Check lines: 109, 73.
+geneidc/src/BuildZeroLengthExons.c	120	warn	V1048 The 'LowestLocalExon' variable was assigned the same value.
+geneidc/src/BuildZeroLengthExons.c	128	err	V1008 Consider inspecting the 'for' operator. No more than one iteration of the loop will be performed.
+geneidc/src/BuildUTRExons.c	102	warn	V769 The 'LocalExon' pointer in the 'LocalExon + nLocalExons' expression could be nullptr. In such case, resulting value will be senseless and it should not be used. Check lines: 102, 64.
+geneidc/src/CookingGenes.c	492	err	V501 There are identical sub-expressions '!strcmp(e->Type, "Begin")' to the left and to the right of the '||' operator.
+geneidc/src/CookingGenes.c	784	warn	V1048 The 'eaux' variable was assigned the same value.
+geneidc/src/CookingGenes.c	1021	warn	V522 There might be dereferencing of a potential null pointer 'tAA'. Check lines: 1021, 1016.
+geneidc/src/CookingGenes.c	1068	warn	V522 There might be dereferencing of a potential null pointer 'info'. Check lines: 1068, 1009.
+geneidc/src/CookingGenes.c	133	warn	V522 Dereferencing of the null pointer 'prot' might take place. The potential null pointer is passed into 'printProt' function. Inspect the third argument. Check lines: 133, 1159, 1031.
+geneidc/src/Dictionary.c	73	warn	V522 There might be dereferencing of a potential null pointer 'n'. Check lines: 73, 68.
+geneidc/src/Dictionary.c	192	warn	V522 There might be dereferencing of a potential null pointer 'n'. Check lines: 192, 187.
+geneidc/src/DumpHash.c	94	warn	V522 There might be dereferencing of a potential null pointer 'n'. Check lines: 94, 89.
+geneidc/src/Output.c	41	warn	V707 Giving short names to global variables is considered to be bad practice. It is suggested to rename 'm' variable.
+geneidc/src/PrintExons.c	34	warn	V707 Giving short names to global variables is considered to be bad practice. It is suggested to rename 'BP' variable.
+geneidc/src/PrintSites.c	34	warn	V707 Giving short names to global variables is considered to be bad practice. It is suggested to rename 'BP' variable.
+geneidc/src/PrintSites.c	299	warn	V1048 The 'i' variable was assigned the same value.
+geneidc/src/PrintSites.c	312	warn	V1048 The 'i' variable was assigned the same value.
+geneidc/src/PrintSites.c	335	warn	V1048 The 'i' variable was assigned the same value.
+geneidc/src/PrintSites.c	348	warn	V1048 The 'i' variable was assigned the same value.
+geneidc/src/ReadExonsGFF.c	36	warn	V707 Giving short names to global variables is considered to be bad practice. It is suggested to rename 'HI' variable.
+geneidc/src/ReadExonsGFF.c	129	warn	V1004 The 'file' pointer was used unsafely after it was verified against nullptr. Check lines: 117, 129.
+geneidc/src/ReadExonsGFF.c	160	warn	V1004 The 'column_1' pointer was used unsafely after it was verified against nullptr. Check lines: 152, 160.
+geneidc/src/ReadExonsGFF.c	173	warn	V1004 The 'column_3' pointer was used unsafely after it was verified against nullptr. Check lines: 152, 173.
+geneidc/src/ReadExonsGFF.c	180	warn	V1004 The 'column_4' pointer was used unsafely after it was verified against nullptr. Check lines: 152, 180.
+geneidc/src/ReadExonsGFF.c	187	warn	V1004 The 'column_5' pointer was used unsafely after it was verified against nullptr. Check lines: 152, 187.
+geneidc/src/ReadExonsGFF.c	194	warn	V1004 The 'column_6' pointer was used unsafely after it was verified against nullptr. Check lines: 152, 194.
+geneidc/src/ReadExonsGFF.c	207	warn	V1004 The 'column_7' pointer was used unsafely after it was verified against nullptr. Check lines: 152, 207.
+geneidc/src/ReadExonsGFF.c	160	warn	V576 Incorrect format. Consider checking the third actual argument of the 'sscanf' function. It's dangerous to use string specifier without width specification. Buffer overflow is possible.
+geneidc/src/ReadExonsGFF.c	173	warn	V576 Incorrect format. Consider checking the third actual argument of the 'sscanf' function. It's dangerous to use string specifier without width specification. Buffer overflow is possible.
+geneidc/src/ReadExonsGFF.c	247	warn	V576 Incorrect format. Consider checking the third actual argument of the 'sscanf' function. It's dangerous to use string specifier without width specification. Buffer overflow is possible.
+geneidc/src/ReadExonsGFF.c	385	warn	V557 Array overrun is possible. The value of 'slen' index could reach 50.
+geneidc/src/ReadGeneModel.c	161	warn	V1004 The 't1' pointer was used unsafely after it was verified against nullptr. Check lines: 154, 161.
+geneidc/src/ReadSequence.c	43	warn	V575 The potential null pointer is passed into 'stat' function. Inspect the second argument. Check lines: 43, 39.
+geneidc/src/ReadSequence.c	75	warn	V576 Incorrect format. Consider checking the third actual argument of the 'fscanf' function. It's dangerous to use string specifier without width specification. Buffer overflow is possible.
+geneidc/src/ReadHSP.c	158	warn	V1004 The 'column_1' pointer was used unsafely after it was verified against nullptr. Check lines: 150, 158.
+geneidc/src/ReadHSP.c	171	warn	V1004 The 'column_4' pointer was used unsafely after it was verified against nullptr. Check lines: 150, 171.
+geneidc/src/ReadHSP.c	177	warn	V1004 The 'column_5' pointer was used unsafely after it was verified against nullptr. Check lines: 150, 177.
+geneidc/src/ReadHSP.c	183	warn	V1004 The 'column_6' pointer was used unsafely after it was verified against nullptr. Check lines: 150, 183.
+geneidc/src/ReadHSP.c	189	warn	V1004 The 'column_7' pointer was used unsafely after it was verified against nullptr. Check lines: 150, 189.
+geneidc/src/ReadHSP.c	196	warn	V1004 The 'column_8' pointer was used unsafely after it was verified against nullptr. Check lines: 150, 196.
+geneidc/src/ReadHSP.c	158	warn	V576 Incorrect format. Consider checking the third actual argument of the 'sscanf' function. It's dangerous to use string specifier without width specification. Buffer overflow is possible.
+geneidc/src/ReadHSP.c	308	warn	V1004 The 'file' pointer was used unsafely after it was verified against nullptr. Check lines: 120, 308.
+geneidc/src/RequestMemory.c	71	warn	V522 There might be dereferencing of a potential null pointer 'allSites'. Check lines: 71, 66.
+geneidc/src/RequestMemory.c	125	warn	V522 There might be dereferencing of a potential null pointer 'allExons'. Check lines: 125, 118.
+geneidc/src/RequestMemory.c	284	warn	V522 There might be dereferencing of a potential null pointer 'p'. Check lines: 284, 279.
+geneidc/src/RequestMemory.c	329	warn	V522 There might be dereferencing of a potential null pointer 'p'. Check lines: 329, 324.
+geneidc/src/RequestMemory.c	335	warn	V522 There might be dereferencing of a potential null pointer 'p->sPairs'. Check lines: 335, 330.
+geneidc/src/RequestMemory.c	349	warn	V522 There might be dereferencing of a potential null pointer 'p->nSegments'. Check lines: 349, 343.
+geneidc/src/RequestMemory.c	376	warn	V522 There might be dereferencing of a potential null pointer 'p'. Check lines: 376, 371.
+geneidc/src/RequestMemory.c	390	warn	V522 There might be dereferencing of a potential null pointer 'p->evidence'. Check lines: 390, 385.
+geneidc/src/RequestMemory.c	401	warn	V522 There might be dereferencing of a potential null pointer 'p->homology'. Check lines: 401, 396.
+geneidc/src/RequestMemory.c	421	warn	V522 There might be dereferencing of a potential null pointer 'p->iSegments'. Check lines: 421, 415.
+geneidc/src/RequestMemory.c	431	warn	V522 There might be dereferencing of a potential null pointer 'p->sr'. Check lines: 431, 426.
+geneidc/src/RequestMemory.c	445	warn	V522 There might be dereferencing of a potential null pointer 'p->readcount'. Check lines: 445, 440.
+geneidc/src/RequestMemory.c	467	warn	V522 There might be dereferencing of a potential null pointer 'p'. Check lines: 467, 462.
+geneidc/src/RequestMemory.c	490	warn	V522 There might be dereferencing of a potential null pointer 'gp'. Check lines: 490, 485.
+geneidc/src/RequestMemory.c	652	warn	V522 There might be dereferencing of a potential null pointer 'isochores'. Check lines: 652, 646.
+geneidc/src/RequestMemory.c	707	warn	V522 There might be dereferencing of a potential null pointer 'pg'. Check lines: 707, 702.
+geneidc/src/RequestMemory.c	711	warn	V522 There might be dereferencing of a potential null pointer 'pg->Ghost'. Check lines: 711, 707.
+geneidc/src/RequestMemory.c	724	warn	V522 There might be dereferencing of a potential null pointer 'pg->Ghost->Donor'. Check lines: 724, 715.
+geneidc/src/RequestMemory.c	727	warn	V522 There might be dereferencing of a potential null pointer 'pg->Ghost->Acceptor'. Check lines: 727, 711.
+geneidc/src/RequestMemory.c	747	warn	V522 There might be dereferencing of a potential null pointer 'pg->Ga'. Check lines: 747, 740.
+geneidc/src/RequestMemory.c	752	warn	V522 There might be dereferencing of a potential null pointer 'pg->Ga[aux]'. Check lines: 752, 747.
+geneidc/src/RequestMemory.c	757	warn	V522 There might be dereferencing of a potential null pointer 'pg->Ga[aux][aux2]'. Check lines: 757, 752.
+geneidc/src/RequestMemory.c	771	warn	V522 There might be dereferencing of a potential null pointer 'pg->d'. Check lines: 771, 765.
+geneidc/src/RequestMemory.c	800	warn	V522 There might be dereferencing of a potential null pointer 'd'. Check lines: 800, 795.
+geneidc/src/RequestMemory.c	819	warn	V522 There might be dereferencing of a potential null pointer 'd->h'. Check lines: 819, 813.
+geneidc/src/ScoreExons.c	33	warn	V707 Giving short names to global variables is considered to be bad practice. It is suggested to rename 'EW' variable.
+geneidc/src/ScoreExons.c	130	warn	V1037 Two or more case-branches perform the same actions. Check lines: 130, 134
+geneidc/src/ScoreExons.c	138	warn	V1037 Two or more case-branches perform the same actions. Check lines: 138, 142
+geneidc/src/ScoreExons.c	156	warn	V1037 Two or more case-branches perform the same actions. Check lines: 156, 161
+geneidc/src/ScoreExons.c	166	warn	V1037 Two or more case-branches perform the same actions. Check lines: 166, 171
+geneidc/src/SortExons.c	52	warn	V522 There might be dereferencing of a potential null pointer 'e'. Check lines: 52, 47.
+geneidc/src/SortExons.c	63	warn	V522 There might be dereferencing of a potential null pointer 'e->Acceptor'. Check lines: 63, 53.
+geneidc/src/SortExons.c	64	warn	V522 There might be dereferencing of a potential null pointer 'e->Donor'. Check lines: 64, 59.
+geneidc/src/SortExons.c	99	warn	V522 There might be dereferencing of a potential null pointer 're'. Check lines: 99, 94.
+geneidc/src/SortExons.c	110	warn	V522 There might be dereferencing of a potential null pointer 're->Acceptor'. Check lines: 110, 100.
+geneidc/src/SortExons.c	111	warn	V522 There might be dereferencing of a potential null pointer 're->Donor'. Check lines: 111, 106.
+geneidc/src/SortExons.c	139	err	V773 Visibility scope of the 'e' pointer was exited without releasing the memory. A memory leak is possible.
+geneidc/src/SortExons.c	139	err	V773 Visibility scope of the 're' pointer was exited without releasing the memory. A memory leak is possible.
+geneidc/src/SortExons.c	153	warn	V522 There might be dereferencing of a potential null pointer 'e'. Check lines: 153, 148.
+geneidc/src/SortExons.c	164	warn	V522 There might be dereferencing of a potential null pointer 'e->Acceptor'. Check lines: 164, 154.
+geneidc/src/SortExons.c	165	warn	V522 There might be dereferencing of a potential null pointer 'e->Donor'. Check lines: 165, 160.
+geneidc/src/SortExons.c	200	warn	V522 There might be dereferencing of a potential null pointer 're'. Check lines: 200, 195.
+geneidc/src/SortExons.c	211	warn	V522 There might be dereferencing of a potential null pointer 're->Acceptor'. Check lines: 211, 201.
+geneidc/src/SortExons.c	212	warn	V522 There might be dereferencing of a potential null pointer 're->Donor'. Check lines: 212, 207.
+geneidc/src/SortExons.c	240	err	V773 Visibility scope of the 'e' pointer was exited without releasing the memory. A memory leak is possible.
+geneidc/src/SortExons.c	240	err	V773 Visibility scope of the 're' pointer was exited without releasing the memory. A memory leak is possible.
+geneidc/src/SortExons.c	311	warn	V522 There might be dereferencing of a potential null pointer 'ExonList'. Check lines: 311, 305.
+geneidc/src/SortExons.c	624	warn	V1020 The function exited without calling the 'InsertEndExon' function. Check lines: 624, 565.
+geneidc/src/SortSites.c	96	warn	V522 There might be dereferencing of a potential null pointer 'SiteList'. Check lines: 96, 90.
+geneidc/src/Translate.c	163	warn	V557 Array overrun is possible. The value of 'lAux + 1' index could reach 50000.
+geneidc/src/Translate.c	173	warn	V557 Array overrun is possible. The value of 'lAux + 1' index could reach 50000.
+geneidc/src/Translate.c	413	warn	V522 There might be dereferencing of a potential null pointer 'tmpDNA'. Check lines: 413, 396.
+geneidc/src/Translate.c	447	warn	V522 There might be dereferencing of a potential null pointer 'rs'. Check lines: 447, 433.
+geneidc/src/Translate.c	505	warn	V522 There might be dereferencing of a potential null pointer 'tmpDNA'. Check lines: 505, 488.
+geneidc/src/Translate.c	538	warn	V522 There might be dereferencing of a potential null pointer 'rs'. Check lines: 538, 524.
+geneidc/src/account.c	83	err	V530 The return value of function 'clock' is required to be utilized.
+geneidc/src/beggar.c	58	warn	V636 The 'NUMEXONS / 3' expression was implicitly cast from 'long' type to 'float' type. Consider utilizing an explicit type cast to avoid the loss of a fractional part. An example: double A = (double)(X) / Y;.
+geneidc/src/manager.c	306	warn	V728 An excessive check can be simplified. The '||' operator is surrounded by opposite expressions 'GENAMIC' and '!GENAMIC'. 
+geneidc/src/readparam.c	34	warn	V707 Giving short names to global variables is considered to be bad practice. It is suggested to rename 'BP' variable.
+geneidc/src/readparam.c	365	warn	V581 The conditional expressions of the 'if' statements situated alongside each other are identical. Check lines: 360, 365.
+geneidc/src/readparam.c	370	warn	V581 The conditional expressions of the 'if' statements situated alongside each other are identical. Check lines: 365, 370.
+geneidc/src/readparam.c	404	warn	V576 Incorrect format. Consider checking the third actual argument of the 'sscanf' function. It's dangerous to use string specifier without width specification. Buffer overflow is possible.
+geneidc/src/readparam.c	455	warn	V512 A call of the 'sprintf' function will lead to overflow of the buffer 'mess'.
+geneidc/src/readparam.c	468	warn	V576 Incorrect format. Consider checking the third actual argument of the 'sscanf' function. It's dangerous to use string specifier without width specification. Buffer overflow is possible.
+geneidc/src/readparam.c	481	warn	V576 Incorrect format. Consider checking the third actual argument of the 'sscanf' function. It's dangerous to use string specifier without width specification. Buffer overflow is possible.
+geneidc/src/readparam.c	545	warn	V512 A call of the 'sprintf' function will lead to overflow of the buffer 'mess'.
+geneidc/src/readparam.c	559	warn	V576 Incorrect format. Consider checking the third actual argument of the 'sscanf' function. It's dangerous to use string specifier without width specification. Buffer overflow is possible.
+geneidc/src/readparam.c	722	warn	V576 Incorrect format. Consider checking the third actual argument of the 'sscanf' function. It's dangerous to use string specifier without width specification. Buffer overflow is possible.
+geneidc/src/readparam.c	838	warn	V576 Incorrect format. Consider checking the third actual argument of the 'sscanf' function. It's dangerous to use string specifier without width specification. Buffer overflow is possible.
+geneidc/src/readparam.c	880	warn	V576 Incorrect format. Consider checking the third actual argument of the 'sscanf' function. It's dangerous to use string specifier without width specification. Buffer overflow is possible.
+geneidc/src/readparam.c	900	warn	V576 Incorrect format. Consider checking the third actual argument of the 'sscanf' function. It's dangerous to use string specifier without width specification. Buffer overflow is possible.
+geneidc/src/readparam.c	1035	warn	V576 Incorrect format. Consider checking the third actual argument of the 'sscanf' function. It's dangerous to use string specifier without width specification. Buffer overflow is possible.
+geneidc/src/readparam.c	1055	warn	V576 Incorrect format. Consider checking the third actual argument of the 'sscanf' function. It's dangerous to use string specifier without width specification. Buffer overflow is possible.
+geneidc/src/readargv.c	43	warn	V707 Giving short names to global variables is considered to be bad practice. It is suggested to rename 'EW' variable.
+geneidc/src/readargv.c	44	warn	V707 Giving short names to global variables is considered to be bad practice. It is suggested to rename 'HI' variable.
+geneidc/src/readargv.c	376	warn	V547 Expression 'error' is always false.
