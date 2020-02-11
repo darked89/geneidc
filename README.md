@@ -63,7 +63,6 @@ Tested with following compilers:
 - clang:  8.0.1  (M_18.1)
 - cc (from Oracle Solaris Studio): 12.6 (M_18.1)
 - icc (Intel): 19.0.5.281 (U_18.0)
->>>>>>> master
 
 TODO
 - Python for testing (future)
