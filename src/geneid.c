@@ -202,9 +202,9 @@ int main(int  argc,
     char exons_gff_fn[FILENAMELENGTH]  = "";
     char blastHSP_gff_fn[FILENAMELENGTH]      = "";
 
-    /* Locus sequence name */
-    char Locus[LOCUSLENGTH];
-    char nextLocus[LOCUSLENGTH];
+    /* contig_name sequence name */
+    char contig_name[CONTIG_NAME_MAX_LENGTH];
+    char next_contig_name[CONTIG_NAME_MAX_LENGTH];
 
     /* Measure of C+G content to select the isochore */
     packGC *GCInfo;
@@ -361,29 +361,29 @@ int main(int  argc,
         }
 
         /* reading the locusname of sequence (in Fasta format) */
-        reading = IniReadSequence(fasta_fptr, Locus);
+        reading = IniReadSequence(fasta_fptr, contig_name);
 
         while (reading != EOF) {
             printMess("Loading DNA sequence");
-            reading = ReadSequence(fasta_fptr, Sequence, nextLocus);
+            reading = ReadSequence(fasta_fptr, Sequence, next_contig_name);
 
             /* A.3. Prepare sequence to work on */
             printMess("Processing DNA sequence");
             LengthSequence = FetchSequence(Sequence, RSequence);
-            OutputHeader(Locus, LengthSequence);
+            OutputHeader(contig_name, LengthSequence);
 
             /* A.4. Prepare external information */
             if (SRP) {
                 printMess("Select homology information");
-                hsp = (packHSP *) SelectHSP(external, Locus, LengthSequence);
+                hsp = (packHSP *) SelectHSP(external, contig_name, LengthSequence);
 
                 if (hsp == NULL) {
                     sprintf(mess, "No information has been provided for %s\n",
-                            Locus);
+                            contig_name);
                 }
                 else {
                     sprintf(mess, "Using %ld HSPs in %s\n",
-                            hsp->nTotalSegments, Locus);
+                            hsp->nTotalSegments, contig_name);
                 }
 
                 printMess(mess);
@@ -391,15 +391,15 @@ int main(int  argc,
 
             if (EVD) {
                 printMess("Select annotations");
-                evidence = (packEvidence *) SelectEvidence(external, Locus);
+                evidence = (packEvidence *) SelectEvidence(external, contig_name);
 
                 if (evidence == NULL) {
                     sprintf(mess, "No information has been provided for %s\n",
-                            Locus);
+                            contig_name);
                 }
                 else {
                     sprintf(mess, "Using %ld annotations in %s\n",
-                            evidence->nvExons, Locus);
+                            evidence->nvExons, contig_name);
                 }
 
                 printMess(mess);
@@ -455,7 +455,7 @@ int main(int  argc,
                 /* B.2. Prediction of sites and exons construction/filtering */
                 if (FWD) {
                     /* Forward strand predictions */
-                    sprintf(mess, "Running FWD  %s: %ld - %ld", Locus, l1, l2);
+                    sprintf(mess, "Running FWD  %s: %ld - %ld", contig_name, l1, l2);
                     printMess(mess);
                     manager(Sequence,
                             LengthSequence,
@@ -480,8 +480,10 @@ int main(int  argc,
 
                 if (RVS) {
                     /* Reverse strand predictions */
-                    sprintf(mess, "Running Reverse  %s: %ld - %ld(%ld - %ld)",
-                            Locus, LengthSequence - 1 - l2,
+                    sprintf(mess,
+                            "Running Reverse  %s: %ld - %ld(%ld - %ld)",
+                            contig_name, 
+                            LengthSequence - 1 - l2,
                             LengthSequence - 1 - l1, l1, l2);
                     printMess(mess);
 
@@ -538,7 +540,7 @@ int main(int  argc,
 /*            printMess(mess); */
 /*            /\* B.4. Printing current fragment predictions (sites and exons) *\/ */
 /*            Output(allSites, allSites_r, allExons, allExons_r,  */
-/*                   exons, nExons, Locus, l1, l2, lowerlimit, Sequence, gp, dAA, GenePrefix);  */
+/*                   exons, nExons, contig_name, l1, l2, lowerlimit, Sequence, gp, dAA, GenePrefix);  */
 
                 sprintf(mess, "Sorting %ld exons\n", nExons);
                 printMess(mess);
@@ -562,7 +564,7 @@ int main(int  argc,
 
                 /* B.4. Printing current fragment predictions (sites and exons) */
                 Output(allSites, allSites_r, allExons, allExons_r,
-                       exons, nExons, Locus, l1, l2, lowerlimit, Sequence, gp, dAA, GenePrefix);
+                       exons, nExons, contig_name, l1, l2, lowerlimit, Sequence, gp, dAA, GenePrefix);
 
                 /* recompute stats about splice sites and exons */
                 updateTotals(m, allSites, allSites_r, allExons, allExons_r);
@@ -602,7 +604,11 @@ int main(int  argc,
                            (EVD && evidence != NULL) ?
                            m->totalExons + evidence->nvExons :
                            m->totalExons,
-                           Locus, Sequence, gp, dAA, GenePrefix);
+                           contig_name, 
+                           Sequence, 
+                           gp, 
+                           dAA, 
+                           GenePrefix);
 
                 /* Reset best genes data structures for next input sequence */
                 printMess("Cleaning gene structures and dumpster");
@@ -610,7 +616,7 @@ int main(int  argc,
             }
 
             /* showing global stats about last sequence predicted */
-            OutputStats(Locus);
+            OutputStats(contig_name);
 
             /* Reset evidence temporary counters */
             if (EVD && evidence != NULL) {
@@ -618,7 +624,7 @@ int main(int  argc,
             }
 
             cleanAcc(m);
-            strcpy(Locus, nextLocus);
+            strcpy(contig_name, next_contig_name);
         } /* endwhile(reading): next sequence to be processed... */
     } /*endifgeneid*/
     else {
@@ -632,15 +638,15 @@ int main(int  argc,
         }
 
         printMess("Reading DNA sequence");
-        reading = IniReadSequence(fasta_fptr, Locus);
+        reading = IniReadSequence(fasta_fptr, contig_name);
 
         if (reading != EOF) {
-            reading        = ReadSequence(fasta_fptr, Sequence, nextLocus);
+            reading        = ReadSequence(fasta_fptr, Sequence, next_contig_name);
             LengthSequence = FetchSequence(Sequence, RSequence);
         }
 
         /* Header Output */
-        OutputHeader(Locus, LengthSequence);
+        OutputHeader(contig_name, LengthSequence);
 
         /* B.1. Reading exons in GFF format */
         printMess("Reading exonsGFF from file");
@@ -664,7 +670,7 @@ int main(int  argc,
 
         /* B.3. Printing gene predictions */
         OutputGene(genes, external->evidence[0]->nvExons,
-                   Locus, Sequence, isochores[0], dAA, GenePrefix);
+                   contig_name, Sequence, isochores[0], dAA, GenePrefix);
     } /* end only gene assembling from exons file */
 
     /* CHECK_LEAKS(); */
