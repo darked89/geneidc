@@ -1,4 +1,4 @@
-#
+# 
 #   This file is part of the geneid distribution
 #   (c) by Roderic Guigo and Enrique Blanco, 2003
 #
@@ -9,28 +9,15 @@ INCLUDE= ./include
 CDIR= ./src
 OBJ = ./objects
 BIN = ./bin
-HEADERS = $(INCLUDE)/geneid.h
+HEADERS = $(INCLUDE)/geneid.h 
 PROGRAM= geneid
 PRODUCT= $(BIN)/$(PROGRAM)
+CC=gcc
+#OPTS=-I$(INCLUDE) -Wall -O3
+#OPTS=-I$(INCLUDE) -Wall -g
+OPTS=-I$(INCLUDE) -std=c11 -ggdb  -g3 -fvar-tracking-assignments -Wpedantic -Wall -Wextra  -Wshadow -Wstrict-overflow -fno-strict-aliasing -Wdouble-promotion -Wundef -fno-common  
+## -fsanitize=address -fno-omit-frame-pointer
 
-
-
-#tested with:
-#clang version 8.0.1 (tags/RELEASE_801/final)
-#Target: x86_64-pc-linux-gnu
-#Manjaro 18.1
-
-#also:
-#AMD AOCC.LLVM.2.0.0.B191.2019_07_19 clang version 8.0.0
-#Manjaro 18.1
-
-CC=clang
-OPTS=-I$(INCLUDE) -std=c11 -ggdb -g3 -march=native  -Wshadow -Wstrict-overflow -fno-strict-aliasing -Weverything  
-#-fsanitize=address
-
-
-
-#all:$(PROGRAM)
 #######
 
 OBJECTS = $(OBJ)/BackupGenes.o $(OBJ)/PeakEdgeScore.o $(OBJ)/GetTranscriptTermini-usingslopes.o $(OBJ)/BuildAcceptors.o $(OBJ)/BuildU12Acceptors.o $(OBJ)/BuildDonors.o \
@@ -53,13 +40,13 @@ $(PRODUCT): $(BIN) $(OBJ) $(OBJ)/$(PROGRAM).o $(OBJECTS) $(HEADERS)
 	$(CC) $(OPTS) -o $(PRODUCT) $(OBJ)/$(PROGRAM).o $(OBJECTS) -lm
 
 $(BIN) :
-	mkdir $(BIN);
+	mkdir $(BIN); 
 
 $(OBJ) :
-	mkdir $(OBJ);
+	mkdir $(OBJ); 
 
 $(OBJ)/$(PROGRAM).o : $(CDIR)/$(PROGRAM).c  $(HEADERS)
-	$(CC) -c $(OPTS) $(CDIR)/$(PROGRAM).c -o $(OBJ)/$(PROGRAM).o
+	$(CC) -c $(OPTS) $(CDIR)/$(PROGRAM).c -o $(OBJ)/$(PROGRAM).o 
 
 $(OBJ)/account.o :  $(CDIR)/account.c $(HEADERS)
 	$(CC) -c $(OPTS) $(CDIR)/account.c -o $(OBJ)/account.o
@@ -67,13 +54,13 @@ $(OBJ)/account.o :  $(CDIR)/account.c $(HEADERS)
 $(OBJ)/beggar.o :  $(CDIR)/beggar.c $(HEADERS)
 	$(CC) -c $(OPTS) $(CDIR)/beggar.c -o $(OBJ)/beggar.o
 
-$(OBJ)/genamic.o : $(CDIR)/genamic.c $(HEADERS)
+$(OBJ)/genamic.o : $(CDIR)/genamic.c $(HEADERS) 
 	$(CC) -c $(OPTS) $(CDIR)/genamic.c -o $(OBJ)/genamic.o
 
 $(OBJ)/manager.o :  $(CDIR)/manager.c $(HEADERS)
 	$(CC) -c $(OPTS) $(CDIR)/manager.c -o $(OBJ)/manager.o
 
-$(OBJ)/readargv.o :  $(CDIR)/readargv.c $(HEADERS)
+$(OBJ)/readargv.o :  $(CDIR)/readargv.c $(HEADERS) 
 	$(CC) -c $(OPTS) $(CDIR)/readargv.c -o $(OBJ)/readargv.o
 
 $(OBJ)/readparam.o : $(CDIR)/readparam.c $(HEADERS)
@@ -109,10 +96,10 @@ $(OBJ)/BuildZeroLengthExons.o : $(CDIR)/BuildZeroLengthExons.c $(HEADERS)
 $(OBJ)/BuildUTRExons.o : $(CDIR)/BuildUTRExons.c $(HEADERS)
 	$(CC) -c $(OPTS) $(CDIR)/BuildUTRExons.c -o $(OBJ)/BuildUTRExons.o
 
-$(OBJ)/BuildORFs.o : $(CDIR)/BuildORFs.c $(HEADERS)
+$(OBJ)/BuildORFs.o : $(CDIR)/BuildORFs.c $(HEADERS)	
 	$(CC) -c $(OPTS) $(CDIR)/BuildORFs.c -o $(OBJ)/BuildORFs.o
 
-$(OBJ)/BuildSingles.o : $(CDIR)/BuildSingles.c $(HEADERS)
+$(OBJ)/BuildSingles.o : $(CDIR)/BuildSingles.c $(HEADERS)	
 	$(CC) -c $(OPTS) $(CDIR)/BuildSingles.c -o $(OBJ)/BuildSingles.o
 
 $(OBJ)/BuildSort.o: $(CDIR)/BuildSort.c $(HEADERS)
@@ -181,7 +168,7 @@ $(OBJ)/RequestMemory.o :  $(CDIR)/RequestMemory.c $(HEADERS)
 $(OBJ)/ScoreExons.o : $(CDIR)/ScoreExons.c $(HEADERS)
 	$(CC) -c $(OPTS) $(CDIR)/ScoreExons.c -o $(OBJ)/ScoreExons.o
 
-$(OBJ)/SearchEvidenceExons.o : $(CDIR)/SearchEvidenceExons.c $(HEADERS)
+$(OBJ)/SearchEvidenceExons.o : $(CDIR)/SearchEvidenceExons.c $(HEADERS)	
 	$(CC) -c $(OPTS) $(CDIR)/SearchEvidenceExons.c -o $(OBJ)/SearchEvidenceExons.o
 
 $(OBJ)/SetRatios.o : $(CDIR)/SetRatios.c $(HEADERS)
@@ -208,3 +195,4 @@ $(OBJ)/Translate.o :  $(CDIR)/Translate.c $(HEADERS)
 clean:
 	rm -f $(OBJ)/*.o $(PRODUCT) *~ $(INCLUDE)/*~ $(CDIR)/*~ core;
 	rmdir $(BIN) $(OBJ);
+

@@ -39,14 +39,18 @@ extern int   SRP, EVD, UTR, GENEID, U12GTAG, U12ATAC;
 extern short SPLICECLASSES;
 
 /* Allocating accounting data structure in memory */
-account *RequestMemoryAccounting(){
-    account *m;
+account *RequestMemoryAccounting() {
+    account *mem_acc;
 
-    if ((m = (account *) malloc(sizeof(account))) == NULL) {
+    /*account *mem_acc = malloc(sizeof(account)); */
+
+    if ((mem_acc = (account *) malloc(sizeof(account))) == NULL) {
         printError("Not enough memory: account");
+        exit(EXIT_FAILURE);
     }
 
-    return(m);
+    memset(mem_acc, 0, (sizeof(account)));
+    return (mem_acc);
 }
 
 /* Allocating input sequence in memory */
@@ -802,7 +806,9 @@ void RequestMemoryProfile(profile *p){
 /* Allocating memory for the best set of predicted genes and extra info */
 packGenes *RequestMemoryGenes(){
     packGenes *pg;
-    int       aux, aux2, aux3;
+    int       aux;
+    int       aux2;
+    int       aux3;
 
     /* 0. Allocating memory for pack of genes (main structure) */
     if ((pg

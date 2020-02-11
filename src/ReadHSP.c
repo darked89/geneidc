@@ -29,14 +29,15 @@
 
 #include "geneid.h"
 
-/* According to Locusname, select a group of HSPs to be sorted */
+/* According to contig_name, select a group of HSPs to be sorted */
 packHSP *SelectHSP(packExternalInformation *external,
                    char                    *Locus,
                    long                    LengthSequence){
     int     a;
     int     frame;
     long    i;
-    long    pos1, pos2;
+    long    pos1;
+    long    pos2;
     packHSP *p;
 
     /* 1. Select the position in the array corresponding to Locus */
@@ -82,30 +83,33 @@ packHSP *SelectHSP(packExternalInformation *external,
 }
 
 /* Input blast HSPs from external file */
-long ReadHSP(char *FileName, packExternalInformation *external){
-    long i, j;
-    FILE *file;
+long ReadHSP(char                    *blastHSP_gff_fn, 
+             packExternalInformation *external){
+    long i; 
+    long j;
+    FILE *blastHSP_gff_fptr;
     char line[MAXLINE];
     char lineCopy[MAXLINE];
-    char *line1;
-    char *line2;
-    char *line3;
-    char *line4;
-    char *line5;
-    char *line6;
-    char *line7;
-    char *line8;
-    char *line9;
+    char *column_1;
+    char *column_2;
+    char *column_3;
+    char *column_4;
+    char *column_5;
+    char *column_6;
+    char *column_7;
+    char *column_8;
+    char *column_9;
 
     /* Identifier for a sequence (from dictionary) */
     int a;
 
     /* If frame = '.' then make three copies of current SR (3 frames) */
     int   three;
-    char  Locusname[LOCUSLENGTH];
+    char  contig_name[CONTIG_NAME_MAX_LENGTH];
     char  mess[MAXSTRING];
-    long  pos1, pos2;
-    float score;
+    long  pos1;
+    long  pos2;
+    float  score;
     char  strand;
     short frame;
     char  c;
@@ -115,16 +119,16 @@ long ReadHSP(char *FileName, packExternalInformation *external){
     /* group is allowed but skipped */
 
     /* 0. Opening the HSP file */
-    if ((file = fopen(FileName, "r")) == NULL) {
+    if ((blastHSP_gff_fptr = fopen(blastHSP_gff_fn, "r")) == NULL) {
         printError("The homology file can not be opened to read");
     }
 
-    /* 1. Read HSPs */
+    /* 1. Read BLAST High Scoring Pairs (HSPa) */
     i     = 0;
     three = 0;
     for (i = 0; i < MAXNSEQUENCES; i++) {
 
-        while (fgets(line, MAXLINE, file) != NULL) {
+        while (fgets(line, MAXLINE, blastHSP_gff_fptr) != NULL) {
             /* 2.a. Comment or empty line: forget it */
             if (line[0] == '#' || line[0] == '\n') {
                 printMess("Skipping comment line in HSPs file");
@@ -134,66 +138,66 @@ long ReadHSP(char *FileName, packExternalInformation *external){
                 strcpy(lineCopy, line);
 
                 /* Extracting GFF features */
-                line1 = (char *) strtok(line, "\t");
-                line2 = (char *) strtok(NULL, "\t");
-                line3 = (char *) strtok(NULL, "\t");
-                line4 = (char *) strtok(NULL, "\t");
-                line5 = (char *) strtok(NULL, "\t");
-                line6 = (char *) strtok(NULL, "\t");
-                line7 = (char *) strtok(NULL, "\t");
-                line8 = (char *) strtok(NULL, "\t");
-                line9 = (char *) strtok(NULL, "\n");
+                column_1 = (char *) strtok(line, "\t");
+                column_2 = (char *) strtok(NULL, "\t");
+                column_3 = (char *) strtok(NULL, "\t");
+                column_4 = (char *) strtok(NULL, "\t");
+                column_5 = (char *) strtok(NULL, "\t");
+                column_6 = (char *) strtok(NULL, "\t");
+                column_7 = (char *) strtok(NULL, "\t");
+                column_8 = (char *) strtok(NULL, "\t");
+                column_9 = (char *) strtok(NULL, "\n");
 
                 /* There are 8 mandatory columns and the last one is optional */
-                if (line1 == NULL || line2 == NULL || line3 == NULL
-                    || line4 == NULL || line5 == NULL || line6 == NULL
-                    || line7 == NULL || line8 == NULL) {
+                if (column_1 == NULL || column_2 == NULL || column_3 == NULL
+                    || column_4 == NULL || column_5 == NULL || column_6 == NULL
+                    || column_7 == NULL || column_8 == NULL) {
                     sprintf(mess, "Wrong GFF format in HSPs (number of records):\n-->%s\n", lineCopy);
                     printError(mess);
                 }
 
-                /* 1. Locusname: leave the exon into the correct array */
-                if (sscanf(line1, "%s", Locusname) != 1) {
+                /* 1. contig_name: leave the exon into the correct array */
+                if (sscanf(column_1, "%s", contig_name) != 1) {
                     sprintf(mess, "Wrong GFF format in HSPs (locusname):\n-->%s\n", lineCopy);
                     printError(mess);
                 }
 
                 /* Look-up the ID for that sequence */
-                a = setkeyDict(external->locusNames, Locusname);
+                a = setkeyDict(external->locusNames, contig_name);
 
                 if (a >= MAXNSEQUENCES) {
                     printError("Too many DNA sequences: increase MAXNSEQUENCES parameter");
                 }
 
                 /* 4. Starting position */
-                if (sscanf(line4, "%ld", &pos1) != 1) {
+                if (sscanf(column_4, "%ld", &pos1) != 1) {
                     sprintf(mess, "Wrong GFF format in HSPs (starting position):\n-->%s\n", lineCopy);
                     printError(mess);
                 }
 
                 /* 5. Finishing position */
-                if (sscanf(line5, "%ld", &pos2) != 1) {
+                if (sscanf(column_5, "%ld", &pos2) != 1) {
                     sprintf(mess, "Wrong GFF format in HSPs (finishing position):\n-->%s\n", lineCopy);
                     printError(mess);
                 }
 
                 /* 6. HSP score */
-                if (sscanf(line6, "%f", &score) != 1) {
+                if (sscanf(column_6, "%f", &score) != 1) {
                     sprintf(mess, "Wrong GFF format in HSPs (score):\n-->%s\n", lineCopy);
                     printError(mess);
                 }
 
                 /* 7. Strand (reading sense) [+|-] */
-                if ((sscanf(line7, "%c", &strand) != 1)
+                if ((sscanf(column_7, "%c", &strand) != 1)
                     || ((strand != '+') && (strand != '-'))) {
                     sprintf(mess, "Wrong GFF format in HSPs (strand):\n-->%s\n", lineCopy);
                     printError(mess);
                 }
 
                 /* 8. Frame = integer or '.' */
-                if (sscanf(line8, "%hd", &frame) != 1) {
+                if (sscanf(column_8, "%hd", &frame) != 1) {
                     /* Is it a dot? */
-                    if ((sscanf(line8, "%c", &c) != 1) || (c != '.')) {
+                    if ((sscanf(column_8, "%c", &c) != 1) || (c != '.')) {
                         sprintf(mess, "Wrong GFF format in HSPs (frame):\n-->%s\n", lineCopy);
                         printError(mess);
                     }
@@ -303,7 +307,7 @@ long ReadHSP(char *FileName, packExternalInformation *external){
         } /* end of while*/
 
     }
-    fclose(file);
+    fclose(blastHSP_gff_fptr);
 
     /* Obtain the number of different sequences */
     external->nSequences = external->locusNames->nextFree;

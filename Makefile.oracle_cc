@@ -14,20 +14,17 @@ PROGRAM= geneid
 PRODUCT= $(BIN)/$(PROGRAM)
 
 
-
-#tested with:
-#clang version 8.0.1 (tags/RELEASE_801/final)
-#Target: x86_64-pc-linux-gnu
+#Oracle Solaris Studio options
+# tested with: 
+#cc: Studio 12.6 Sun C 5.15 Linux_i386 2017/05/30
 #Manjaro 18.1
 
-#also:
-#AMD AOCC.LLVM.2.0.0.B191.2019_07_19 clang version 8.0.0
-#Manjaro 18.1
-
-CC=clang
-OPTS=-I$(INCLUDE) -std=c11 -ggdb -g3 -march=native  -Wshadow -Wstrict-overflow -fno-strict-aliasing -Weverything  
-#-fsanitize=address
-
+CC=cc
+OPTS=-I$(INCLUDE) -std=c11 -m64 -v  -traceback=common -errshort=full  -g3
+#debug compile
+#OPTS=-I$(INCLUDE) -std=c11 -m64 -v -errshort=full -g3
+#-std=c11  -xanalyze=code -xc99=all -xO3
+#OPTS=-I$(INCLUDE) -ansi
 
 
 #all:$(PROGRAM)

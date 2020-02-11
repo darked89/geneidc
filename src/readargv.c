@@ -50,7 +50,7 @@ extern int  optind;
 char        *USAGE = "NAME\n\tgeneid - a program to annotate genomic sequences\nSYNOPSIS\n\tgeneid\t[-bdaefitnxszru]\n\t\t[-TDAZU]\n\t\t[-p gene_prefix]\n\t\t[-G] [-3] [-X] [-M] [-m]\n\t\t[-WCF] [-o]\n\t\t[-j lower_bound_coord]\n\t\t[-k upper_bound_coord]\n\t\t[-N numer_nt_mapped]\n\t\t[-O <gff_exons_file>]\n\t\t[-R <gff_annotation-file>]\n\t\t[-S <gff_homology_file>]\n\t\t[-P <parameter_file>]\n\t\t[-E exonweight]\n\t\t[-V evidence_exonweight]\n\t\t[-Bv] [-h]\n\t\t<locus_seq_in_fasta_format>\nRELEASE\n\tgeneid v 1.4\n";
 
 void printHelp(){
-    printf(USAGE);
+    printf("%s", USAGE);
 
     printf("OPTIONS\n");
 
@@ -147,9 +147,13 @@ void printDTD(){
     printf("\tscore    CDATA   #REQUIRED>\n\n");
 }
 
-void readargv(int argc, char *argv[],
-              char *ParamFile, char *SequenceFile,
-              char *ExonsFile, char *HSPFile, char *GenePrefix){
+void readargv(int argc,
+              char *argv[],
+              char *param_fn, 
+              char *fasta_fn,
+              char *exons_gff_fn, 
+              char *blastHSP_gff_fn, 
+              char *GenePrefix){
     int  c;
     int  error        = 0;
     int  geneidOpts   = 0;
@@ -212,19 +216,19 @@ void readargv(int argc, char *argv[],
                 break;
             case 'O':
                 GENEID--;
-                strcpy(ExonsFile, optarg);
+                strcpy(exons_gff_fn, optarg);
                 break;
             case 'P':
-                strcpy(ParamFile, optarg);
+                strcpy(param_fn, optarg);
                 break;
             case 'R':
                 EVD++;
-                strcpy(ExonsFile, optarg);
+                strcpy(exons_gff_fn, optarg);
                 geneidOpts++;
                 break;
             case 'S':
                 SRP++;
-                strcpy(HSPFile, optarg);
+                strcpy(blastHSP_gff_fn, optarg);
                 geneidOpts++;
                 break;
             case 'u':
@@ -381,7 +385,7 @@ void readargv(int argc, char *argv[],
     /* Setup Errors (b): Wrong number of filenames */
     /* Read the name of the input fasta file */
     if (optind < argc) {
-        strcpy(SequenceFile, argv[optind]);
+        strcpy(fasta_fn, argv[optind]);
         optind++;
 
         if (optind < argc) {
@@ -395,7 +399,7 @@ void readargv(int argc, char *argv[],
     }
 
     /* Default parameter file selected if option -P not used */
-    if (!strcmp(ParamFile, "")) {
-        strcpy(ParamFile, PARAMETERFILE);
+    if (!strcmp(param_fn, "")) {
+        strcpy(param_fn, PARAMETERFILE);
     }
 }

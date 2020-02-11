@@ -1,4 +1,18 @@
+<<<<<<< HEAD
 #geneid v. 1.4.4+
+=======
+
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/043eeacbb72e462d9604bfaed06d8ca8)](https://www.codacy.com/manual/darked89/geneidc?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=darked89/geneidc&amp;utm_campaign=Badge_Grade)
+
+
+** Caveat: unofficial geneid repository**
+
+
+# geneid 
+
+* version:  1.4.5+
+>>>>>>> master
 
 ==================
 - [Synopsis](#synopsis)
@@ -38,6 +52,7 @@ Installation, setup and basic usage of geneid is fairly easy. The command line o
 ## Installation
 ### Requirements
 #### Platforms/compilers
+<<<<<<< HEAD
 The program is written in ANSI C, but started moving towards the C11 C standard. It compiles on multiple Linux/Unix system with default compilers. The lists below contain only a subset of platforms /compiler versions, just to give an idea about recent distributions on which the builds were tested.
 
 - Linux: Debian 8.2; Lubuntu 15.04; Centos 7; Manjaro 15.09, Manjaro 18.1;
@@ -54,6 +69,22 @@ Tested with following compilers:
 - *old* clang: 3.6.0 on Lubuntu 15.04; 3.7.0 on Manjaro 15.09, 3.4.1?? on FreeBSD 10.2
 
 - *old* cc (from Oracle Solaris Studio): 12.4 on Centos 7; 12.1 on OpenIndiana 20151003
+=======
+The program is written in ANSI C, but started moving towards the C11 C standard. 
+It compiles on multiple Linux/Unix system with default compilers. The lists below contain only a subset of platforms /compiler versions, just to give an idea about recent distributions on which the builds were tested.
+
+- Linux: 
+    - Manjaro 18.1 (M_18.1)
+    - Ubuntu 18.04.1 (U_18.0)
+#### Programs and libraries
+Tested with following compilers:
+- gcc: 
+    - 9.1.0 (M_18.1)
+    - 7.4.0 (U_18.0)
+- clang:  8.0.1  (M_18.1)
+- cc (from Oracle Solaris Studio): 12.6 (M_18.1)
+- icc (Intel): 19.0.5.281 (U_18.0)
+>>>>>>> master
 
 TODO
 - Python for testing (future)
@@ -63,8 +94,14 @@ TODO
 Options:
 - git clone https://github.com/darked89/geneidc.git
 
+<<<<<<< HEAD
 - http/ftp from FFF/GGG (geneid_latests.tar.gz)
 
+=======
+TODO: 
+
+- Release
+>>>>>>> master
 ```
 tar -xvfz geneid.tar.gz
 ```
@@ -72,20 +109,45 @@ tar -xvfz geneid.tar.gz
 ### Compilation
 Go to geneid directory and type:
 
+<<<<<<< HEAD
 '''
 make
 '''
+=======
+```
+#gcc
+make
+
+#clang
+make --file=Makefile.clang
+
+#Oracle CC
+make --file=Makefile.oracle_cc
+```
+>>>>>>> master
 
 Executable will be created as bin/geneid
 
 ### Testing
 
+<<<<<<< HEAD
 `geneid -h
 `
 
 `bin/geneid -vG -P param/human3iso.param hs_chr6_test.fa`
 
 TODO
+=======
+```
+#help
+geneid -h
+
+#running with predictions
+
+./bin/geneid  -GP param/dictyostelium.param ./samples/dict_1chr.fa
+
+```
+>>>>>>> master
 
 
 ## Usage

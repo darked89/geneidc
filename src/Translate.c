@@ -37,7 +37,8 @@ int Translate(long  p1,
               char  *s,
               dict  *dAA,
               char  sAux[]){
-    int  nAA, nAux;
+    int  nAA;
+    int  nAux;
     long i;
     char codon[LENGTHCODON + 1];
 
@@ -94,7 +95,8 @@ void TranslateGene(exonGFF *e,
     int   currAA;
     char  sAux[MAXAA];
     char  *rs;
-    long  p1, p2;
+    long  p1;
+    long  p2;
     char  codon[LENGTHCODON + 1];
     char  aa;
     short currFrame;
@@ -251,6 +253,7 @@ void TranslateGene(exonGFF *e,
                 /* Memory for the reverse exon sequence */
                 if ((rs = (char *) calloc(p2 - p1 + 2, sizeof(char))) == NULL) {
                     printError("Not enough memory: reverse gene translation");
+                    exit(EXIT_FAILURE);
                 }
 
                 ReverseSubSequence(p1, p2, s, rs);
@@ -384,7 +387,8 @@ void GetcDNA(exonGFF *e,
              char    *cDNA,
              long    *nNN){
     char *tmpDNA;
-    long p1, p2;
+    long p1;
+    long p2;
     char *rs;
     int  i;
     long j;

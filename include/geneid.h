@@ -30,22 +30,35 @@
 
 /* $Id: geneid.h,v 1.54 2010/11/25 20:48:06 talioto Exp $ */
 
+#pragma once
+
 /* Required libraries */
+
+/*  #include <strings.h> */
+
+#define _POSIX_C_SOURCE 2
+
+
 #include <stdlib.h>
 #include <stdio.h>
+
+#include <stdint.h>
+#include <float.h>
+#include <stdbool.h>
+
 #include <unistd.h>
 #include <string.h>
-#include <time.h>
 #include <math.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 
+#include <time.h>
 /*************************************************************************
 A. DEFINITIONS
 *************************************************************************/
 
 /* The name of the game                     */
-#define VERSION   "geneid_v1.4"
+#define VERSION   "geneid_v1.5a"
 #define SITES     "geneid_v1.4"
 #define EXONS     "geneid_v1.4"
 #define EVIDENCE  "evidence"
@@ -94,17 +107,17 @@ A. DEFINITIONS
 #define BASEVALUESITES_LARGE 600000
 #define BASEVALUEEXONS_LARGE 600000
 
-/* Max number of annotations per locus      */
-#define MAXEVIDENCES 200000
+/* Max number of annotations per fasta contig      */
+#define MAXEVIDENCES      200000
 #define MAXSITESEVIDENCES 3 * MAXEVIDENCES
 
-/* Max number of HSP per locus/frame/strand */
+/* Max number of HSP per fasta contig/frame/strand */
 #define MAXHSP 40000000
 
 /* UTR prediction parameters */
-#define MAXUTRDONORS 8
-#define MAX3UTREXONLENGTH 5000
-#define MAXUTREXONLENGTH 1000
+#define MAXUTRDONORS       8
+#define MAX3UTREXONLENGTH  5000
+#define MAXUTREXONLENGTH   1000
 /* UTRMAXGAP used to be 55 */
 #define UTRMAXGAP 5
 
@@ -115,7 +128,7 @@ A. DEFINITIONS
 /* Length of allowed UTR including stop codon before intron: used to be 55 */
 #define MAXNMDLENGTH 1000
 
-/* Max number of locus in multi-fasta files */
+/* Max number of contigs in multi-fasta files */
 #define MAXNSEQUENCES 100
 
 /* Maximum number of predicted genes        */
@@ -151,7 +164,7 @@ A. DEFINITIONS
 /* Region around exon to measure G+C        */
 #define ISOCONTEXT 1000
 
-/* Number of nucloetides to scan for PPTs   */
+/* Number of nucleotides to scan for PPTs   */
 /* or Branch Points before the Acceptor site*/
 /* #define ACCEPTOR_CONTEXT 25*/
 #define ACCEPTOR_CONTEXT 50
@@ -180,8 +193,8 @@ A. DEFINITIONS
 /* Maximum profile dimension (length)       */
 #define PROFILEDIM 100
 
-/* Maximum number of chars (locus names)    */
-#define LOCUSLENGTH 500
+/* Maximum number of chars (contig names)    */
+#define CONTIG_NAME_MAX_LENGTH 500
 
 /* Maximum oligo (word) length (Markov)     */
 #define OLIGOLENGTH 10
@@ -193,7 +206,8 @@ A. DEFINITIONS
 #define FASTALINE 60
 
 /* Maximum length for strings (mess)        */
-#define MAXSTRING 1600
+#define MAXSTRING 2000
+/* 20190930 dk: changed since 600 dumped core/got gcc warnings */
 
 /* Mark rules up as blocking in Gene model  */
 #define BLOCK 1
@@ -203,10 +217,10 @@ A. DEFINITIONS
 #define COFFSET 1
 
 /* Dictionary definitions (hash)            */
-#define MAXENTRY 97
-#define MAXTYPE 50
-#define MAXINFO 100
-#define NOTFOUND -1
+#define MAXENTRY  97
+#define MAXTYPE   50
+#define MAXINFO  100
+#define NOTFOUND  -1
 #define UNKNOWNAA 'X'
 
 /* Dumpster hash table size (factor)        */
@@ -219,16 +233,16 @@ A. DEFINITIONS
 #define PARAMETERFILE  "param.default"
 
 /* Constants:                               */
-#define FRAMES 3
-#define STRANDS 2
+#define FRAMES      3
+#define STRANDS     2
 #define LENGTHCODON 3
-#define PERCENT 100
-#define MINUTE 60
-#define MEGABYTE 1048576
-#define MAXTIMES 100
-#define PROT 0
-#define TDNA 2
-#define DNA  1
+#define PERCENT     100
+#define MINUTE      60
+#define MEGABYTE    1048576
+#define MAXTIMES    100
+#define PROT        0
+#define TDNA        2
+#define DNA         1
 
 /* Strands                                  */
 #define cFORWARD '+'
@@ -273,7 +287,8 @@ A. DEFINITIONS
 
 /* Intron Subtypes                           */
 #define MAXSUBTYPE 10
-#define MAXSPLICETYPE 5
+// 20200210dk change the subtype size to 8 from 5
+#define MAXSPLICETYPE 8
 #define sU2 "U2"
 #define sU2gcag "U2gcag"
 #define sU12gtag "U12gtag"
@@ -368,7 +383,8 @@ A. DEFINITIONS
 #define SINFI "Infinity"
 
 /* Infinity: score functions                */
-#define INF  1.7976931348623157E+308
+#define INF  FLT_MAX
+/* 1.7976931348623157E+308 */
 
 /* Score (annotations with score=".")       */
 #define MAXSCORE 10000.0
@@ -396,6 +412,7 @@ B. DATA TYPES
 *************************************************************************/
 
 typedef struct s_node *pnode;
+
 typedef struct s_node
 {
     char  s[MAXSTRING];
@@ -421,7 +438,6 @@ typedef struct s_profile
     int   dist;
     int   opt_dist;
     float penalty_factor;
-
     long  dimensionTrans;
     float *transitionValues[PROFILEDIM];
 } profile;
@@ -455,7 +471,6 @@ typedef struct s_packSites
     long nStopCodons;
     long nTS;
     long nTE;
-
     long nSites;
 } packSites;
 
@@ -771,25 +786,26 @@ long GetTES(site                    *sc,
             );
 
 long BuildDonors(char                    *s,
-                 short                   xxspl_class,
+                 short                    xxspl_class,
                  char                    *type,
                  char                    *subtype,
-                 profile                 *p,
+                 profile                  *p,
                  site                    *st,
                  long                    l1,
                  long                    l2,
                  long                    ns,
                  long                    nsites,
                  int                     Strand,
+
                  packExternalInformation *external
                  );
 
-float PeakEdgeScore(long                    Position,
-                    int                     Strand,
+float PeakEdgeScore(long                      Position,
+                    int                      Strand,
                     packExternalInformation *external,
-                    long                    l1,
-                    long                    l2,
-                    int                     win);
+                    long                     l1,
+                    long                     l2,
+                    int                      win);
 
 /* long BuildU12Donors(char* s, */
 /*                  char* type, */
@@ -885,35 +901,57 @@ long BuildUTRExons(site    *Start,
                    exonGFF *Exon,
                    long    nexons);
 
-packSites *RequestMemorySites();
-packExons *RequestMemoryExons();
-exonGFF *RequestMemorySortExons();
-site *RequestMemorySortSites();
-gparam *RequestMemoryParams();
-packGenes *RequestMemoryGenes();
-packDump *RequestMemoryDumpster();
-dict *RequestMemoryAaDictionary();
+
+packSites *RequestMemorySites(void);
+
+packExons *RequestMemoryExons(void);
+
+exonGFF *RequestMemorySortExons(void);
+
+site *RequestMemorySortSites(void);
+
+gparam *RequestMemoryParams(void);
+
+packGenes *RequestMemoryGenes(void);
+
+packDump *RequestMemoryDumpster(void);
+
+dict *RequestMemoryAaDictionary(void);
+
+
 void RequestMemoryProfile(profile *p);
-account *RequestMemoryAccounting();
-packExternalInformation *RequestMemoryExternalInformation();
 
-void readargv (int argc, char *argv[],
-               char *ParamFile, char *SequenceFile,
-               char *ExonsFile, char *HSPFile, char *GenePrefix);
+account *RequestMemoryAccounting(void);
 
-int readparam (char *name, gparam **isochores);
+packExternalInformation *RequestMemoryExternalInformation(void);
 
-account *InitAcc();
+void readargv (int  argc,
+               char *argv[],
+               char *param_fn,
+               char *fasta_fn,
+               char *ExonsFile,
+               char *HSPFile,
+               char *GenePrefix);
 
-void OutputHeader(char *locus, long l);
+int readparam (char   *name,
+               gparam **isochores);
 
-int IniReadSequence(FILE *seqfile, char *line);
+account *InitAcc(void);
 
-int ReadSequence (FILE *seqfile, char *Sequence, char *nextLocus);
+void OutputHeader(char *locus,
+                  long l);
 
-long FetchSequence(char *s, char *r);
+int IniReadSequence(FILE *fasta_fptr,
+                    char *line);
 
-long ReadExonsGFF (char                    *FileName,
+int ReadSequence (FILE *fasta_fptr,
+                  char *Sequence,
+                  char *next_contig_name);
+
+long FetchSequence(char *s,
+                   char *r);
+
+long ReadExonsGFF (char                    *exons_gff_fn,
                    packExternalInformation *external,
                    dict                    *d);
 
@@ -923,17 +961,21 @@ void SearchEvidenceExons(packExternalInformation *external,
                          packEvidence            *pv,
                          long                    l2);
 
-void SortExons(packExons *allExons,
-               packExons *allExons_r,
+void SortExons(packExons               *allExons,
+               packExons               *allExons_r,
                packExternalInformation *external,
-               packEvidence *pv,
-               exonGFF *Exons,
-               long l1, long l2, long lowerlimit,
-               long upperlimit);
+               packEvidence            *pv,
+               exonGFF                 *Exons,
+               long                    l1,
+               long                    l2,
+               long                    lowerlimit,
+               long                    upperlimit);
 
-void SortSites(site *Sites, long nSites, site *sortedSites,
-               long l1, long l2
-               );
+void SortSites(site *Sites,
+               long nSites,
+               site *sortedSites,
+               long l1,
+               long l2);
 
 void SwitchCounters(packExternalInformation *external);
 
@@ -987,13 +1029,15 @@ void OutputGene(packGenes *pg,
                 char      *GenePrefix);
 
 void OutputStats(char *Locus);
-void OutputTime();
+void OutputTime(void);
 
-void RecomputePositions(packSites *allSites, long l);
+void RecomputePositions(packSites *allSites,
+                        long      l);
 
 void cleanAcc(account *m);
 
-void PrintProfile (profile *p, char *signal);
+void PrintProfile (profile *p,
+                   char    *signal);
 
 long ReadGeneModel (FILE *file,
                     dict *d,
@@ -1149,7 +1193,7 @@ void PrintXMLExon(exonGFF *e,
                   long    nExon,
                   int     type1,
                   int     type2,
-                  char *GenePrefix);
+                  char    *GenePrefix);
 
 void TranslateGene(exonGFF *e,
                    char    *s,
@@ -1175,23 +1219,27 @@ char getAADict(dict *d,
                char s[]);
 
 void CookingGenes(exonGFF *e,
-                  char    Name[],
+                  char     Name[],
                   char    *s,
                   gparam  *gp,
                   dict    *dAA,
                   char    *GenePrefix);
 
-float MeasureSequence(long l1,
-                      long l2,
-                      char *s);
+float MeasureSequence(long  l1,
+                     long  l2,
+                     char *s);
 
-gparam **RequestMemoryIsochoresParams();
+gparam **RequestMemoryIsochoresParams(void);
 
-long ReadHSP (char *FileName, packExternalInformation *external);
+long ReadHSP (char                    *blastHSP_gff_fn,
+              packExternalInformation *external);
 
-void shareGeneModel(gparam **isochores, int n);
+void shareGeneModel(gparam **isochores,
+                    int    n);
 
-long OligoToInt(char *s, int ls, int cardinal);
+long OligoToInt(char *s,
+                int  ls,
+                int  cardinal);
 
 char *RequestMemorySequence(long L);
 
@@ -1218,13 +1266,21 @@ void GetcDNA(exonGFF *e,
              char    *cDNA,
              long    *nNN);
 
+
 void GetTDNA(exonGFF *e,
              char    *s,
-             long    nExons,
+             long     nExons,
              char    *tDNA,
              long    *nTN);
 
-void GCScan(char *s, packGC *GCInfo, long l1, long l2);
+float ComputeGC(packGC *GCInfo,
+                long   inigc,
+                long   endgc);
+
+void GCScan(char    *s,
+            packGC  *GCInfo,
+            long     l1,
+            long     l2);
 
 void beggar(long L);
 
@@ -1232,28 +1288,29 @@ void SetRatios(long *NUMSITES,
                long *NUMEXONS,
                long *MAXBACKUPSITES,
                long *MAXBACKUPEXONS,
-               long L);
+               long  L);
 
-long analizeFile(char *SequenceFile);
+long get_fasta_size(char *fasta_fn);
 
-packGC *RequestMemoryGC();
+packGC *RequestMemoryGC(void);
 
-int SelectIsochore(float percent, gparam **isochores);
+int SelectIsochore(float     percent,
+                   gparam **isochores);
 
 void  manager(char                    *Sequence,
-              long                    LengthSequence,
+              long                     LengthSequence,
               packSites               *allSites,
               packExons               *allExons,
-              long                    l1,
-              long                    l2,
-              long                    lower,
-              long                    upper,
-              int                     Strand,
+              long                     l1,
+              long                     l2,
+              long                     lower,
+              long                     upper,
+              int                      Strand,
               packExternalInformation *external,
               packHSP                 *hsp,
               gparam                  *gp,
-              gparam                  **isochores,
-              int                     nIsochores,
+              gparam                 **isochores,
+              int                      nIsochores,
               packGC                  *GCInfo,
               site                    *acceptorsites,
               site                    *donorsites,
@@ -1263,45 +1320,46 @@ void  manager(char                    *Sequence,
 
 void resetEvidenceCounters(packExternalInformation *external);
 
-void ComputeStopInfo(exonGFF *e, char *s);
+void ComputeStopInfo(exonGFF *e,
+                     char    *s);
 
 packHSP *SelectHSP(packExternalInformation *external,
-                   char                    *Locus,
+                   char                    *contig_name,
                    long                    LengthSequence);
 
 packEvidence *SelectEvidence(packExternalInformation *external,
-                             char                    *Locus);
+                             char                    *contig_name);
 
 void SortHSPs(packHSP *p);
 
-HSP *RequestNewHSP();
+HSP *RequestNewHSP(void);
 
 long  BuildU12Acceptors(char                    *s,
-                        short                   class,
+                        short                    class,
                         char                    *type,
                         char                    *subtype,
-                        profile                 *u12_p,
-                        profile                 *u12bp,
-                        profile                 *ppt,
+                        profile                  *u12_p,
+                        profile                  *u12bp,
+                        profile                  *ppt,
                         site                    *st,
-                        long                    l1,
-                        long                    l2,
-                        long                    ns,
-                        long                    nsites,
-                        int                     Strand,
+                        long                     l1,
+                        long                     l2,
+                        long                     ns,
+                        long                     nsites,
+                        int                      Strand,
                         packExternalInformation *external);
 
 long  BuildAcceptors(char                    *s,
-                     short                   class,
+                     short                    class,
                      char                    *type,
                      char                    *subtype,
-                     profile                 *p,
-                     profile                 *ppt,
-                     profile                 *bp,
+                     profile                  *p,
+                     profile                  *ppt,
+                     profile                  *bp,
                      site                    *st,
-                     long                    l1,
-                     long                    l2,
-                     long                    ns,
-                     long                    nsites,
-                     int                     Strand,
+                     long                     l1,
+                     long                     l2,
+                     long                     ns,
+                     long                     nsites,
+                     int                      Strand,
                      packExternalInformation *external);
