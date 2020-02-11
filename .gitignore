@@ -1,9 +1,4 @@
-<<<<<<< HEAD
-
-./bin/geneid
-=======
 bin/geneid
->>>>>>> master
 *.o
 param/.DS_Store
 scripts/.DS_Store
