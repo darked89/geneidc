@@ -22,8 +22,8 @@ PRODUCT= $(BIN)/$(PROGRAM)
 #AMD AOCC.LLVM.2.0.0.B191.2019_07_19 clang version 8.0.0
 #Manjaro 18.1
 
-CC= clang
-OPTS=-I$(INCLUDE) -std=c11 -ggdb -g2 -march=native -Weverything -Wshadow -Wstrict-overflow -fno-strict-aliasing  
+CC=clang
+OPTS=-I$(INCLUDE) -std=c11 -ggdb -g3 -march=native  -Wshadow -Wstrict-overflow -fno-strict-aliasing -Weverything  
 #-fsanitize=address
 
 
