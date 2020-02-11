@@ -35,14 +35,14 @@ extern int   RVS;
 extern long  LOW;
 extern long  HI;
 
-/* According to Locusname, select a group of annotations */
+/* According to contig_name, select a group of annotations */
 packEvidence *SelectEvidence(packExternalInformation *external,
-                             char                    *Locus){
+                             char                    *contig_name){
     int          a;
     packEvidence *p;
 
-    /* 1. Select the position in the array corresponding to Locus */
-    a = getkeyDict(external->locusNames, Locus);
+    /* 1. Select the position in the array corresponding to contig_name */
+    a = getkeyDict(external->locusNames, contig_name);
 
     if (a == NOTFOUND) {
         p = NULL;
@@ -97,7 +97,7 @@ long ReadExonsGFF(char                    *exons_gff_fn,
     /* Identifier for a sequence (from dictionary) */
     int     a;
 
-    char    Locusname[LOCUSLENGTH];
+    char    contig_name[CONTIG_NAME_MAX_LENGTH];
     char    saux[MAXTYPE];
     char    c;
     int     slen;
@@ -157,14 +157,14 @@ long ReadExonsGFF(char                    *exons_gff_fn,
                 printError(mess);
             }
 
-            /* 1. Locusname: leave the exon into the correct array */
-            if (sscanf(column_1, "%s", Locusname) != 1) {
+            /* 1. contig_name: leave the exon into the correct array */
+            if (sscanf(column_1, "%s", contig_name) != 1) {
                 sprintf(mess, "Wrong GFF format in annotations (locusname):\n-->%s\n", lineCopy);
                 printError(mess);
             }
 
             /* 2. Look-up the ID for that sequence */
-            a = setkeyDict(external->locusNames, Locusname);
+            a = setkeyDict(external->locusNames, contig_name);
 
             if (a >= MAXNSEQUENCES) {
                 printError("Too many DNA sequences: increase MAXNSEQUENCES parameter");
