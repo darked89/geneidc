@@ -77,10 +77,11 @@ long fDump(exonGFF *E){
 }
 
 /* Save the new exon into the hash table */
-void setExonDumpHash(exonGFF *E, dumpHash *h){
-    dumpNode *p;
-    dumpNode *n;
-    long     i;
+void setExonDumpHash(exonGFF   *E, 
+                     dumpHash  *h){
+    dumpNode  *p;
+    dumpNode  *n;
+    long       i;
 
     /* Computing hash value */
     i = fDump(E);
@@ -88,6 +89,7 @@ void setExonDumpHash(exonGFF *E, dumpHash *h){
     /* Allocate the new node */
     if ((n = (dumpNode *) malloc(sizeof(dumpNode))) == NULL) {
         printError("Not enough memory: dumpster node");
+        exit(EXIT_FAILURE);
     }
 
     /* Filling in the node with exon features */
@@ -120,11 +122,12 @@ void setExonDumpHash(exonGFF *E, dumpHash *h){
 }
 
 /* Finding an exon. Returns the address or NULL pointer */
-exonGFF *getExonDumpHash(exonGFF *E, dumpHash *h){
-    long     i;
-    int      found = 0;
-    exonGFF  *exon;
-    dumpNode *p;
+exonGFF *getExonDumpHash(exonGFF   *E, 
+                         dumpHash  *h){
+    long       i;
+    int        found = 0;
+    exonGFF   *exon;
+    dumpNode  *p;
 
     exon = NULL;
     i    = fDump(E);

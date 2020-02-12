@@ -279,6 +279,7 @@ exonGFF *RequestMemorySortExons(){
     if ((exons
              = (exonGFF *) calloc(HowMany, sizeof(exonGFF))) == NULL) {
         printError("Not enough memory: table to sort exons");
+        exit(EXIT_FAILURE);
     }
 
     assert(exons != NULL);
