@@ -229,6 +229,7 @@ int main(int    argc,
     /* 0.a. Previous checkpoint about length in splits and overlapping */
     if (LENGTHSi <= OVERLAP) {
         printError("LENGTHSi must be greater than OVERLAP parameter (geneid.h)");
+        exit(EXIT_FAILURE);
     }
 
     /* 0.b. Initializing stats and time counters */
