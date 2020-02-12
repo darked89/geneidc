@@ -59,6 +59,8 @@ char *RequestMemorySequence(long L){
 
     if ((s = (char *) calloc(L, sizeof(char))) == NULL) {
         printError("Not enough memory: DNA input sequence");
+        exit(EXIT_FAILURE);
+        
     }
 
     return(s);
@@ -72,6 +74,7 @@ packSites *RequestMemorySites(){
     if ((allSites
              = (struct s_packSites *) malloc(sizeof(struct s_packSites))) == NULL) {
         printError("Not enough memory: pack of sites");
+        exit(EXIT_FAILURE);
     }
 
     /* Start codons */
@@ -867,6 +870,7 @@ packGenes *RequestMemoryGenes(){
         for (aux2 = 0; aux2 < FRAMES; aux2++) {
             if ((pg->Ga[aux][aux2] = (exonGFF **) calloc(SPLICECLASSES, sizeof(exonGFF *))) == NULL) {
                 printError("Not enough memory: 3 splice classes in Ga array of genes");
+                exit(EXIT_FAILURE);
             }
 
             for (aux3 = 0; aux3 < SPLICECLASSES; aux3++) {
