@@ -29,26 +29,26 @@
 
 #include "geneid.h"
 
-extern int X10;
-extern int GFF;
-extern int GFF3;
-extern int XML;
-extern int cDNA;
-extern int PSEQ;
-extern int tDNA;
-extern int PRINTINT;
+extern int  X10;
+extern int  GFF;
+extern int  GFF3;
+extern int  XML;
+extern int  cDNA;
+extern int  PSEQ;
+extern int  tDNA;
+extern int  PRINTINT;
 
 /* Local data structure to record stats about every gene */
 typedef struct s_gene
 {
-    long     nexons;
-    long     nintrons;
-    long     nutrs;
-    long     ncds;
-    long     nfeats;
-    float     score;
-    exonGFF *start;
-    exonGFF *end;
+    long      nexons;
+    long      nintrons;
+    long      nutrs;
+    long      ncds;
+    long      nfeats;
+    float      score;
+    exonGFF  *start;
+    exonGFF  *end;
 } gene;
 
 /* Printing a protein/DNA sequence (fasta format) */
@@ -58,8 +58,8 @@ void printProt(char  *Name,
                long   nAA,
                int    mode,
                char  *GenePrefix){
-    long j;
-    char header[MAXLINE];
+    long  j;
+    char  header[MAXLINE];
 
     /* 1. Print the header(geneid format): protein or genomic sequence */
     if (GFF3) {
@@ -150,14 +150,14 @@ void printProt(char  *Name,
 }
 
 /* Returns signal types and profiles according to the type of input exon */
-void selectFeatures(char    *exonType,
-                    char    exonStrand,
-                    profile **p1,
-                    profile **p2,
-                    int     *type1,
-                    int     *type2,
-                    int     *strand,
-                    gparam  *gp){
+void selectFeatures(char     *exonType,
+                    char      exonStrand,
+                    profile  **p1,
+                    profile  **p2,
+                    int      *type1,
+                    int      *type2,
+                    int      *strand,
+                    gparam   *gp){
     if (exonStrand == '+') {
         *strand = FORWARD;
 
@@ -396,13 +396,14 @@ void selectFeatures(char    *exonType,
 long CookingInfo(exonGFF  *eorig,
                  gene      info[],
                  double   *artScore){
+					 
     /* Identifier of current gene */
-    long     igen;
-    int      stop;
-    int      stop1;
-    int      stop2;
-    int      currentIsUTR;
-    exonGFF *e;
+    long      igen;
+    int       stop;
+    int       stop1;
+    int       stop2;
+    int       currentIsUTR;
+    exonGFF  *e;
 
 /*   char mess[MAXSTRING]; */
     /* Reset counters into the gene information structure */
@@ -706,24 +707,25 @@ long CookingInfo(exonGFF  *eorig,
 
 /* Print a gene according to formatted output selected and info structure */
 /* taa[exon][0] means first amino acid id. and taa[exon][1] means last one */
-void PrintGene(exonGFF *start,
-               exonGFF *end,
-               exonGFF *last,
-               char     Name[],
-               char    *s,
-               gparam  *gp,
-               dict    *dAA,
-               long     igen,
-               long     nAA,
-               int    **tAA,
-               long     cexons,
-               long     cintrons,
-               long     ccds,
-               long     cutrs,
-               long     cfeats,
-               gene    *info, 
-               long     geneindex,
-               char    *GenePrefix){
+void PrintGene(exonGFF  *start,
+               exonGFF  *end,
+               exonGFF  *last,
+               char      Name[],
+               char     *s,
+               gparam   *gp,
+               dict     *dAA,
+               long      igen,
+               long      nAA,
+               int     **tAA,
+               long      cexons,
+               long      cintrons,
+               long      ccds,
+               long      cutrs,
+               long      cfeats,
+               gene     *info, 
+               long      geneindex,
+               char     *GenePrefix){
+
     exonGFF  *eaux;
     profile   *p1;
     profile   *p2;
