@@ -23,7 +23,8 @@ PRODUCT= $(BIN)/$(PROGRAM)
 #Manjaro 18.1
 
 CC=clang
-OPTS=-I$(INCLUDE) -std=c11 -ggdb -g3 -march=native  -Wshadow -Wstrict-overflow -fno-strict-aliasing -Weverything  
+OPTS=-I$(INCLUDE) -std=c11 -ggdb -g3 -march=native  -Wshadow -Wstrict-overflow -fno-strict-aliasing 
+# -Weverything  
 #-fsanitize=address
 
 
