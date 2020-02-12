@@ -41,7 +41,8 @@ void resetDict(dict *d){
 
 /* Hash Function:: String -> Integer between 0..MAXENTRY-1 */
 int f(char s[]){
-    int i, total;
+    int  i;
+    int  total;
 
     for (i = 0, total = 0; i < strlen(s); i++) {
         total = (i + 1) * s[i] + total;
@@ -52,11 +53,12 @@ int f(char s[]){
 }
 
 /* Assign a number-key to the new word and store it */
-int setkeyDict(dict *d, char s[]){
-    int  key;
-    node *p;
-    node *n;
-    int  i;
+int setkeyDict(dict  *d, 
+               char   s[]){
+    int    key;
+    node  *p;
+    node  *n;
+    int    i;
 
     /* If this word exists at the dictionary don't insert */
     key = getkeyDict(d, s);
@@ -67,6 +69,7 @@ int setkeyDict(dict *d, char s[]){
         /* Alloc the new word */
         if ((n = (node *) malloc(sizeof(node))) == NULL) {
             printError("Not enough memory: dictionary word");
+            exit(EXIT_FAILURE);
         }
 
         /* Filling the node */
@@ -112,11 +115,13 @@ void showDict(dict *d){
     }
 }
 /* Returns the key for the word request; NOTFOUND is Not found */
-int getkeyDict(dict *d, char s[]){
-    int  i;
-    int  found = 0;
-    int  key;
-    node *p;
+int getkeyDict(dict  *d,
+               char   s[]){
+
+    int    i;
+    int    found = 0;
+    int    key;
+    node  *p;
 
     /* showDict(d); */
     key = NOTFOUND;
@@ -152,13 +157,13 @@ int getkeyDict(dict *d, char s[]){
 }
 
 /* Free memory of hash nodes (sinonimous) */
-void freeNodes(pnode node){
-    if (node == NULL) {
+void freeNodes(pnode del_node){
+    if (del_node != NULL) {
+        freeNodes(del_node->next);
+        /* free(node); */
+        FREE(del_node);
     }
-    else {
-        freeNodes(node->next);
-        free(node);
-    }
+
 }
 
 /* Free memory of the whole dictionary */
@@ -172,25 +177,30 @@ void freeDict(dict *d){
     }
 
     /* free the dictionary */
-    free(d);
+    /* free(d); */
+    FREE(d);
+
 }
 
 /* Binding the amino acid (key) to the new codon (word) */
-void setAADict(dict *d, char s[], char aA){
-    node *p;
-    node *n;
-    int  i;
+void setAADict(dict  *d,
+               char   s[],
+               char   aa){
+    node  *p;
+    node  *n;
+    int    i;
 
     i = f(s);
 
     /* Allocating the new word */
     if ((n = (node *) malloc(sizeof(node))) == NULL) {
         printError("Not enough memory: AA dictionary node");
+        exit(EXIT_FAILURE);
     }
 
     /* Filling the node */
     strcpy(n->s, s);
-    n->key = aA;
+    n->key = aa; //was aA
 
     if (d->T[i] == NULL) {
         n->next = NULL;
@@ -206,13 +216,15 @@ void setAADict(dict *d, char s[], char aA){
 }
 
 /* Returns the amino acid for the input codon; 'X' is Not found */
-char getAADict(dict *d, char s[]){
-    int  i;
-    int  found = 0;
-    int  aa;
-    node *p;
+char getAADict(dict  *d,
+               char   s[]){
+    int    i;
+    int    found;
+    int    aa;
+    node  *p;
 
-    aa = UNKNOWNAA;
+    found = 0;
+    aa    = UNKNOWNAA; /*error? char array for int? */
 
     i  = f(s);
 
