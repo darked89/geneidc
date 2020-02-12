@@ -47,18 +47,21 @@ void InsertBeginExon(exonGFF  *Exons,
     /* Create the exon structure */
     if ((e = (exonGFF *) malloc(sizeof(exonGFF))) == NULL) {
         printError("Not enough memory: artificial FWD Begin exon");
+        exit(EXIT_FAILURE);
     }
 
     /* Create the sites structure */
     if ((e->Acceptor
              = (struct s_site *) malloc(sizeof(struct s_site))) == NULL) {
         printError("Not enough memory: acceptor site for artificial FWD Begin exon");
+        exit(EXIT_FAILURE);
     }
 
     /* Create the sites structure */
     if ((e->Donor
              = (struct s_site *) malloc(sizeof(struct s_site))) == NULL) {
         printError("Not enough memory: donor site for artificial FWD Begin exon");
+        exit(EXIT_FAILURE);
     }
 
     e->Acceptor->Position = lowerlimit;
