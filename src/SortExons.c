@@ -38,7 +38,8 @@ extern int  FWD, RVS;
 extern int  scanORF;
 
 /* Artificial initial gene feature: force complete gene prediction */
-void InsertBeginExon(exonGFF *Exons, long lowerlimit){
+void InsertBeginExon(exonGFF  *Exons, 
+                     long      lowerlimit){
     exonGFF *e;
     exonGFF *re;
 
@@ -93,18 +94,21 @@ void InsertBeginExon(exonGFF *Exons, long lowerlimit){
     /* Create the exon structure */
     if ((re = (exonGFF *) malloc(sizeof(exonGFF))) == NULL) {
         printError("Not enough memory: artificial RVS Begin exon");
+        exit(EXIT_FAILURE);
     }
 
     /* Create the sites structure */
     if ((re->Acceptor
              = (struct s_site *) malloc(sizeof(struct s_site))) == NULL) {
         printError("Not enough memory: acceptor site for artificial RVS Begin exon");
+        exit(EXIT_FAILURE);
     }
 
     /* Create the sites structure */
     if ((re->Donor
              = (struct s_site *) malloc(sizeof(struct s_site))) == NULL) {
         printError("Not enough memory: donor site for artificial RVS Begin exon");
+        exit(EXIT_FAILURE);
     }
 
     re->Acceptor->Position = 0;
@@ -139,7 +143,9 @@ void InsertBeginExon(exonGFF *Exons, long lowerlimit){
 }
 
 /* Artificial terminal gene feature: force complete gene prediction */
-void InsertEndExon(exonGFF *Exons, long n, long L){
+void InsertEndExon(exonGFF *Exons, 
+                   long     n, 
+                   long     L){
     exonGFF *e;
     exonGFF *re;
 
@@ -147,18 +153,21 @@ void InsertEndExon(exonGFF *Exons, long n, long L){
     /* Create the exon structure */
     if ((e = (exonGFF *) malloc(sizeof(exonGFF))) == NULL) {
         printError("Not enough memory: artificial FWD End exon");
+        exit(EXIT_FAILURE);
     }
 
     /* Create the sites structure */
     if ((e->Acceptor
              = (struct s_site *) malloc(sizeof(struct s_site))) == NULL) {
         printError("Not enough memory: acceptor site for artificial FWD End exon");
+        exit(EXIT_FAILURE);
     }
 
     /* Create the sites structure */
     if ((e->Donor
              = (struct s_site *) malloc(sizeof(struct s_site))) == NULL) {
         printError("Not enough memory: donor site for artificial FWD End exon");
+        exit(EXIT_FAILURE);
     }
 
     e->Acceptor->Position = L;
@@ -194,18 +203,21 @@ void InsertEndExon(exonGFF *Exons, long n, long L){
     /* Create the exon structure */
     if ((re = (exonGFF *) malloc(sizeof(exonGFF))) == NULL) {
         printError("Not enough memory: artificial RVS End exon");
+        exit(EXIT_FAILURE);
     }
 
     /* Create the sites structure */
     if ((re->Acceptor
              = (struct s_site *) malloc(sizeof(struct s_site))) == NULL) {
         printError("Not enough memory: acceptor site for artificial RVS End exon");
+        exit(EXIT_FAILURE);
     }
 
     /* Create the sites structure */
     if ((re->Donor
              = (struct s_site *) malloc(sizeof(struct s_site))) == NULL) {
         printError("Not enough memory: donor site for artificial RVS End exon");
+        exit(EXIT_FAILURE);
     }
 
     re->Acceptor->Position = L;
@@ -257,7 +269,9 @@ void FreeItems(struct exonitem *q){
 }
 
 /* Insert an exon in the selected list according to its left position */
-void UpdateList(struct exonitem **p, exonGFF *InputExon){
+void UpdateList(struct exonitem **p, 
+                       exonGFF   *InputExon){
+   
     /* Insert the new node at the end of the list */
     while (*p != NULL) {
         p = &((*p)->nexitem);
@@ -266,6 +280,7 @@ void UpdateList(struct exonitem **p, exonGFF *InputExon){
     /* Allocating new node for this exon */
     if ((*p = (struct exonitem *) malloc(sizeof(struct exonitem))) == NULL) {
         printError("Not enough memory: new exonitem (sorting)");
+        exit(EXIT_FAILURE);
     }
 
     /* Updating information for the node */
@@ -275,25 +290,29 @@ void UpdateList(struct exonitem **p, exonGFF *InputExon){
 
 /* Sort all of predicted exons by placing them in an array of lists */
 /* corresponding every list to a beginning position for predicted exons */
-void SortExons(packExons *allExons,
-               packExons *allExons_r,
-               packExternalInformation *external,
-               packEvidence *pv,
-               exonGFF *Exons,
-               long l1, long l2, long lowerlimit,
-               long upperlimit){
-    struct exonitem **ExonList, *q;
-    long            i;
-    long            acceptor;
+void SortExons(packExons                *allExons,
+               packExons                *allExons_r,
+               packExternalInformation  *external,
+               packEvidence             *pv,
+               exonGFF                  *Exons,
+               long                      l1, 
+               long                      l2, 
+               long                      lowerlimit,
+               long                      upperlimit){
+
+    struct exonitem  **ExonList;
+    struct exonitem   *q;
+    long               i;
+    long               acceptor;
     /* long donor; */
-    long            n;
-    int             offset;
-    long            l;
-    long            left;
-    long            right;
-    long            room;
-    char            mess[MAXSTRING];
-    long            HowMany;
+    long               n;
+    int                offset;
+    long               l;
+    long               left;
+    long               right;
+    long               room;
+    char               mess[MAXSTRING];
+    long               HowMany;
 
     /* 0. Creating the array for sorting: 1 - Length of fragment */
     left  = l1 + COFFSET - LENGTHCODON;
@@ -304,6 +323,7 @@ void SortExons(packExons *allExons,
     if ((ExonList
              = (struct exonitem **) calloc(l, sizeof(struct exonitem *))) == NULL) {
         printError("Not enough memory: ExonList array (sorting)");
+        exit(EXIT_FAILURE);
     }
 
     /* Reset the positions, pointing to NULL */
