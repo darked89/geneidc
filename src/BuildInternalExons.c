@@ -83,7 +83,7 @@ long BuildInternalExons(site     *Acceptor,
         printError("Not enough memory: local initial exons");
         exit(EXIT_FAILURE);
     }
-
+    assert(LocalExon != NULL);
     /* Main loop, forall Acceptor looking for donor sites... */
     /* ...until 3 windows are closed due to 3 stop codons */
     HowMany = (MAXBACKUPSITES) ? (long) (nexons / RINTER) : nexons;

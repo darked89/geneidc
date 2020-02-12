@@ -71,7 +71,7 @@ long BuildInitialExons(site     *Start,
         printError("Not enough memory: local first exons");
         exit(EXIT_FAILURE);
     }
-
+    assert(LocalExon != NULL);
     /* Main loop, forall start codon looking for donor sites... */
     /* ...until the first stop codon in frame is reached */
     HowMany = (MAXBACKUPSITES) ? (long) (nexons / RFIRST) : nexons;

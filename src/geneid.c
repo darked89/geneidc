@@ -37,21 +37,21 @@
 
 /* geneid setup flags */
 /* sites to print */
-int SFP      = 0;
+int    SFP      = 0;
 int    SDP      = 0;
 int    SAP      = 0;
 int    STP      = 0;
 /* exons to print */
-int EFP      = 0;
+int    EFP      = 0;
 int    EIP      = 0;
 int    ETP      = 0;
 int    EXP      = 0;
 int    ESP      = 0;
 int    EOP      = 0;
 /* introns to print */
-int PRINTINT = 0;
+int    PRINTINT = 0;
 /* Partial or full prediction engine */
-int GENAMIC  = 1;
+int    GENAMIC  = 1;
 int    GENEID   = 1;
 /* Only forward or reverse prediction engine */
 int    FWD      = 1;
@@ -71,7 +71,7 @@ int    cDNA     = 0;
 int    PSEQ     = 0;
 int    tDNA     = 0;
 /* Verbose flag (memory/processing information) */
-int BEG      = 0;
+int    BEG      = 0;
 int    VRB      = 0;
 /* Score for regions not-supported by protein homology */
 int   NO_SCORE;
@@ -145,78 +145,78 @@ account *m;
                             geneid MAIN program
 ************************************************************************/
 
-int main(int  argc,
-         char *argv[]){
+int main(int    argc,
+         char  *argv[]){
 
     /* DNA sequence data structures */
-    FILE *fasta_fptr;
-    char *Sequence;
-    char *RSequence;
-    long LengthSequence;
+    FILE       *fasta_fptr;
+    char       *Sequence;
+    char       *RSequence;
+    long        LengthSequence;
 
     /* Current split ends */
-    long l1;
-    long l2;
-    long      upperlimit;
-    long      lowerlimit;
+    long        l1;
+    long        l2;
+    long        upperlimit;
+    long        lowerlimit;
 
     /* Forward sense data structures */
-    packSites *allSites;
-    packExons *allExons;
+    packSites  *allSites;
+    packExons  *allExons;
 
     /* Reverse sense data structures */
-    packSites *allSites_r;
-    packExons *allExons_r;
+    packSites  *allSites_r;
+    packExons  *allExons_r;
 
     /* Structures for sorting sites */
-    site *donorsites;
-    site *acceptorsites;
-    site *tssites = NULL;
-    site *tesites = NULL;
+    site       *donorsites;
+    site       *acceptorsites;
+    site       *tssites = NULL;
+    site       *tesites = NULL;
 
     /* Table to sort predicted exons by acceptor */
-    exonGFF *exons;
-    long    nExons;
+    exonGFF    *exons;
+    long        nExons;
 
     /* External information: reannotation */
-    packExternalInformation *external;
-    packEvidence            *evidence;
-    packHSP                 *hsp;
+    packExternalInformation  *external;
+    packEvidence             *evidence;
+    packHSP                  *hsp;
 
     /* Best partial predicted genes */
-    packGenes *genes;
+    packGenes  *genes;
 
     /* Dumpster for backup operations between splits */
-    packDump *dumpster;
+    packDump   *dumpster;
 
     /* Amino acid dictionary (genetic code) */
-    dict *dAA;
+    dict       *dAA;
 
     /* geneid prediction parameters: data structures */
-    gparam *gp = NULL;
-    gparam **isochores;
+    gparam     *gp = NULL;
+    gparam    **isochores;
 
     /* Input Filenames */
-    char fasta_fn[FILENAMELENGTH]     = "";
-    char param_fn[FILENAMELENGTH]     = "";
-    char exons_gff_fn[FILENAMELENGTH]  = "";
-    char blastHSP_gff_fn[FILENAMELENGTH]      = "";
+    char        fasta_fn[FILENAMELENGTH]     = "";
+    char        param_fn[FILENAMELENGTH]     = "";
+    char        exons_gff_fn[FILENAMELENGTH]  = "";
+    char        blastHSP_gff_fn[FILENAMELENGTH]      = "";
 
     /* contig_name sequence name */
-    char contig_name[CONTIG_NAME_MAX_LENGTH];
-    char next_contig_name[CONTIG_NAME_MAX_LENGTH];
+    char        contig_name[CONTIG_NAME_MAX_LENGTH];
+    char        next_contig_name[CONTIG_NAME_MAX_LENGTH];
 
     /* Measure of C+G content to select the isochore */
-    packGC *GCInfo;
-    packGC *GCInfo_r;
-    int    inigc;
-    int    endgc;
-    float   percentGC;
-    int    currentIsochore;
-    int    nIsochores;
-    int    reading;
-    int    lastSplit;
-    char   mess[MAXSTRING];
+    packGC     *GCInfo;
+    packGC     *GCInfo_r;
+    int         inigc;
+    int         endgc;
+    float        percentGC;
+    int         currentIsochore;
+    int         nIsochores;
+    int         reading;
+    int         lastSplit;
+    char        mess[MAXSTRING];
 
     /* Start memory trace -- for debugging memory leaks */
     /* mtrace(); */
