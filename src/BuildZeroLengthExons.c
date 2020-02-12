@@ -34,44 +34,56 @@
 /* extern long NUMEXONS; */
 extern long  MAXBACKUPSITES;
 extern int   RSS;
-extern float RSSDON;
-extern float RSSACC;
+extern float  RSSDON;
+extern float  RSSACC;
 
-long BuildZeroLengthExons(site *Acceptor, long nAcceptors,
-                          site *Donor, long nDonors,
-                          site *Stop, long nStops,
-                          int MaxDonors,
-                          char *ExonType,
-                          char *Sequence,
-                          exonGFF *Exon, long nexons){
+long BuildZeroLengthExons(site     *Acceptor, 
+                          long      nAcceptors,
+                          site     *Donor, 
+                          long      nDonors,
+                          site     *Stop, 
+                          long      nStops,
+                          int       MaxDonors,
+                          char     *ExonType,
+                          char     *Sequence,
+                          exonGFF  *Exon, 
+                          long      nexons){
+							  
     /* Best exons built using the current Acceptor and frame availability */
     struct iexon
     {
-        site *Acceptor;
-        site *Donor;
-        int  Frame[FRAMES];
+        site  *Acceptor;
+        site  *Donor;
+        int    Frame[FRAMES];
     } *LocalExon;
-    int   nLocalExons, LowestLocalExon;
-    float LowestLocalScore;
+    
+    int   nLocalExons;
+    int   LowestLocalExon;
+    float  LowestLocalScore;
     /* char mess[MAXSTRING]; */
 
     /* Boolean array of windows: closed or opened */
-    int  Frame[FRAMES];
-
-    long i, j, js, k;
-    int  f, l, ll;
+    int   Frame[FRAMES];
+    long  i;
+    long  j;
+    long  js;
+    long  k;
+    int   f;
+    int   l;
+    int   ll;
 
     /* Maximum allowed number of predicted internal exons per fragment */
-    long HowMany;
+    long  HowMany;
 
     /* Final number of predicted internal exons */
-    long nExon;
+    long  nExon;
 
     /* Allocating space for exons built by using the current Acceptor */
     /* MaxDonors is the maximum allowed number of exons with this signal */
     if ((LocalExon
              = (struct iexon *) calloc(MaxDonors, sizeof(struct iexon))) == NULL) {
         printError("Not enough memory: local initial exons");
+        exit(EXIT_FAILURE);
     }
 
     /* Main loop, forall Acceptor looking for donor sites... */

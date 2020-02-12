@@ -312,6 +312,7 @@ packEvidence *RequestMemoryEvidence(){
     if ((p
              = (struct s_packEvidence *) malloc(sizeof(struct s_packEvidence))) == NULL) {
         printError("Not enough memory: pack of evidences");
+         exit(EXIT_FAILURE);
     }
 
     /* Evidences sites */
