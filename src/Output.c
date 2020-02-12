@@ -138,20 +138,20 @@ void OutputHeader(char *locus, long l){
 }
 
 /* Display some predictions results according to the options selected */
-void Output(packSites *allSites,
-            packSites *allSites_r,
-            packExons *allExons,
-            packExons *allExons_r,
-            exonGFF   *exons,
-            long      nExons,
-            char      *Locus,
-            long      l1,
-            long      l2,
-            long      lowerlimit,
-            char      *Sequence,
-            gparam    *gp,
-            dict      *dAA,
-            char      *GenePrefix){
+void Output(packSites  *allSites,
+            packSites  *allSites_r,
+            packExons  *allExons,
+            packExons  *allExons_r,
+            exonGFF    *exons,
+            long        nExons,
+            char       *Locus,
+            long        l1,
+            long        l2,
+            long        lowerlimit,
+            char       *Sequence,
+            gparam     *gp,
+            dict       *dAA,
+            char       *GenePrefix){
     /* 1. Printing Forward */
     if (FWD) {
         printMess("Printing forward selected elements");
@@ -289,13 +289,13 @@ void Output(packSites *allSites,
 }
 
 /* Print best genes using selected format */
-void OutputGene(packGenes *pg,
-                long      nExons,
-                char      *Locus,
-                char      *Sequence,
-                gparam    *gp,
-                dict      *dAA,
-                char      *GenePrefix){
+void OutputGene(packGenes  *pg,
+                long        nExons,
+                char       *Locus,
+                char       *Sequence,
+                gparam     *gp,
+                dict       *dAA,
+                char       *GenePrefix){
     /* Retrieving the best predicted genes recursively */
     if (nExons > 0) {
         printMess("Recovering gene-solution...");
@@ -355,10 +355,10 @@ void OutputStats(char *Locus){
 
 /* Computing running time by using accounting information */
 void OutputTime(){
-    time_t tEnd;
-    int    t;
-    float  caux;
-    char   mess[MAXSTRING];
+    time_t  tEnd;
+    int     t;
+    float    caux;
+    char    mess[MAXSTRING];
 
     /* Final time */
     /* Real time */

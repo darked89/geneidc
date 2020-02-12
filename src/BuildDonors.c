@@ -36,23 +36,25 @@ extern int TRANS[];
 extern long NUMSITES;
 extern int  UTR;
 
-long  BuildDonors(char                    *s,
-                  short                   class,
-                  char                    *type,
-                  char                    *subtype,
-                  profile                 *p,
-                  site                    *st,
-                  long                    l1,
-                  long                    l2,
-                  long                    ns,
-                  long                    nsites,
-                  int                     Strand,
-                  packExternalInformation *external
+long  BuildDonors(char                     *s,
+                  short                     class,
+                  char                     *type,
+                  char                     *subtype,
+                  profile                   *p,
+                  site                     *st,
+                  long                      l1,
+                  long                      l2,
+                  long                      ns,
+                  long                      nsites,
+                  int                       Strand,
+                  packExternalInformation  *external
                   ){
-    int   i, j;
-    float score;
+    int   i;
+    int   j;
+    float  score;
     long  is;
-    long  left, right;
+    long  left;
+    long  right;
     int   index;
 
     /* 1. Searching sites between beginning of the sequence and p->offset */
