@@ -63,6 +63,7 @@ long BuildUTRExons(
     /* MaxDonors is the maximum allowed number of exons with this signal */
     if ((LocalExon = (exonGFF *) calloc(MaxDonors, sizeof(exonGFF))) == NULL) {
         printError("Not enough memory: local UTR exons");
+        exit(EXIT_FAILURE);
     }
 
     /* Main loop, forall beginning sites looking for ending sites... */
@@ -163,6 +164,7 @@ long BuildUTRExons(
 
     if (nExon >= HowMany) {
         printError("Too many UTR exons: decrease RUTR parameter");
+        exit(EXIT_FAILURE);
     }
 
     free(LocalExon);
