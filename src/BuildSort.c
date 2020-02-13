@@ -30,22 +30,23 @@
 #include "geneid.h"
 
 /* Sort exons by donor site (for every GM rule): genamic requirement */
-void BuildSort(dict    *D,
-               int     nc[],
-               int     ne[],
-               int     UC[][MAXENTRY],
-               int     DE[][MAXENTRY],
-               int     nclass,
-               long    km[],
-               exonGFF ***d,
-               exonGFF *E,
-               long    nexons){
-    long i, k;
-    int  j;
-    int  type;
-    int  class;
-    char aux[MAXTYPE];
-    char mess[MAXSTRING];
+void BuildSort(dict       *D,
+               int         nc[],
+               int         ne[],
+               int         UC[][MAXENTRY],
+               int         DE[][MAXENTRY],
+               int         nclass,
+               long        km[],
+               exonGFF  ***d,
+               exonGFF    *E,
+               long        nexons){
+    long  i; 
+    long  k;
+    int   j;
+    int   type;
+    int   class;
+    char  aux[MAXTYPE];
+    char  mess[MAXSTRING];
 
     /* Every exon will be classified into some sorting function (d) */
     /* Input exons are sorted by acceptor (left position) */

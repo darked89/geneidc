@@ -36,13 +36,15 @@ extern int TRANS[];
 extern long NUMSITES;
 
 long GetStopCodons(char    *s,
-                   profile *p,
+                   profile  *p,
                    site    *sc,
-                   long    l1,
-                   long    l2){
-    long  ns, is;
-    float score;
-    int   i, j;
+                   long     l1,
+                   long     l2){
+    long  ns; 
+    long  is;
+    float  score;
+    int   i; 
+    int   j;
 
     /* Strings defining Stop codons */
     static char *stop[] =
@@ -52,9 +54,10 @@ long GetStopCodons(char    *s,
         "TGA"
     };
 
-    char codon[LENGTHCODON + 1];
-    long left, right;
-    int  index;
+    char  codon[LENGTHCODON + 1];
+    long  left; 
+    long  right;
+    int   index;
 
     /* Final number of predicted stops */
     ns = 0;

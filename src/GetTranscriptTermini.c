@@ -32,16 +32,16 @@
 /* Maximum allowed number of generic sites */
 extern long NUMSITES;
 
-long GetTSS(
-    site *sc,
-    site *Acceptors, long nAcceptors,
-    packExternalInformation *external,
-    packHSP *hsp,
-    int Strand,
-    long LengthSequence,
-    long l1,
-    long l2
-    ){
+long GetTSS(site                     *sc,
+            site                     *Acceptors, 
+            long                      nAcceptors,
+            packExternalInformation  *external,
+            packHSP                  *hsp,
+            int                       Strand,
+            long                      LengthSequence,
+            long                      l1,
+            long                      l2){
+				
     short x;
     short frameStart;
     long  i = 0;
@@ -56,7 +56,7 @@ long GetTSS(
     /* Final number of potential transcript termini */
     ns = 0;
 /*   char mess[MAXSTRING]; */
-    long tempcoord;
+//unused    long tempcoord;
 
     x = 0;
 
@@ -168,7 +168,7 @@ long GetTSS(
     else {
         /* HSPs in REVERSE strand */
         frameStart = FRAMES;
-        tempcoord  = l2;
+        // unused tempcoord  = l2;
         rl2        = LengthSequence - l1 + 1;
         rl1        = LengthSequence - l2 + 1;
         x          = frameStart;
@@ -288,32 +288,32 @@ long GetTSS(
 
 }
 
-long GetTES(
-    site *sc,
-    site *Donors, long nDonors,
-    packExternalInformation *external,
-    packHSP *hsp,
-    int Strand,
-    long LengthSequence,
-    long l1,
-    long l2,
-    long ns
-    ){
-    short x;
-    short frameStart;
-    long  i = 0;
+long GetTES(site                     *sc,
+            site                     *Donors, 
+            long                      nDonors,
+            packExternalInformation  *external,
+            packHSP                  *hsp,
+            int                       Strand,
+            long                      LengthSequence,
+            long                      l1,
+            long                      l2,
+            long                      ns){
+
+    short  x;
+    short  frameStart;
+    long   i = 0;
     /* long ns; */
     /* Final number of potential transcript termini */
     /* ns = 0; */
-    long tempcoord;
-    long rl1;
-    long rl2;
+    // unused long tempcoord;
+    long  rl1;
+    long  rl2;
 /*   char mess[MAXSTRING]; */
-    long j      = 0;
-    long js     = 0;
-    int  window = 10;
-    long minP1  = l2;
-    long maxP1  = 0;
+    long  j      = 0;
+    long  js     = 0;
+    int   window = 10;
+    long  minP1  = l2;
+    long  maxP1  = 0;
 
     if (Strand == FORWARD) {
 
@@ -419,7 +419,7 @@ long GetTES(
         /* HSPs in REVERSE strand */
 
         frameStart = FRAMES;
-        tempcoord  = l2;
+        // unused tempcoord  = l2;
         rl2        = LengthSequence - l1 + 1;
         rl1        = LengthSequence - l2 + 1;
         x          = frameStart;

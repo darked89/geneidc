@@ -47,7 +47,8 @@ long BuildUTRExons(site     *Start,
    
     /* Best exons built by using the current start codon */
     exonGFF  *LocalExon;
-    int       nLocalExons, LowestLocalExon;
+    int       nLocalExons;
+    int       LowestLocalExon;
     float      LowestLocalScore;
     /* Maximum allowed number of predicted initial exons per fragment */
     long      HowMany;
