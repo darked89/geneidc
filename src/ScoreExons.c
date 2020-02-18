@@ -112,23 +112,29 @@ int SelectIsochore(float      percent,
 }
 
 /* Compute the percentage of G+C nucleotides on a DNA sequence */
-float ComputeGC(packGC  *GCInfo, 
-               long     inigc, 
+float ComputeGC(packGC  *GCInfo,
+               long     inigc,
                long     endgc){
 
-    float percentGC;
+    float GC_fraction;
 
     /* %GC = number of C|G divided by the number of "useful" nucleotides */
     /* The idea is to skip the N's in the computing */
     /* Accumulated sum technique: rest between both positions */
-    percentGC = ((float) (GCInfo->GC[endgc] - GCInfo->GC[inigc]))
+    /* percentGC = ((float) (GCInfo->GC[endgc] - GCInfo->GC[inigc]))
                 / ((float) (endgc - inigc + 1 - (GCInfo->N[endgc] - GCInfo->N[inigc])));
-
-    return (percentGC);
+    */
+    GC_fraction = ((float) (GCInfo->GC[endgc] - GCInfo->GC[inigc]))
+                / ((float) (endgc - inigc + 1 - (GCInfo->N[endgc] - GCInfo->N[inigc])));
+    
+    return (GC_fraction);
 }
 
 /* Counting the frequency of C/Gs or Ns found until reaching very position */
-void GCScan(char *s, packGC *GCInfo, long l1, long l2){
+void GCScan(char    *s,
+            packGC  *GCInfo,
+            long     l1,
+            long     l2){
     long i;
 
     /* Initializing array values: setting first nucleotide */
@@ -432,7 +438,7 @@ long Score(exonGFF                  *Exons,
         }
 
         percentGC       = ComputeGC(GCInfo, inigc, endgc);
-
+        
         currentIsochore = SelectIsochore(percentGC, isochores);
         gp              = isochores[currentIsochore];
 

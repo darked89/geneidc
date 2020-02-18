@@ -115,7 +115,7 @@ long HI  = 0;
 float MRM = 15.0;
 
 /* Optional Predicted Gene Prefix */
-char GenePrefix[MAXSTRING] = "";
+char gene_name_prefix[MAXSTRING] = "";
 
 /* Increase/decrease exon weight value (exon score) */
 float EW                      = NOVALUE;
@@ -178,7 +178,7 @@ int main(int    argc,
 
     /* Table to sort predicted exons by acceptor */
     exonGFF    *exons;
-    long        nExons;
+    long        exons_number;
 
     /* External information: reannotation */
     packExternalInformation  *external;
@@ -208,12 +208,13 @@ int main(int    argc,
     char        contig_name[CONTIG_NAME_MAX_LENGTH];
     char        next_contig_name[CONTIG_NAME_MAX_LENGTH];
 
-    /* Measure of C+G content to select the isochore */
-    packGC     *GCInfo;
-    packGC     *GCInfo_r;
+    /* Measure of GC content to select the isochore */
+    packGC     *GC_Info_frw;
+    packGC     *GC_Info_rev;
     int         inigc;
     int         endgc;
-    float        percentGC;
+    int         seq_split_len;
+    float        GC_fraction;
     int         currentIsochore;
     int         nIsochores;
     int         reading;
@@ -224,7 +225,7 @@ int main(int    argc,
     /* mtrace(); */
 
     /** 0. Starting and reading options, parameters and sequence... **/
-    nExons   = 0;
+    exons_number   = 0;
     evidence = NULL;
     hsp      = NULL;
 
@@ -244,7 +245,7 @@ int main(int    argc,
              fasta_fn,
              exons_gff_fn,
              blastHSP_gff_fn,
-             GenePrefix);
+             gene_name_prefix);
 
     printRes("\n\n\t\t\t** Running geneid 1.4.5+ 2020 geneid@crg.es **\n\n");
 
@@ -297,8 +298,8 @@ int main(int    argc,
 
     printMess("Request Memory Isochores, etc.\n");
     isochores = (gparam **) RequestMemoryIsochoresParams();
-    GCInfo    = (packGC *) RequestMemoryGC();
-    GCInfo_r  = (packGC *) RequestMemoryGC();
+    GC_Info_frw    = (packGC *) RequestMemoryGC();
+    GC_Info_rev  = (packGC *) RequestMemoryGC();
     dAA       = (dict *) RequestMemoryAaDictionary();
     printMess("Request Memory External\n");
     external  = (packExternalInformation *) RequestMemoryExternalInformation();
@@ -429,8 +430,8 @@ int main(int    argc,
             }
 
             seq_split_left        = seq_split_limit_lower;
-            seq_split_right        = MIN(seq_split_left + LENGTHSi - 1, contig_seq_size - 1);
-            seq_split_right        = MIN(seq_split_right, seq_split_limit_upper);
+            seq_split_right       = MIN(seq_split_left + LENGTHSi - 1, contig_seq_size - 1);
+            seq_split_right       = MIN(seq_split_right, seq_split_limit_upper);
             /* Check to see if we are on last split */
             lastSplit = (seq_split_right == seq_split_limit_upper);
             sprintf(mess, "Running on range %ld to %ld\n",
@@ -439,8 +440,8 @@ int main(int    argc,
 
             while ((seq_split_left < (seq_split_limit_upper + 1 - OVERLAP)) || (seq_split_left == 0) || (seq_split_left == seq_split_limit_lower)) {
                 /** B.1. Measure G+C content in the current fragment: seq_split_left,seq_split_right **/
-                GCScan(Sequence, GCInfo, seq_split_left, seq_split_right);
-                GCScan(sequence_rev, GCInfo_r, contig_seq_size - 1 - seq_split_right, contig_seq_size - 1 - seq_split_left);
+                GCScan(Sequence, GC_Info_frw, seq_split_left, seq_split_right);
+                GCScan(sequence_rev, GC_Info_rev, contig_seq_size - 1 - seq_split_right, contig_seq_size - 1 - seq_split_left);
 
                 /* G+C range: from 0 (seq_split_left) to seq_split_right -seq_split_left (seq_split_right) */
                 /*
@@ -448,12 +449,14 @@ int main(int    argc,
                  */
                 inigc     = 0;
                 endgc     = seq_split_right - seq_split_left;
-                percentGC = ComputeGC(GCInfo, inigc, endgc);
-                sprintf(mess, "G+C content in [%ld-%ld] is %f", seq_split_left, seq_split_right, percentGC);
+
+                GC_fraction = ComputeGC(GC_Info_frw, inigc, endgc);
+                
+                sprintf(mess, "XXX GC content in [%ld-%ld] is %f", seq_split_left, seq_split_right, GC_fraction);
                 printMess(mess);
 
                 /* Choose the isochore to predict sites according to the GC level */
-                currentIsochore = SelectIsochore(percentGC, isochores);
+                currentIsochore = SelectIsochore(GC_fraction, isochores);
                 gp              = isochores[currentIsochore];
                 sprintf(mess, "Selecting isochore %d", currentIsochore + COFFSET);
                 printMess(mess);
@@ -477,7 +480,7 @@ int main(int    argc,
                             gp,
                             isochores,
                             nIsochores,
-                            GCInfo,
+                            GC_Info_frw,
                             acceptor_sites,
                             donor_sites,
                             ts_sites,
@@ -507,7 +510,7 @@ int main(int    argc,
                             gp,
                             isochores, 
                             nIsochores,
-                            GCInfo_r, 
+                            GC_Info_rev, 
                             acceptor_sites, 
                             donor_sites, 
                             ts_sites, 
@@ -536,29 +539,29 @@ int main(int    argc,
                     }
                 }
 
-                nExons = allExons_frw->nExons + allExons_rev->nExons;
+                exons_number = allExons_frw->nExons + allExons_rev->nExons;
 
                 if (EVD && evidence != NULL) {
-                    nExons = nExons + external->ivExons;
+                    exons_number = exons_number + external->ivExons;
                 }
 
                 /* BEGIN artificial exon: + and - */
                 if (seq_split_left == seq_split_limit_lower) {
-                    nExons = nExons + 2;
+                    exons_number = exons_number + 2;
                 }
 
                 /* END artitificial exon: + and - */
                 if (seq_split_right == seq_split_limit_upper) {
-                    nExons = nExons + 2;
+                    exons_number = exons_number + 2;
                 }
 
 /*            sprintf(mess,"seq_split_left: %ld   ll:%ld   seq_split_right: %ld   ul: %ld\n", seq_split_left,seq_split_limit_lower,seq_split_right,seq_split_limit_upper); */
 /*            printMess(mess); */
 /*            /\* B.4. Printing current fragment predictions (sites and exons) *\/ */
 /*            Output(allSites_frw, allSites_rev, allExons_frw, allExons_rev,  */
-/*                   exons, nExons, contig_name, seq_split_left, seq_split_right, seq_split_limit_lower, Sequence, gp, dAA, GenePrefix);  */
+/*                   exons, exons_number, contig_name, seq_split_left, seq_split_right, seq_split_limit_lower, Sequence, gp, dAA, gene_name_prefix);  */
 
-                sprintf(mess, "Sorting %ld exons\n", nExons);
+                sprintf(mess, "Sorting %ld exons\n", exons_number);
                 printMess(mess);
 
                 /* Merge predicted exons with some evidence exons */
@@ -571,7 +574,7 @@ int main(int    argc,
                           seq_split_right,
                           seq_split_limit_lower,
                           seq_split_limit_upper);
-                sprintf(mess, "Finished sorting %ld exons\n", nExons);
+                sprintf(mess, "Finished sorting %ld exons\n", exons_number);
                 printMess(mess);
 
                 /* Next block of annotations to be processed */
@@ -580,16 +583,32 @@ int main(int    argc,
                 }
 
                 /* B.4. Printing current fragment predictions (sites and exons) */
-                Output(allSites_frw, allSites_rev, allExons_frw, allExons_rev,
-                       exons, nExons, contig_name, seq_split_left, seq_split_right, seq_split_limit_lower, Sequence, gp, dAA, GenePrefix);
+                Output(allSites_frw,
+                       allSites_rev,
+                       allExons_frw,
+                       allExons_rev,
+                       exons,
+                       exons_number,
+                       contig_name,
+                       seq_split_left, 
+                       seq_split_right, 
+                       seq_split_limit_lower, 
+                       Sequence,
+                       gp,
+                       dAA,
+                       gene_name_prefix);
 
                 /* recompute stats about splice sites and exons */
-                updateTotals(m, allSites_frw, allSites_rev, allExons_frw, allExons_rev);
+                updateTotals(m, 
+                             allSites_frw,
+                             allSites_rev,
+                             allExons_frw,
+                             allExons_rev);
 
                 /* B.5. Calling to genamic for assembling the best gene */
-                if (GENAMIC && nExons) {
+                if (GENAMIC && exons_number) {
 
-                    genamic(exons, nExons, genes, gp);
+                    genamic(exons, exons_number, genes, gp);
 
                     if (seq_split_limit_upper - seq_split_limit_lower + 1 > LENGTHSi) {/*  if (contig_seq_size > LENGTHSi) */
                         /* clean hash table of exons */
@@ -625,7 +644,7 @@ int main(int    argc,
                            Sequence, 
                            gp, 
                            dAA, 
-                           GenePrefix);
+                           gene_name_prefix);
 
                 /* Reset best genes data structures for next input sequence */
                 printMess("Cleaning gene structures and dumpster");
@@ -687,7 +706,7 @@ int main(int    argc,
 
         /* B.3. Printing gene predictions */
         OutputGene(genes, external->evidence[0]->nvExons,
-                   contig_name, Sequence, isochores[0], dAA, GenePrefix);
+                   contig_name, Sequence, isochores[0], dAA, gene_name_prefix);
     } /* end only gene assembling from exons file */
 
     /* CHECK_LEAKS(); */
