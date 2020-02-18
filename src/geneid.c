@@ -441,7 +441,10 @@ int main(int    argc,
                 GCScan(RSequence, GCInfo_r, LengthSequence - 1 - l2, LengthSequence - 1 - l1);
 
                 /* G+C range: from 0 (l1) to l2 -l1 (l2) */
-                inigc     = l1 - l1;
+                /*
+                 * inigc     = l1 - l1; //error, 20200218
+                 */
+                inigc     = 0;
                 endgc     = l2 - l1;
                 percentGC = ComputeGC(GCInfo, inigc, endgc);
                 sprintf(mess, "G+C content in [%ld-%ld] is %f", l1, l2, percentGC);
