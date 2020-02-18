@@ -209,14 +209,14 @@ int main(int    argc,
     char        next_contig_name[CONTIG_NAME_MAX_LENGTH];
 
     /* Measure of GC content to select the isochore */
-    packGC     *GC_Info_frw;
-    packGC     *GC_Info_rev;
+    packGC     *GC_info_frw;
+    packGC     *GC_info_rev;
     int         inigc;
     int         endgc;
     int         seq_split_len;
     float        GC_fraction;
-    int         currentIsochore;
-    int         nIsochores;
+    int         isochore_current;
+    int         isochores_number;
     int         reading;
     int         lastSplit;
     char        mess[MAXSTRING];
@@ -298,8 +298,8 @@ int main(int    argc,
 
     printMess("Request Memory Isochores, etc.\n");
     isochores = (gparam **) RequestMemoryIsochoresParams();
-    GC_Info_frw    = (packGC *) RequestMemoryGC();
-    GC_Info_rev  = (packGC *) RequestMemoryGC();
+    GC_info_frw    = (packGC *) RequestMemoryGC();
+    GC_info_rev  = (packGC *) RequestMemoryGC();
     dAA       = (dict *) RequestMemoryAaDictionary();
     printMess("Request Memory External\n");
     external  = (packExternalInformation *) RequestMemoryExternalInformation();
@@ -315,7 +315,7 @@ int main(int    argc,
 
     /** 2. Reading statistical model parameters file **/
     printMess("Reading parameters...");
-    nIsochores = readparam(param_fn, isochores);
+    isochores_number = readparam(param_fn, isochores);
 
     if (U12) {
         if ((!U12GTAG) && (!U12ATAC)) {
@@ -440,8 +440,8 @@ int main(int    argc,
 
             while ((seq_split_left < (seq_split_limit_upper + 1 - OVERLAP)) || (seq_split_left == 0) || (seq_split_left == seq_split_limit_lower)) {
                 /** B.1. Measure G+C content in the current fragment: seq_split_left,seq_split_right **/
-                GCScan(Sequence, GC_Info_frw, seq_split_left, seq_split_right);
-                GCScan(sequence_rev, GC_Info_rev, contig_seq_size - 1 - seq_split_right, contig_seq_size - 1 - seq_split_left);
+                GCScan(Sequence, GC_info_frw, seq_split_left, seq_split_right);
+                GCScan(sequence_rev, GC_info_rev, contig_seq_size - 1 - seq_split_right, contig_seq_size - 1 - seq_split_left);
 
                 /* G+C range: from 0 (seq_split_left) to seq_split_right -seq_split_left (seq_split_right) */
                 /*
@@ -450,15 +450,15 @@ int main(int    argc,
                 inigc     = 0;
                 endgc     = seq_split_right - seq_split_left;
 
-                GC_fraction = ComputeGC(GC_Info_frw, inigc, endgc);
+                GC_fraction = ComputeGC(GC_info_frw, inigc, endgc);
                 
                 sprintf(mess, "XXX GC content in [%ld-%ld] is %f", seq_split_left, seq_split_right, GC_fraction);
                 printMess(mess);
 
                 /* Choose the isochore to predict sites according to the GC level */
-                currentIsochore = SelectIsochore(GC_fraction, isochores);
-                gp              = isochores[currentIsochore];
-                sprintf(mess, "Selecting isochore %d", currentIsochore + COFFSET);
+                isochore_current = SelectIsochore(GC_fraction, isochores);
+                gp               = isochores[isochore_current];
+                sprintf(mess, "Selecting isochore %d", isochore_current + COFFSET);
                 printMess(mess);
 
                 /* B.2. Prediction of sites and exons construction/filtering */
@@ -479,8 +479,8 @@ int main(int    argc,
                             hsp,
                             gp,
                             isochores,
-                            nIsochores,
-                            GC_Info_frw,
+                            isochores_number,
+                            GC_info_frw,
                             acceptor_sites,
                             donor_sites,
                             ts_sites,
@@ -509,8 +509,8 @@ int main(int    argc,
                             hsp, 
                             gp,
                             isochores, 
-                            nIsochores,
-                            GC_Info_rev, 
+                            isochores_number,
+                            GC_info_rev, 
                             acceptor_sites, 
                             donor_sites, 
                             ts_sites, 
@@ -693,7 +693,7 @@ int main(int    argc,
         printMess(mess);
 
         if (external->nSequences > 1) {
-            sprintf(mess, "Exons in more than one different locus were detected (%ld sequences)\n", external->nSequences);
+            sprintf(mess, "Exons in more than one different contig were detected (%ld sequences)\n", external->nSequences);
             printError(mess);
         }
 
