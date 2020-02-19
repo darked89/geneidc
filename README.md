@@ -6,7 +6,7 @@
 
 
 
-# geneid (dev branch)
+# geneid (master branch)
 
 
 * version:  1.4.5+
