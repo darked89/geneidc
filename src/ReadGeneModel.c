@@ -31,8 +31,11 @@
 #include "geneid.h"
 
 /* Replicating the gene model rules for every isochore */
-void shareGeneModel(gparam **isochores, int nIsochores){
-    int i, j, k;
+void shareGeneModel(gparam **isochores, 
+                    int      nIsochores){
+    int i;
+    int j; 
+    int k;
     int nTypes;
 
     /* Original gene model is loaded in the first isochore */
@@ -70,27 +73,31 @@ void shareGeneModel(gparam **isochores, int nIsochores){
 /* Loading the gene model rules to build correct genes */
 /* Every rule is identified by the gm line where it has been found */
 /* Returns how many rules have been loaded right */
-long ReadGeneModel(FILE *file, dict *d,
-                   int nc[], int ne[],
-                   int UC[][MAXENTRY],
-                   int DE[][MAXENTRY],
-                   long md[], long Md[],
-                   int block[]){
-    char line[MAXLINE];
-    char lineCopy[MAXLINE];
-    char *column_1;
-    char *column_2;
-    char *column_3;
-    char *column_4;
+long ReadGeneModel(FILE  *file, 
+                   dict  *d,
+                   int    nc[],
+                   int    ne[],
+                   int    UC[][MAXENTRY],
+                   int    DE[][MAXENTRY],
+                   long   md[],
+                   long   Md[],
+                   int    block[]){
+					   
+    char   line[MAXLINE];
+    char   lineCopy[MAXLINE];
+    char  *column_1;
+    char  *column_2;
+    char  *column_3;
+    char  *column_4;
 
     /* Identifier for feature (from dictionary) */
-    int a;
+    int  a;
 
     /* Identifier for class (assembling rule) */
     int  nlines;
 
-    char mess[MAXSTRING];
-    char *t1;
+    char   mess[MAXSTRING];
+    char  *t1;
 
     /* Format for gene model rules:
        F1:F2:(...):Fn   F1:F2:(...):Fm dmin:dMax  [block] */
@@ -196,12 +203,14 @@ long ReadGeneModel(FILE *file, dict *d,
 /* Fill in the Gene Model with artificial lines to build only one gene */
 /* Every rule is identified by the gm line where it has been found */
 /* Returns how many rules have been loaded right */
-long ForceGeneModel(dict *d,
-                    int nc[], int ne[],
-                    int UC[][MAXENTRY],
-                    int DE[][MAXENTRY],
-                    long md[], long Md[],
-                    int block[]){
+long ForceGeneModel(dict  *d,
+                    int    nc[], 
+                    int    ne[],
+                    int    UC[][MAXENTRY],
+                    int    DE[][MAXENTRY],
+                    long   md[], 
+                    long   Md[],
+                    int    block[]){
     /* Identifier for feature (from dictionary) */
     int a;
 

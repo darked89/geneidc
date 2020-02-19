@@ -41,7 +41,8 @@ void resetDict(dict *d){
 
 /* Hash Function:: String -> Integer between 0..MAXENTRY-1 */
 int f(char s[]){
-    int i, total;
+    int  i;
+    int  total;
 
     for (i = 0, total = 0; i < strlen(s); i++) {
         total = (i + 1) * s[i] + total;
@@ -52,11 +53,12 @@ int f(char s[]){
 }
 
 /* Assign a number-key to the new word and store it */
-int setkeyDict(dict *d, char s[]){
-    int  key;
-    node *p;
-    node *n;
-    int  i;
+int setkeyDict(dict  *d, 
+               char   s[]){
+    int    key;
+    node  *p;
+    node  *n;
+    int    i;
 
     /* If this word exists at the dictionary don't insert */
     key = getkeyDict(d, s);
@@ -113,13 +115,14 @@ void showDict(dict *d){
     }
 }
 /* Returns the key for the word request; NOTFOUND is Not found */
-int getkeyDict(dict *d,
-               char s[]){
 
-    int  i;
-    int  found = 0;
-    int  key;
-    node *p;
+int getkeyDict(dict  *d,
+               char   s[]){
+
+    int    i;
+    int    found = 0;
+    int    key;
+    node  *p;
 
     /* showDict(d); */
     key = NOTFOUND;
@@ -181,12 +184,13 @@ void freeDict(dict *d){
 }
 
 /* Binding the amino acid (key) to the new codon (word) */
-void setAADict(dict *d,
-               char s[],
-               char aa){
-    node *p;
-    node *n;
-    int  i;
+
+void setAADict(dict  *d,
+               char   s[],
+               char   aa){
+    node  *p;
+    node  *n;
+    int    i;
 
     i = f(s);
 
@@ -198,7 +202,8 @@ void setAADict(dict *d,
 
     /* Filling the node */
     strcpy(n->s, s);
-    n->key = aa;
+
+    n->key = aa; //was aA
 
     if (d->T[i] == NULL) {
         n->next = NULL;
@@ -214,12 +219,12 @@ void setAADict(dict *d,
 }
 
 /* Returns the amino acid for the input codon; 'X' is Not found */
-char getAADict(dict *d,
-               char s[]){
-    int  i;
-    int  found;
-    int  aa;
-    node *p;
+char getAADict(dict  *d,
+               char   s[]){
+    int    i;
+    int    found;
+    int    aa;
+    node  *p;
 
     found = 0;
     aa    = UNKNOWNAA; /*error? char array for int? */

@@ -47,8 +47,10 @@ int complement(int c){
 
 /* Translate into upper letters and reverse/complement a DNA sequence */
 /* s is the input and r is the output (reverse) */
-long FetchSequence(char *s, char *r){
-    long i, j;
+long FetchSequence(char  *s, 
+                   char  *r){
+    long i; 
+    long j;
     long l;
 
     /* Length of input sequence */
@@ -77,9 +79,13 @@ long FetchSequence(char *s, char *r){
 }
 
 /* Reverse a split in the original sequence (p1,p2) */
-void ReverseSubSequence(long p1, long p2, char *s, char *r){
-    long i, j;
-    long l;
+void ReverseSubSequence(long   p1, 
+                        long   p2, 
+                        char  *s, 
+                        char  *r){
+    long  i; 
+    long  j;
+    long  l;
 
     /* Length of the input subsequence (fragment) */
     l = p2 - p1 + 1;

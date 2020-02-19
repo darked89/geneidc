@@ -256,18 +256,18 @@ void PrintExon(exonGFF *e,
 }
 
 /* Print a list of exons of the same type */
-void PrintExons(exonGFF *e,
-                long     ne,
-                int      type,
-                char     Name[],
-                long     l1, 
-                long     l2,
-                char    *Sequence,
-                dict    *dAA,
-                char    *GenePrefix){
-    long i;
-    char Type[MAXTYPE];
-    char strand;
+void PrintExons(exonGFF  *e,
+                long      ne,
+                int       type,
+                char      Name[],
+                long      l1, 
+                long      l2,
+                char     *Sequence,
+                dict     *dAA,
+                char     *GenePrefix){
+    long  i;
+    char  Type[MAXTYPE];
+    char  strand;
 
     strand  = (ne > 0) ? e->Strand : 'x';
 
@@ -331,16 +331,16 @@ void PrintExons(exonGFF *e,
 }
 
 /* Print a predicted exon from a assembled gene: gff/geneid format */
-void PrintGCDS(exonGFF *e,
-               char     Name[],
-               char    *s,
-               dict    *dAA,
-               long     ngen,
-               int      AA1,
-               int      AA2,
-               int      nAA,
-               int      nExon,
-               char    *GenePrefix
+void PrintGCDS(exonGFF  *e,
+               char      Name[],
+               char     *s,
+               dict     *dAA,
+               long      ngen,
+               int       AA1,
+               int       AA2,
+               int       nAA,
+               int       nExon,
+               char     *GenePrefix
                ){
 /*   float onekb = 1000; */
     long  p1;
@@ -609,12 +609,12 @@ void PrintGCDS(exonGFF *e,
     }
 }
 /* Print a predicted exon from a assembled gene: gff/geneid format */
-void PrintGUTR(exonGFF *e,
-               char     Name[],
-               char    *s,
-               long     ngen,
-               int      nExon,
-               char    *GenePrefix
+void PrintGUTR(exonGFF  *e,
+               char      Name[],
+               char     *s,
+               long      ngen,
+               int       nExon,
+               char     *GenePrefix
                ){
     if (e->Donor->Position == e->Acceptor->Position - 1) {
         return;
@@ -622,7 +622,7 @@ void PrintGUTR(exonGFF *e,
 
     long  p1;
     long  p2;
-    float kb = 1000.000;
+    float  kb = 1000.000;
     
     p1 = e->Acceptor->Position + e->offset1 - COFFSET;
     p2 = e->Donor->Position + e->offset2 - COFFSET;
@@ -1027,14 +1027,14 @@ void PrintGIntron(exonGFF *d,
 
 }
 /* Print a predicted intron from an assembled gene: gff/geneid format */
-void PrintGExon(  exonGFF *a,
-                  int      nSegments,
-                  char     Name[],
-                  long     ngen,
-                  int      nExon,
-                  char    *GenePrefix,
-                  int      evidence,
-                  float     score){
+void PrintGExon(  exonGFF  *a,
+                  int       nSegments,
+                  char      Name[],
+                  long      ngen,
+                  int       nExon,
+                  char     *GenePrefix,
+                  int       evidence,
+                  float      score){
                       
     exonGFF *d                    = a;
     exonGFF *e                    = a;

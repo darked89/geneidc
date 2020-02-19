@@ -59,6 +59,8 @@ char *RequestMemorySequence(long L){
 
     if ((s = (char *) calloc(L, sizeof(char))) == NULL) {
         printError("Not enough memory: DNA input sequence");
+        exit(EXIT_FAILURE);
+        
     }
 
     return(s);
@@ -72,6 +74,7 @@ packSites *RequestMemorySites(){
     if ((allSites
              = (struct s_packSites *) malloc(sizeof(struct s_packSites))) == NULL) {
         printError("Not enough memory: pack of sites");
+        exit(EXIT_FAILURE);
     }
 
     /* Start codons */
@@ -125,7 +128,7 @@ packSites *RequestMemorySites(){
 /* Allocating pack of exons (only in one sense) in memory */
 packExons *RequestMemoryExons(){
     packExons *allExons;
-    long      HowMany;
+    long       HowMany;
 
     /* Allocating memory for exons */
     if ((allExons
@@ -268,7 +271,7 @@ packExons *RequestMemoryExons(){
 /* Allocating memory for sorting the set of predicted exons */
 exonGFF *RequestMemorySortExons(){
     exonGFF *exons;
-    long    HowMany;
+    long     HowMany;
 
     /* Sorting Exons */
     HowMany = NUMEXONS * FSORT;
@@ -276,6 +279,7 @@ exonGFF *RequestMemorySortExons(){
     if ((exons
              = (exonGFF *) calloc(HowMany, sizeof(exonGFF))) == NULL) {
         printError("Not enough memory: table to sort exons");
+        exit(EXIT_FAILURE);
     }
 
     assert(exons != NULL);
@@ -285,7 +289,7 @@ exonGFF *RequestMemorySortExons(){
 /* Allocating memory for sorting the set of predicted sites */
 site *RequestMemorySortSites(){
     site *sites;
-    long HowMany;
+    long  HowMany;
 
     /* Sorting Exons */
     HowMany = NUMSITES * FSORT;
@@ -308,6 +312,7 @@ packEvidence *RequestMemoryEvidence(){
     if ((p
              = (struct s_packEvidence *) malloc(sizeof(struct s_packEvidence))) == NULL) {
         printError("Not enough memory: pack of evidences");
+         exit(EXIT_FAILURE);
     }
 
     /* Evidences sites */
@@ -346,8 +351,8 @@ HSP *RequestNewHSP(){
 /* Allocating memory for blast HSPs (homology information) */
 packHSP *RequestMemoryHomology(){
     packHSP *p;
-    int     i;
-    long    HowMany;
+    int      i;
+    long     HowMany;
 
     /* TWO senses plus THREE reading frames */
     HowMany = STRANDS * FRAMES;
@@ -396,8 +401,8 @@ packHSP *RequestMemoryHomology(){
 /* Alocating memory for external information */
 packExternalInformation *RequestMemoryExternalInformation(){
     packExternalInformation *p;
-    int                     i;
-    long                    HowMany;
+    int                      i;
+    long                     HowMany;
 
     /* TWO senses plus THREE reading frames */
     HowMany = STRANDS * FRAMES;
@@ -536,7 +541,7 @@ packGC *RequestMemoryGC(){
 /* Allocating memory for statistical model parameters of one isochore */
 gparam *RequestMemoryParams(){
     gparam *gp;
-    long   OligoDim;
+    long    OligoDim;
 
     /* 0. Main structure: gparam */
     if ((gp = (gparam *) malloc(sizeof(gparam))) == NULL) {
@@ -602,13 +607,12 @@ gparam *RequestMemoryParams(){
         exit(EXIT_FAILURE);
     }
 
-    assert(gp->U2gcagDonorProfile != NULL);
-    /* dk 2016.03.14 memory leak above
-
-if ((gp->U2gcagDonorProfile = (profile *) malloc(sizeof(profile))) == NULL)
-printError("Not enough memory: U2 GCAG donor profile");
-    duplicated malloc??? */
-
+    /* duplication of the statement above
+    if ((gp->U2gcagDonorProfile = (profile *) malloc(sizeof(profile))) == NULL) {
+        printError("Not enough memory: U2 GCAG donor profile");
+    }
+    */
+    
     if ((gp->U2gtaDonorProfile = (profile *) malloc(sizeof(profile))) == NULL) {
         printError("Not enough memory: U2 GTA donor profile");
         exit(EXIT_FAILURE);
@@ -743,7 +747,7 @@ printError("Not enough memory: U2 GCAG donor profile");
 /* Allocating memory (all of the isochores) */
 gparam **RequestMemoryIsochoresParams(){
     gparam **isochores;
-    int    i;
+    int      i;
 
     /* Allocating the array of isochores */
     if ((isochores = (gparam **) calloc(MAXISOCHORES, sizeof(gparam *))) == NULL) {
@@ -806,9 +810,9 @@ void RequestMemoryProfile(profile *p){
 /* Allocating memory for the best set of predicted genes and extra info */
 packGenes *RequestMemoryGenes(){
     packGenes *pg;
-    int       aux;
-    int       aux2;
-    int       aux3;
+    int        aux;
+    int        aux2;
+    int        aux3;
 
     /* 0. Allocating memory for pack of genes (main structure) */
     if ((pg
@@ -870,6 +874,7 @@ packGenes *RequestMemoryGenes(){
         for (aux2 = 0; aux2 < FRAMES; aux2++) {
             if ((pg->Ga[aux][aux2] = (exonGFF **) calloc(SPLICECLASSES, sizeof(exonGFF *))) == NULL) {
                 printError("Not enough memory: 3 splice classes in Ga array of genes");
+                exit(EXIT_FAILURE);
             }
 
             for (aux3 = 0; aux3 < SPLICECLASSES; aux3++) {
@@ -911,7 +916,7 @@ packGenes *RequestMemoryGenes(){
 /* This information is required to continue the process between 2 splits */
 packDump *RequestMemoryDumpster(){
     packDump *d;
-    long     HowMany;
+    long      HowMany;
 
     /* 0. Allocating memory for dumpster */
     if ((d

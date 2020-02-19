@@ -25,9 +25,9 @@ PRODUCT= $(BIN)/$(PROGRAM)
 #Manjaro 18.1
 
 #scan-build make
-CC=clang
-OPTS=-I$(INCLUDE) -std=c11 -ggdb -g3 -march=native  -Wshadow -Wstrict-overflow -fno-strict-aliasing 
-#-Weverything  
+
+OPTS=-I$(INCLUDE)  -std=c11 -ggdb -g3 -march=native  -Wshadow -Wstrict-overflow -fno-strict-aliasing -fsanitize=address  -fno-omit-frame-pointer -fno-optimize-sibling-calls -fsanitize-address-use-after-scope
+# -Weverything
 #-fsanitize=address
 
 

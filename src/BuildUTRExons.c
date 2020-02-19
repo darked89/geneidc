@@ -34,28 +34,34 @@
 /* extern long NUMEXONS; */
 extern long MAXBACKUPSITES;
 
-long BuildUTRExons(
-    site *Start, long nStarts,
-    site *Donor, long nDonors,
-    int MaxDonors,
-    int MaxExonLength, long cutPoint,
-    char *ExonType,
-    exonGFF *Exon, long nexons){
+long BuildUTRExons(site     *Start, 
+                   long      nStarts,
+                   site     *Donor, 
+                   long      nDonors,
+                   int       MaxDonors,
+                   int       MaxExonLength, 
+                   long      cutPoint,
+                   char     *ExonType,
+                   exonGFF  *Exon, 
+                   long      nexons){
+   
     /* Best exons built by using the current start codon */
-    exonGFF *LocalExon;
-    int     nLocalExons, LowestLocalExon;
-    float   LowestLocalScore;
-/*   char mess[MAXSTRING]; */
-
+    exonGFF  *LocalExon;
+    int       nLocalExons;
+    int       LowestLocalExon;
+    float      LowestLocalScore;
     /* Maximum allowed number of predicted initial exons per fragment */
-    long HowMany;
-
+    long      HowMany;
+/*   char mess[MAXSTRING]; */
 /*   int Frame; */
 /*   int js; */
 
-    long  i, j, k, ks;
+    long  i;
+    long  j;
+    long  k;
+    long  ks;
     int   l;
-    float pen = 0.002;
+    float  pen = 0.002;
     /* Final number of predicted UTR exons */
     long  nExon;
 
@@ -63,6 +69,7 @@ long BuildUTRExons(
     /* MaxDonors is the maximum allowed number of exons with this signal */
     if ((LocalExon = (exonGFF *) calloc(MaxDonors, sizeof(exonGFF))) == NULL) {
         printError("Not enough memory: local UTR exons");
+        exit(EXIT_FAILURE);
     }
 
     /* Main loop, forall beginning sites looking for ending sites... */
@@ -163,6 +170,7 @@ long BuildUTRExons(
 
     if (nExon >= HowMany) {
         printError("Too many UTR exons: decrease RUTR parameter");
+        exit(EXIT_FAILURE);
     }
 
     free(LocalExon);

@@ -42,7 +42,6 @@ long get_fasta_size(char *fasta_fn){
         printError("Not enough memory: analizing input sequence file");
     }
 
-
     assert(buf != NULL);
 
     if (stat(fasta_fn, buf) != 0) {
@@ -53,7 +52,7 @@ long get_fasta_size(char *fasta_fn){
     size = (long) buf->st_size;
 
     if (size == 0) {
-        printError("Empty input sequence file!");
+        printError("Empty input fasta file!");
     }
 
     free(buf);
@@ -63,7 +62,6 @@ long get_fasta_size(char *fasta_fn){
 
 /* Get the header of the first DNA sequence (Name) */
 /* The sequence file is allowed to contain more than one fasta sequence */
-
 
 int IniReadSequence(FILE *fasta_fptr, 
                     char *line){

@@ -57,6 +57,7 @@ void UpdateSiteList(struct siteitem **p, site *InputSite){
     /* Allocating new node for this site */
     if ((*p = (struct siteitem *) malloc(sizeof(struct siteitem))) == NULL) {
         printError("Not enough memory: new siteitem (sorting)");
+        exit(EXIT_FAILURE);
     }
 
     /* Updating information for the node */
@@ -66,19 +67,24 @@ void UpdateSiteList(struct siteitem **p, site *InputSite){
 
 /* Sort all of predicted sites by placing them in an array of lists */
 /* corresponding every list to a beginning position for predicted sites */
-void SortSites(site *Sites, long numSites, site *sortedSites,
-               long l1, long l2){
-    struct siteitem **SiteList, *q;
-    long            i;
-    long            pos;
-    long            n;
+void SortSites(site  *Sites, 
+               long   numSites, 
+               site  *sortedSites,
+               long   l1, 
+               long   l2){
+/*    struct siteitem **SiteList, *q; */
+    struct siteitem  **SiteList;
+    struct siteitem   *q;
+    long               i;
+    long               pos;
+    long               n;
 /*   int offset; */
-    long            l;
-    long            left;
-    long            right;
+    long               l;
+    long               left;
+    long               right;
 /*   long room; */
 /*   char mess[MAXSTRING]; */
-    long HowMany;
+    long               HowMany;
 
     /* 0. Creating the array for sorting: 1 - Length of fragment */
     left  = l1;
@@ -89,6 +95,7 @@ void SortSites(site *Sites, long numSites, site *sortedSites,
     if ((SiteList
              = (struct siteitem **) calloc(l + COFFSET + 10, sizeof(struct siteitem *))) == NULL) {
         printError("Not enough memory: SiteList array (sorting)");
+        exit(EXIT_FAILURE);
     }
 
     /* Reset the positions, pointing to NULL */
@@ -134,6 +141,7 @@ void SortSites(site *Sites, long numSites, site *sortedSites,
 
             if (n >= HowMany) {
                 printError("Too many predicted sites: increase FSORT parameter");
+                exit(EXIT_FAILURE);
             }
 
             q = q->nexitem;

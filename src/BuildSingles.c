@@ -33,16 +33,20 @@
 extern long NUMEXONS;
 extern long MAXBACKUPSITES;
 
-long BuildSingles(site *Start, long nStarts,
-                  site *Stop, long nStops,
-                  long cutPoint,
-                  char *Sequence,
-                  exonGFF *Exon){
+long BuildSingles(site     *Start, 
+                  long      nStarts,
+                  site     *Stop, 
+                  long      nStops,
+                  long      cutPoint,
+                  char     *Sequence,
+                  exonGFF  *Exon){
     /* Maximum allowed number of predicted single gene exons per fragment */
     long HowMany;
 
-    int  Frame;
-    long i, j, js;
+    int   Frame;
+    long  i;
+    long  j;
+    long  js;
 
     /* Final number of predicted single genes exons */
     long nSingles;
