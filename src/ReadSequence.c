@@ -27,28 +27,35 @@
 
 /*  $Id: ReadSequence.c,v 1.7 2006-12-11 09:50:48 talioto Exp $  */
 
+#include <assert.h>
 #include "geneid.h"
 
 extern int VRB;
 
 /* Predicting the length of a sequence before loading it */
-long analizeFile(char *SequenceFile){
+
+long get_fasta_size(char *fasta_fn){
     struct stat *buf;
-    long        size;
+    size_t      size;
 
     if ((buf = (struct stat *) malloc(sizeof(struct stat))) == NULL) {
         printError("Not enough memory: analizing input sequence file");
+	exit(EXIT_FAILURE);
     }
 
-    if (stat(SequenceFile, buf) != 0) {
-        printError("Impossible to access sequence file");
+    assert(buf != NULL);
+
+    if (stat(fasta_fn, buf) != 0) {
+        printError("Impossible to access fasta sequence file");
+	exit(EXIT_FAILURE);
     }
 
     /* Size (bytes) of this file */
     size = (long) buf->st_size;
 
     if (size == 0) {
-        printError("Empty input sequence file!");
+        printError("Empty input fasta file!");
+	exit(EXIT_FAILURE);
     }
 
     free(buf);
@@ -58,21 +65,23 @@ long analizeFile(char *SequenceFile){
 
 /* Get the header of the first DNA sequence (Name) */
 /* The sequence file is allowed to contain more than one fasta sequence */
-int IniReadSequence(FILE *seqfile, char *line){
+
+int IniReadSequence(FILE *fasta_fptr, 
+                    char *line){
     int  res;
     char sAux[MAXSTRING];
     char cAux;
 
     /* Fasta format: >string1_string2...stringn \n ctacgatcgacg... */
     /* Searching ">" */
-    res = fscanf(seqfile, "%c", &cAux);
+    res = fscanf(fasta_fptr, "%c", &cAux);
 
     if ((res == -1) || cAux != '>') {
         printError("Problems reading locusname (>)");
     }
 
     /* Get locus name */
-    res = fscanf(seqfile, "%s", sAux);
+    res = fscanf(fasta_fptr, "%s", sAux);
 
     if (res == -1) {
         printError("Problems reading locusname");
@@ -82,10 +91,10 @@ int IniReadSequence(FILE *seqfile, char *line){
     }
 
     /* Jumping to the first fasta line (skipping the \n) */
-    res = fscanf(seqfile, "%c", &cAux);
+    res = fscanf(fasta_fptr, "%c", &cAux);
 
     while ((cAux != '\n') && (res == 1)) {
-        res = fscanf(seqfile, "%c", &cAux);
+        res = fscanf(fasta_fptr, "%c", &cAux);
 
         if (res == -1) {
             printError("Problems reading locusname");
@@ -100,7 +109,10 @@ int IniReadSequence(FILE *seqfile, char *line){
 }
 
 /* Reading content of current DNA sequence and the header of next one */
-int ReadSequence(FILE *seqfile, char *Sequence, char *nextLocus){
+
+int ReadSequence(FILE *fasta_fptr, 
+                 char *Sequence, 
+                 char *nextLocus){
     long pos;
     int  res;
     char mess[MAXSTRING];
@@ -109,12 +121,12 @@ int ReadSequence(FILE *seqfile, char *Sequence, char *nextLocus){
     /* 1. Reading the current fasta sequence */
     /* fasta format = "atcgata...atta\n" */
     pos = 0;
-    res = fscanf(seqfile, "%s\n", Sequence);
+    res = fscanf(fasta_fptr, "%s\n", Sequence);
 
     while ((res != EOF) && (Sequence[pos] != '>')) {
         /* chars read = previous reading + current line */
         pos = pos + strlen(Sequence + pos);
-        res = fscanf(seqfile, "%s", Sequence + pos);
+        res = fscanf(fasta_fptr, "%s", Sequence + pos);
 
         if (VRB && !(pos % MESSAGE_FREQ)) {
             sprintf(mess, "...%ld", pos);
@@ -133,10 +145,10 @@ int ReadSequence(FILE *seqfile, char *Sequence, char *nextLocus){
         strcpy(nextLocus, Sequence + pos + 1);
 
         /* Jumping until \n of the first fasta line */
-        res = fscanf(seqfile, "%c", &cAux);
+        res = fscanf(fasta_fptr, "%c", &cAux);
 
         while ((cAux != '\n') && (res == 1)) {
-            res = fscanf(seqfile, "%c", &cAux);
+            res = fscanf(fasta_fptr, "%c", &cAux);
 
             if (res == -1) {
                 printError("Problems reading locusname");

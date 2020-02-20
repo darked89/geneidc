@@ -27,11 +27,15 @@
 
 /*  $Id: ReadGeneModel.c,v 1.7 2006-12-11 09:50:48 talioto Exp $  */
 
+#include <assert.h>
 #include "geneid.h"
 
 /* Replicating the gene model rules for every isochore */
-void shareGeneModel(gparam **isochores, int nIsochores){
-    int i, j, k;
+void shareGeneModel(gparam **isochores, 
+                    int      nIsochores){
+    int i;
+    int j; 
+    int k;
     int nTypes;
 
     /* Original gene model is loaded in the first isochore */
@@ -69,30 +73,34 @@ void shareGeneModel(gparam **isochores, int nIsochores){
 /* Loading the gene model rules to build correct genes */
 /* Every rule is identified by the gm line where it has been found */
 /* Returns how many rules have been loaded right */
-long ReadGeneModel(FILE *file, dict *d,
-                   int nc[], int ne[],
-                   int UC[][MAXENTRY],
-                   int DE[][MAXENTRY],
-                   long md[], long Md[],
-                   int block[]){
-    char line[MAXLINE];
-    char lineCopy[MAXLINE];
-    char *line1;
-    char *line2;
-    char *line3;
-    char *line4;
+long ReadGeneModel(FILE  *file, 
+                   dict  *d,
+                   int    nc[],
+                   int    ne[],
+                   int    UC[][MAXENTRY],
+                   int    DE[][MAXENTRY],
+                   long   md[],
+                   long   Md[],
+                   int    block[]){
+					   
+    char   line[MAXLINE];
+    char   lineCopy[MAXLINE];
+    char  *column_1;
+    char  *column_2;
+    char  *column_3;
+    char  *column_4;
 
     /* Identifier for feature (from dictionary) */
-    int a;
+    int  a;
 
     /* Identifier for class (assembling rule) */
     int  nlines;
 
-    char mess[MAXSTRING];
-    char *t1;
+    char   mess[MAXSTRING];
+    char  *t1;
 
     /* Format for gene model rules:
-           F1:F2:(...):Fn   F1:F2:(...):Fm dmin:dMax  [block] */
+       F1:F2:(...):Fn   F1:F2:(...):Fm dmin:dMax  [block] */
 
     /* Input lines from parameter file */
     nlines = 0;
@@ -101,24 +109,25 @@ long ReadGeneModel(FILE *file, dict *d,
         /* For every line extracting features (upstream/downstream), */
         /* the minMax distances and the (optional) block */
         /* line number is the class/rule identifier */
-        if (line[0] != '#') {
+        if (line[0] != '#' && line[0] != '\n') {
             /* 0. Backup the line to display errors */
             strcpy(lineCopy, line);
 
             /* 1. Splitting line into 4 parts: UC DE Dist block */
-            line1 = (char *) strtok(line, " ");
-            line2 = (char *) strtok(NULL, " ");
-            line3 = (char *) strtok(NULL, " ");
-            line4 = (char *) strtok(NULL, " ");
+            column_1 = (char *) strtok(line, " ");
+            column_2 = (char *) strtok(NULL, " ");
+            column_3 = (char *) strtok(NULL, " ");
+            column_4 = (char *) strtok(NULL, " ");
 
             /* Three first columns are mandatory, last one is optional */
-            if (line1 == NULL || line2 == NULL || line3 == NULL) {
+            if (column_1 == NULL || column_2 == NULL || column_3 == NULL) {
                 sprintf(mess, "Wrong format in gene model rule:\n%s", lineCopy);
                 printError(mess);
+		exit(EXIT_FAILURE);
             }
 
             /* 2. Processing upstream compatible features list */
-            for ( t1 = (char *) strtok(line1, ":");
+            for ( t1 = (char *) strtok(column_1, ":");
                   t1 != NULL;
                   t1 = (char *) strtok(NULL, ":") ) {
                 /* Extracting and adding to the dictionary of types */
@@ -128,7 +137,7 @@ long ReadGeneModel(FILE *file, dict *d,
             }
 
             /* 3. Processing downstream equivalent features list */
-            for ( t1 = (char *) strtok(line2, ":");
+            for ( t1 = (char *) strtok(column_2, ":");
                   t1 != NULL;
                   t1 = (char *) strtok(NULL, ":") ) {
                 /* Extracting and adding to the dictionary of types */
@@ -139,12 +148,16 @@ long ReadGeneModel(FILE *file, dict *d,
 
             /* 4. Read the distances xx:yy [block] */
             /* a) minimum distance */
-            t1 = (char *) strtok(line3, ":");
+            t1 = (char *) strtok(column_3, ":");
 
             if (t1 == NULL) {
                 sprintf(mess, "Wrong distance range (min) in gene model rule:\n%s", lineCopy);
                 printError(mess);
+		exit(EXIT_FAILURE);
             }
+
+            /* dk 2916.03.14   */
+            assert(t1 != NULL);
 
             md[nlines] = atol(t1);
 
@@ -158,6 +171,9 @@ long ReadGeneModel(FILE *file, dict *d,
 
             /* To forget the DMAX requirement use the string SINFI */
             /* Extracting \n in case there aren't block word behind */
+            /* dk 2916.03.14   */
+            assert(t1 != NULL);
+
             if (t1[strlen(t1) - 1] == '\n') {
                 t1[strlen(t1) - 1] = '\0';
             }
@@ -170,7 +186,7 @@ long ReadGeneModel(FILE *file, dict *d,
             }
 
             /* 5. Read the block record (to preserve group)... if exists */
-            if (line4 != NULL) {
+            if (column_4 != NULL) {
                 block[nlines] = BLOCK;
             }
             else {
@@ -188,12 +204,14 @@ long ReadGeneModel(FILE *file, dict *d,
 /* Fill in the Gene Model with artificial lines to build only one gene */
 /* Every rule is identified by the gm line where it has been found */
 /* Returns how many rules have been loaded right */
-long ForceGeneModel(dict *d,
-                    int nc[], int ne[],
-                    int UC[][MAXENTRY],
-                    int DE[][MAXENTRY],
-                    long md[], long Md[],
-                    int block[]){
+long ForceGeneModel(dict  *d,
+                    int    nc[], 
+                    int    ne[],
+                    int    UC[][MAXENTRY],
+                    int    DE[][MAXENTRY],
+                    long   md[], 
+                    long   Md[],
+                    int    block[]){
     /* Identifier for feature (from dictionary) */
     int a;
 

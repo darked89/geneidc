@@ -34,24 +34,33 @@
 /* extern long NUMEXONS; */
 extern long MAXBACKUPSITES;
 
-long BuildInitialExons(site *Start, long nStarts,
-                       site *Donor, long nDonors,
-                       site *Stop, long nStops,
-                       int MaxDonors,
-                       char *ExonType,
-                       char *Sequence,
-                       exonGFF *Exon, long nexons){
+long BuildInitialExons(site     *Start, 
+                       long      nStarts,
+                       site     *Donor, 
+                       long      nDonors,
+                       site     *Stop, 
+                       long      nStops,
+                       int       MaxDonors,
+                       char     *ExonType,
+                       char     *Sequence,
+                       exonGFF  *Exon, 
+                       long      nexons){
     /* Best exons built by using the current start codon */
-    exonGFF *LocalExon;
-    int     nLocalExons, LowestLocalExon;
-    float   LowestLocalScore;
+    exonGFF  *LocalExon;
+    int       nLocalExons; 
+    int       LowestLocalExon;
+    float      LowestLocalScore;
 
     /* Maximum allowed number of predicted initial exons per fragment */
     long HowMany;
 
-    int  Frame;
-    long i, j, js, k, ks;
-    int  l;
+    int   Frame;
+    long  i;
+    long  j; 
+    long  js; 
+    long  k; 
+    long  ks;
+    int   l;
 
     /* Final number of predicted initial exons */
     long nExon;
@@ -60,8 +69,9 @@ long BuildInitialExons(site *Start, long nStarts,
     /* MaxDonors is the maximum allowed number of exons with this signal */
     if ((LocalExon = (exonGFF *) calloc(MaxDonors, sizeof(exonGFF))) == NULL) {
         printError("Not enough memory: local first exons");
+        exit(EXIT_FAILURE);
     }
-
+    assert(LocalExon != NULL);
     /* Main loop, forall start codon looking for donor sites... */
     /* ...until the first stop codon in frame is reached */
     HowMany = (MAXBACKUPSITES) ? (long) (nexons / RFIRST) : nexons;
@@ -162,6 +172,7 @@ long BuildInitialExons(site *Start, long nStarts,
 
     if (nExon >= HowMany) {
         printError("Too many initial exons: decrease RFIRST parameter");
+        exit(EXIT_FAILURE);
     }
 
     free(LocalExon);
