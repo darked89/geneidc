@@ -8,7 +8,7 @@
 *                                                                        *
 *     Copyright (C) 2006 - Enrique BLANCO GARCIA                         *
 *                          Roderic GUIGO SERRA                           *
-*                          Tyler   ALIOTO                                * 
+*                          Tyler   ALIOTO                                *
 *                                                                        *
 *  This program is free software; you can redistribute it and/or modify  *
 *  it under the terms of the GNU General Public License as published by  *
@@ -21,7 +21,7 @@
 *  GNU General Public License for more details.                          *
 *                                                                        *
 *  You should have received a copy of the GNU General Public License     *
-*  along with this program; if not, write to the Free Software           * 
+*  along with this program; if not, write to the Free Software           *
 *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.             *
 *************************************************************************/
 
@@ -37,591 +37,689 @@ extern int U12;
 extern int SRP;
 
 /* Print a predicted exon from a list of exons */
-void PrintExon(exonGFF *e, char Name[], char* s, dict* dAA, char* GenePrefix)
-{
-  char sAux[MAXAA];
-  char* rs;
-  long p1, p2;
-  int nAA = 0;
-  char attribute[MAXSTRING] = "";
-  char tmpstr[MAXSTRING] = "";
+void PrintExon(exonGFF *e, char Name[], char *s, dict *dAA, char *GenePrefix){
+    char sAux[MAXAA];
+    char *rs;
+    long p1, p2;
+    int  nAA                  = 0;
+    char attribute[MAXSTRING] = "";
+    char tmpstr[MAXSTRING]    = "";
+
 /*   char saux[MAXTYPE]; */
 /*   char saux2[MAXTYPE]; */
-  
-  /* Acquiring real positions of exon */
-  p1 = e->Acceptor->Position + e->offset1 - COFFSET;
-  p2 = e->Donor->Position + e->offset2 - COFFSET;
-  
-  /* Translation of exon nucleotides into amino acids */
-  strcpy(sAux,"\0");
-  if(e->Donor->Position >= e->Acceptor->Position){
-    if (e->Strand == '+')
-      /* Translate codons to amino acids */
-      nAA = Translate(p1,p2,
-		      e->Frame,
-		      (3 - e->Remainder)%3,
-		      s, dAA, sAux);
-    else
-      {
-	/* Reverse strand exon */
-	if ((rs = (char*) calloc(p2-p1+2,sizeof(char))) == NULL)
-	  printError("Not enough memory: translating reverse exon");
-      
-	/* Reversing and complementing the exon sequence */
-	ReverseSubSequence(p1, p2, s, rs);
-      
-	/* Translate codons to aminoacids */
-	nAA = Translate(0,p2-p1,
-			e->Frame,
-			(3 - e->Remainder)%3,
-			rs, dAA, sAux);
-	free(rs);
-      }
-  }
-  /* According to selected options formatted output */
 
-  if (GFF3)
-    {
-      if (! e->evidence){
-	if (e->Strand == cFORWARD){
-	  if (!strcmp(e->Type,sFIRST)){
-	    sprintf(tmpstr,";start_score=%1.2f;donor_score=%1.2f;donor=%s",e->Acceptor->Score,e->Donor->Score,e->Donor->subtype);strcat(attribute,tmpstr);
-	  }
-	  if (!strcmp(e->Type,sINTERNAL)){
-	    sprintf(tmpstr,";acceptor_score=%1.2f;acceptor_profile_score=%1.2f;acceptor=%s;donor_score=%1.2f;donor=%s",e->Acceptor->Score,e->Acceptor->ScoreAccProfile,e->Acceptor->subtype,e->Donor->Score,e->Donor->subtype);strcat(attribute,tmpstr);
-	    if (PPT){
-	      sprintf(tmpstr,";ppt_score=%1.2f;ppt_pos=%i",e->Acceptor->ScorePPT,e->Acceptor->PositionPPT);strcat(attribute,tmpstr);
-	    }
-	    if ((BP && e->Donor->class == U2)||(e->Acceptor->class != U2)){
-	      sprintf(tmpstr,";bp_score=%1.2f;bp_pos=%i",e->Acceptor->ScoreBP,e->Acceptor->PositionBP);strcat(attribute,tmpstr);
-	    }
-	  }
-	  if (!strcmp(e->Type,sTERMINAL)){
-	    sprintf(tmpstr,";acceptor_score=%1.2f;acceptor_profile_score=%1.2f;acceptor=%s",e->Acceptor->Score,e->Acceptor->ScoreAccProfile,e->Acceptor->subtype);strcat(attribute,tmpstr);
-	    if (PPT){
-	      sprintf(tmpstr,";ppt_score=%1.2f;ppt_pos=%i",e->Acceptor->ScorePPT,e->Acceptor->PositionPPT);strcat(attribute,tmpstr);
-	    }
-	    if ((BP && e->Donor->class == U2)||(e->Acceptor->class != U2)){
-	      sprintf(tmpstr,";bp_score=%1.2f;bp_pos=%i",e->Acceptor->ScoreBP,e->Acceptor->PositionBP);strcat(attribute,tmpstr);
-	    }
-	  }
-	  if (!strcmp(e->Type,sSINGLE)){
-	    sprintf(tmpstr,";start_score=%1.2f",e->Acceptor->Score);strcat(attribute,tmpstr);
-	  }
-	  
-	}else{
-	  if (!strcmp(e->Type,sFIRST)){
-	    sprintf(tmpstr,";start_score=%1.2f;donor_score=%1.2f;donor=%s",e->Donor->Score,e->Acceptor->Score,e->Acceptor->subtype);strcat(attribute,tmpstr);
-	  }
-	  if (!strcmp(e->Type,sINTERNAL)){
-	    sprintf(tmpstr,";acceptor_score=%1.2f;acceptor_profile_score=%1.2f;acceptor=%s;donor_score=%1.2f;donor=%s",e->Donor->Score,e->Donor->ScoreAccProfile,e->Donor->subtype,e->Acceptor->Score,e->Acceptor->subtype);strcat(attribute,tmpstr);
-	    if (PPT){
-	      sprintf(tmpstr,";ppt_score=%1.2f;ppt_pos=%i",e->Donor->ScorePPT,e->Donor->PositionPPT);strcat(attribute,tmpstr);
-	    }
-	    if ((BP && e->Donor->class == U2)||(e->Donor->class != U2)){
-	      sprintf(tmpstr,";bp_score=%1.2f;bp_pos=%i",e->Donor->ScoreBP,e->Donor->PositionBP);strcat(attribute,tmpstr);
-	    }
-	  }
-	  if (!strcmp(e->Type,sTERMINAL)){
-	    sprintf(tmpstr,";acceptor_score=%1.2f;acceptor_profile_score=%1.2f;acceptor=%s",e->Donor->Score,e->Donor->ScoreAccProfile,e->Donor->subtype);strcat(attribute,tmpstr);
-	    if (PPT){
-	      sprintf(tmpstr,";ppt_score=%1.2f;ppt_pos=%i",e->Donor->ScorePPT,e->Donor->PositionPPT);strcat(attribute,tmpstr);
-	    }
-	    if ((BP && e->Donor->class == U2)||(e->Donor->class != U2)){
-	      sprintf(tmpstr,";bp_score=%1.2f;bp_pos=%i",e->Donor->ScoreBP,e->Donor->PositionBP);strcat(attribute,tmpstr);
-	    }
-	  }
-	  if (!strcmp(e->Type,sSINGLE)){
-	    sprintf(tmpstr,";start_score=%1.2f",e->Donor->Score);strcat(attribute,tmpstr);
-	  }
-	  
-	}
-	sprintf(tmpstr,";coding_potential=%1.2f",e->PartialScore);strcat(attribute,tmpstr);
-	if (SRP){sprintf(tmpstr,";homology_score=%1.2f",e->HSPScore);strcat(attribute,tmpstr);}
-      }
-      printf ("%s\t%s\t%s\t%ld\t%ld\t%1.2f\t%c\t%hd\tID=%s_%s_%ld_%ld%s\n",
-	      /* correct stop codon position, Terminal- & Terminal+ */ 
-	      Name,
-	      (e->evidence)? EVIDENCE : EXONS,
-	      e->Type,
-	      (e->evidence)? e->Acceptor->Position : e->Acceptor->Position + e->offset1,
-	      (e->evidence)? e->Donor->Position : e->Donor->Position + e->offset2,
-	      (e->Score==MAXSCORE)? 0.0: e->Score,
-	      e->Strand,
-	      e->Frame,
-	      e->Type,
-	      Name,
-	      (e->evidence)? e->Acceptor->Position : e->Acceptor->Position + e->offset1,
-	      (e->evidence)? e->Donor->Position : e->Donor->Position + e->offset2,
-	      attribute);
+    /* Acquiring real positions of exon */
+    p1 = e->Acceptor->Position + e->offset1 - COFFSET;
+    p2 = e->Donor->Position + e->offset2 - COFFSET;
+
+    /* Translation of exon nucleotides into amino acids */
+    strcpy(sAux, "\0");
+
+    if (e->Donor->Position >= e->Acceptor->Position) {
+        if (e->Strand == '+') {
+            /* Translate codons to amino acids */
+            nAA = Translate(p1, p2,
+                            e->Frame,
+                            (3 - e->Remainder) % 3,
+                            s, dAA, sAux);
+        }
+        else {
+            /* Reverse strand exon */
+            if ((rs = (char *) calloc(p2 - p1 + 2, sizeof(char))) == NULL) {
+                printError("Not enough memory: translating reverse exon");
+            }
+
+            /* Reversing and complementing the exon sequence */
+            ReverseSubSequence(p1, p2, s, rs);
+
+            /* Translate codons to aminoacids */
+            nAA = Translate(0, p2 - p1,
+                            e->Frame,
+                            (3 - e->Remainder) % 3,
+                            rs, dAA, sAux);
+            free(rs);
+        }
     }
-  else
-    {
-    if (GFF)
-      {
-	/* GFF format */
-	printf ("%s\t%s\t%s\t%ld\t%ld\t%1.2f\t%c\t%hd\t%s_%s_%ld_%ld\n",
-		/* correct stop codon position, Terminal- & Terminal+ */ 
-		Name,
-		(e->evidence)? EVIDENCE : EXONS,
-		e->Type,
-		(e->evidence)? e->Acceptor->Position : e->Acceptor->Position + e->offset1,
-		(e->evidence)? e->Donor->Position : e->Donor->Position + e->offset2,
-		(e->Score==MAXSCORE)? 0.0: e->Score,
-		e->Strand,
-		e->Frame,
-		e->Type,
-		Name,
-		(e->evidence)? e->Acceptor->Position : e->Acceptor->Position + e->offset1,
-		(e->evidence)? e->Donor->Position : e->Donor->Position + e->offset2 );
-      }
-    else
-      {
-	/* Default format */
-	printf ("%8s %8ld %8ld\t%5.2f\t%c %hd %hd\t%5.2f\t%5.2f\t%5.2f\t%5.2f\t%d\t%s\n",
-		/* correct stop codon position, Terminal- & Terminal+ */ 
-		/* saux2,  */
-		e->Type,
-		(e->evidence)? e->Acceptor->Position: e->Acceptor->Position + e->offset1,
-		(e->evidence)? e->Donor->Position : e->Donor->Position + e->offset2,
-		(e->Score==MAXSCORE)? 0.0:e->Score,
-		e->Strand,
-		e->Frame,
-		(3 - e->Remainder)%3,
-		e->Acceptor->Score,
-		e->Donor->Score,
-		e->PartialScore,
-		e->HSPScore,
-		nAA,
-		sAux);
-      }
-  }
+
+    /* According to selected options formatted output */
+
+    if (GFF3) {
+        if (!e->evidence) {
+            if (e->Strand == cFORWARD) {
+                if (!strcmp(e->Type, sFIRST)) {
+                    sprintf(tmpstr, ";start_score=%1.2f;donor_score=%1.2f;donor=%s", e->Acceptor->Score, e->Donor->Score, e->Donor->subtype);
+                    strcat(attribute, tmpstr);
+                }
+
+                if (!strcmp(e->Type, sINTERNAL)) {
+                    sprintf(tmpstr, ";acceptor_score=%1.2f;acceptor_profile_score=%1.2f;acceptor=%s;donor_score=%1.2f;donor=%s", e->Acceptor->Score, e->Acceptor->ScoreAccProfile, e->Acceptor->subtype, e->Donor->Score, e->Donor->subtype);
+                    strcat(attribute, tmpstr);
+
+                    if (PPT) {
+                        sprintf(tmpstr, ";ppt_score=%1.2f;ppt_pos=%i", e->Acceptor->ScorePPT, e->Acceptor->PositionPPT);
+                        strcat(attribute, tmpstr);
+                    }
+
+                    if ((BP && e->Donor->class == U2) || (e->Acceptor->class != U2)) {
+                        sprintf(tmpstr, ";bp_score=%1.2f;bp_pos=%i", e->Acceptor->ScoreBP, e->Acceptor->PositionBP);
+                        strcat(attribute, tmpstr);
+                    }
+                }
+
+                if (!strcmp(e->Type, sTERMINAL)) {
+                    sprintf(tmpstr, ";acceptor_score=%1.2f;acceptor_profile_score=%1.2f;acceptor=%s", e->Acceptor->Score, e->Acceptor->ScoreAccProfile, e->Acceptor->subtype);
+                    strcat(attribute, tmpstr);
+
+                    if (PPT) {
+                        sprintf(tmpstr, ";ppt_score=%1.2f;ppt_pos=%i", e->Acceptor->ScorePPT, e->Acceptor->PositionPPT);
+                        strcat(attribute, tmpstr);
+                    }
+
+                    if ((BP && e->Donor->class == U2) || (e->Acceptor->class != U2)) {
+                        sprintf(tmpstr, ";bp_score=%1.2f;bp_pos=%i", e->Acceptor->ScoreBP, e->Acceptor->PositionBP);
+                        strcat(attribute, tmpstr);
+                    }
+                }
+
+                if (!strcmp(e->Type, sSINGLE)) {
+                    sprintf(tmpstr, ";start_score=%1.2f", e->Acceptor->Score);
+                    strcat(attribute, tmpstr);
+                }
+
+            }
+            else {
+                if (!strcmp(e->Type, sFIRST)) {
+                    sprintf(tmpstr, ";start_score=%1.2f;donor_score=%1.2f;donor=%s", e->Donor->Score, e->Acceptor->Score, e->Acceptor->subtype);
+                    strcat(attribute, tmpstr);
+                }
+
+                if (!strcmp(e->Type, sINTERNAL)) {
+                    sprintf(tmpstr, ";acceptor_score=%1.2f;acceptor_profile_score=%1.2f;acceptor=%s;donor_score=%1.2f;donor=%s", e->Donor->Score, e->Donor->ScoreAccProfile, e->Donor->subtype, e->Acceptor->Score, e->Acceptor->subtype);
+                    strcat(attribute, tmpstr);
+
+                    if (PPT) {
+                        sprintf(tmpstr, ";ppt_score=%1.2f;ppt_pos=%i", e->Donor->ScorePPT, e->Donor->PositionPPT);
+                        strcat(attribute, tmpstr);
+                    }
+
+                    if ((BP && e->Donor->class == U2) || (e->Donor->class != U2)) {
+                        sprintf(tmpstr, ";bp_score=%1.2f;bp_pos=%i", e->Donor->ScoreBP, e->Donor->PositionBP);
+                        strcat(attribute, tmpstr);
+                    }
+                }
+
+                if (!strcmp(e->Type, sTERMINAL)) {
+                    sprintf(tmpstr, ";acceptor_score=%1.2f;acceptor_profile_score=%1.2f;acceptor=%s", e->Donor->Score, e->Donor->ScoreAccProfile, e->Donor->subtype);
+                    strcat(attribute, tmpstr);
+
+                    if (PPT) {
+                        sprintf(tmpstr, ";ppt_score=%1.2f;ppt_pos=%i", e->Donor->ScorePPT, e->Donor->PositionPPT);
+                        strcat(attribute, tmpstr);
+                    }
+
+                    if ((BP && e->Donor->class == U2) || (e->Donor->class != U2)) {
+                        sprintf(tmpstr, ";bp_score=%1.2f;bp_pos=%i", e->Donor->ScoreBP, e->Donor->PositionBP);
+                        strcat(attribute, tmpstr);
+                    }
+                }
+
+                if (!strcmp(e->Type, sSINGLE)) {
+                    sprintf(tmpstr, ";start_score=%1.2f", e->Donor->Score);
+                    strcat(attribute, tmpstr);
+                }
+
+            }
+
+            sprintf(tmpstr, ";coding_potential=%1.2f", e->PartialScore);
+            strcat(attribute, tmpstr);
+
+            if (SRP) {
+                sprintf(tmpstr, ";homology_score=%1.2f", e->HSPScore);
+                strcat(attribute, tmpstr);
+            }
+        }
+
+        printf("%s\t%s\t%s\t%ld\t%ld\t%1.2f\t%c\t%hd\tID=%s_%s_%ld_%ld%s\n",
+               /* correct stop codon position, Terminal- & Terminal+ */
+               Name,
+               (e->evidence) ? EVIDENCE : EXONS,
+               e->Type,
+               (e->evidence) ? e->Acceptor->Position : e->Acceptor->Position + e->offset1,
+               (e->evidence) ? e->Donor->Position : e->Donor->Position + e->offset2,
+               (e->Score == MAXSCORE) ? 0.0 : e->Score,
+               e->Strand,
+               e->Frame,
+               e->Type,
+               Name,
+               (e->evidence) ? e->Acceptor->Position : e->Acceptor->Position + e->offset1,
+               (e->evidence) ? e->Donor->Position : e->Donor->Position + e->offset2,
+               attribute);
+    }
+    else {
+        if (GFF) {
+            /* GFF format */
+            printf("%s\t%s\t%s\t%ld\t%ld\t%1.2f\t%c\t%hd\t%s_%s_%ld_%ld\n",
+                   /* correct stop codon position, Terminal- & Terminal+ */
+                   Name,
+                   (e->evidence) ? EVIDENCE : EXONS,
+                   e->Type,
+                   (e->evidence) ? e->Acceptor->Position : e->Acceptor->Position + e->offset1,
+                   (e->evidence) ? e->Donor->Position : e->Donor->Position + e->offset2,
+                   (e->Score == MAXSCORE) ? 0.0 : e->Score,
+                   e->Strand,
+                   e->Frame,
+                   e->Type,
+                   Name,
+                   (e->evidence) ? e->Acceptor->Position : e->Acceptor->Position + e->offset1,
+                   (e->evidence) ? e->Donor->Position : e->Donor->Position + e->offset2 );
+        }
+        else {
+            /* Default format */
+            printf("%8s %8ld %8ld\t%5.2f\t%c %hd %hd\t%5.2f\t%5.2f\t%5.2f\t%5.2f\t%d\t%s\n",
+                   /* correct stop codon position, Terminal- & Terminal+ */
+                   /* saux2,  */
+                   e->Type,
+                   (e->evidence) ? e->Acceptor->Position : e->Acceptor->Position + e->offset1,
+                   (e->evidence) ? e->Donor->Position : e->Donor->Position + e->offset2,
+                   (e->Score == MAXSCORE) ? 0.0 : e->Score,
+                   e->Strand,
+                   e->Frame,
+                   (3 - e->Remainder) % 3,
+                   e->Acceptor->Score,
+                   e->Donor->Score,
+                   e->PartialScore,
+                   e->HSPScore,
+                   nAA,
+                   sAux);
+        }
+    }
 }
 
 /* Print a list of exons of the same type */
-void PrintExons (exonGFF *e,
-                 long ne,
-                 int type,
-                 char Name[],
-                 long l1, long l2,
-                 char* Sequence,
-                 dict* dAA,
-		 char* GenePrefix)
-{
-  long i;
-  char Type[MAXTYPE];
-  char strand;
-  
-  strand = (ne>0)? e->Strand : 'x'; 
-  
-  Type[0] = '\0';
-  switch(type)
-    {
-    case FIRST: strcpy(Type,sFIRST);
-	  break;
-    case INTERNAL:strcpy(Type,sINTERNAL);
-      break;
-    case ZEROLENGTH:strcpy(Type,sZEROLENGTH);
-      break;
-    case TERMINAL:strcpy(Type,sTERMINAL);
-      break;
-    case SINGLE:strcpy(Type,sSINGLE);
-      break;  
-    case ORF:strcpy(Type,sORF);
-      break;  
-    default: strcpy(Type,sEXON);
-      strand = 'x'; 
-      break;
+void PrintExons(exonGFF *e,
+                long ne,
+                int type,
+                char Name[],
+                long l1, long l2,
+                char *Sequence,
+                dict *dAA,
+                char *GenePrefix){
+    long i;
+    char Type[MAXTYPE];
+    char strand;
+
+    strand  = (ne > 0) ? e->Strand : 'x';
+
+    Type[0] = '\0';
+    switch (type) {
+        case FIRST:
+            strcpy(Type, sFIRST);
+            break;
+        case INTERNAL:
+            strcpy(Type, sINTERNAL);
+            break;
+        case ZEROLENGTH:
+            strcpy(Type, sZEROLENGTH);
+            break;
+        case TERMINAL:
+            strcpy(Type, sTERMINAL);
+            break;
+        case SINGLE:
+            strcpy(Type, sSINGLE);
+            break;
+        case ORF:
+            strcpy(Type, sORF);
+            break;
+        default:
+            strcpy(Type, sEXON);
+            strand = 'x';
+            break;
     }
-  
-  /* Output header for the following output */
-  printf("# %ss(%c) predicted in sequence %s: [%ld,%ld]\n",
-		 Type,
-		 strand,
-		 Name, l1, l2);
-  
-  /* Print list of exons (type) predicted in the current fragment */
-  for (i=0;i<ne;i++)
-    PrintExon((e+i), Name, Sequence, dAA,GenePrefix);   
+
+    /* Output header for the following output */
+    printf("# %ss(%c) predicted in sequence %s: [%ld,%ld]\n",
+           Type,
+           strand,
+           Name, l1, l2);
+
+    /* Print list of exons (type) predicted in the current fragment */
+    for (i = 0; i < ne; i++) {
+        PrintExon((e + i), Name, Sequence, dAA, GenePrefix);
+    }
 }
 
 /* Print a predicted exon from a assembled gene: gff/geneid format */
 void PrintGExon(exonGFF *e,
-                char Name[],
-                char* s,
-                dict* dAA,
-                long ngen,
-                int AA1,
-                int AA2,
-                int nAA,
-		int nExon,
-		char* GenePrefix
-		)
-{
-  if (e->Donor->Position == e->Acceptor->Position - 1){return;}
-  char attribute[MAXSTRING] = "";
-  char tmpstr[MAXSTRING] = "";
-  if (GFF3)
-    {
-      /* GFF3 format 5_prime_partial=true ???*/
-      if (e->five_prime_partial) { strcpy(attribute,";5_prime_partial=true");}
-      if (e->three_prime_partial) { strcat(attribute,";3_prime_partial=true");}
-      sprintf(tmpstr,";exon_type=%s",e->Type);strcat(attribute,tmpstr);
-      if (! e->evidence){
-	if (e->Strand == cFORWARD){
-	  if (!strcmp(e->Type,sFIRST)){
-	    sprintf(tmpstr,";start_score=%1.2f;donor_score=%1.2f",e->Acceptor->Score,e->Donor->Score);strcat(attribute,tmpstr);
-	  }
-	  if (!strcmp(e->Type,sINTERNAL)){
-	    sprintf(tmpstr,";acceptor_score=%1.2f;donor_score=%1.2f",e->Acceptor->Score,e->Donor->Score);strcat(attribute,tmpstr);
-	    
-	  }
-	  if (!strcmp(e->Type,sTERMINAL)){
-	    sprintf(tmpstr,";acceptor_score=%1.2f",e->Acceptor->Score);strcat(attribute,tmpstr);
-	  }
-	  if (!strcmp(e->Type,sSINGLE)){
-	    sprintf(tmpstr,";start_score=%1.2f",e->Acceptor->Score);strcat(attribute,tmpstr);
-	  }
-	  
-	}else{
-	  if (!strcmp(e->Type,sFIRST)){
-	    sprintf(tmpstr,";start_score=%1.2f;donor_score=%1.2f",e->Donor->Score,e->Acceptor->Score);strcat(attribute,tmpstr);
-	  }
-	  if (!strcmp(e->Type,sINTERNAL)){
-	    sprintf(tmpstr,";acceptor_score=%1.2f;donor_score=%1.2f",e->Donor->Score,e->Acceptor->Score);strcat(attribute,tmpstr);
-	    
-	  }
-	  if (!strcmp(e->Type,sTERMINAL)){
-	    sprintf(tmpstr,";acceptor_score=%1.2f",e->Donor->Score);strcat(attribute,tmpstr);
-	  }
-	  if (!strcmp(e->Type,sSINGLE)){
-	    sprintf(tmpstr,";start_score=%1.2f",e->Donor->Score);strcat(attribute,tmpstr);
-	  }
-	  
-	}
-	sprintf(tmpstr,";coding_potential=%1.2f",e->PartialScore);strcat(attribute,tmpstr);
-	if (SRP){sprintf(tmpstr,";start_score=%1.2f",e->HSPScore);strcat(attribute,tmpstr);}
-      }
-      /* It's really not necessary to print out exons unless we can predict UTR exons (leave this commented for now) */
-/*       printf ("%s\t%s\t%s\t%ld\t%ld\t%1.2f\t%c\t%hd\tID=exon_%s%s_%ld.%i;Parent=mRNA_%s%s_%ld;type=%s\n", */
-/* 	      /\* correct stop codon position, Terminal- & Terminal+ *\/  */
-/* 	      Name, */
-/* 	      (e->evidence)? EVIDENCE : VERSION,      */
-/* 	      "exon", */
-/* 	      (e->evidence)? e->Acceptor->Position : e->Acceptor->Position + e->offset1, */
-/* 	      (e->evidence)? e->Donor->Position : e->Donor->Position + e->offset2, */
-/* 	      (e->Score==MAXSCORE)? 0.0:e->Score, */
-/* 	      e->Strand, */
-/* 	      e->Frame, */
-/* 	      GenePrefix, */
-/* 	      Name, */
-/* 	      ngen, */
-/* 	      nExon, */
-/* 	      GenePrefix, */
-/* 	      Name, */
-/* 	      ngen, */
-/* 	      e->Type); */
-      printf ("%s\t%s\t%s\t%ld\t%ld\t%1.2f\t%c\t%hd\tID=cds_%s%s_%ld.%i;Parent=mRNA_%s%s_%ld;Target=%s_predicted_protein_%s%s_%ld %d %d%s\n",
-	      /* correct stop codon position, Terminal- & Terminal+ */ 
-	      Name,
-	      (e->evidence)? EVIDENCE : VERSION,     
-	      "CDS",
-	      (e->evidence)? e->Acceptor->Position : e->Acceptor->Position + e->offset1,
-	      (e->evidence)? e->Donor->Position : e->Donor->Position + e->offset2,
-	      (e->Score==MAXSCORE)? 0.0:e->Score,
-	      e->Strand,
-	      e->Frame,
-	      GenePrefix,
-	      Name,
-	      ngen,
-	      nExon,
-	      GenePrefix,
-	      Name,
-	      ngen,
-	      VERSION,
-	      GenePrefix,
-	      Name,
-	      ngen,
-	      (e->Strand=='+')? nAA-AA2+COFFSET : AA1,
-	      (e->Strand=='+')? nAA-AA1+COFFSET : AA2,
-	      attribute);
-     
+                char    Name[],
+                char    *s,
+                dict    *dAA,
+                long    ngen,
+                int     AA1,
+                int     AA2,
+                int     nAA,
+                int     nExon,
+                char    *GenePrefix
+                ){
+    if (e->Donor->Position == e->Acceptor->Position - 1) {
+        return;
     }
-  else
-    {
-      if (GFF){
-	/* GFF format */
-	printf ("%s\t%s\t%s\t%ld\t%ld\t%1.2f\t%c\t%hd\t%s%s_%ld\n",
-		/* correct stop codon position, Terminal- & Terminal+ */ 
-		Name,
-		(e->evidence)? EVIDENCE : VERSION,     
-		e->Type,
-		(e->evidence)? e->Acceptor->Position : e->Acceptor->Position + e->offset1,
-		(e->evidence)? e->Donor->Position : e->Donor->Position + e->offset2,
-		(e->Score==MAXSCORE)? 0.0:e->Score,
-		e->Strand,
-		e->Frame,
-		GenePrefix,
-		Name,
-		ngen);
-      } else {
-	/* Default format for genes */
-	printf ("%8s %8ld %8ld\t%5.2f\t%c %hd %hd\t%5.2f\t%5.2f\t%5.2f\t%5.2f\tAA %3d:%3d %s%s_%ld\n",
-		/* correct stop codon position, Terminal- & Terminal+ */ 
-		e->Type,
-		(e->evidence)? e->Acceptor->Position :e->Acceptor->Position + e->offset1,
-		(e->evidence)? e->Donor->Position : e->Donor->Position + e->offset2,
-		(e->Score==MAXSCORE)? 0.0:e->Score,
-		e->Strand,
-		e->Frame,
-		(3 - e->Remainder)%3,
-		e->Acceptor->Score,
-		e->Donor->Score,
-		e->PartialScore,
-		e->HSPScore,
-		(e->Strand=='+')? nAA-AA2+COFFSET : AA1,
-		(e->Strand=='+')? nAA-AA1+COFFSET : AA2,
-		GenePrefix,
-		Name,
-		ngen);
-      }
+
+    char attribute[MAXSTRING] = "";
+    char tmpstr[MAXSTRING]    = "";
+
+    if (GFF3) {
+        /* GFF3 format 5_prime_partial=true ???*/
+        if (e->five_prime_partial) {
+            strcpy(attribute, ";5_prime_partial=true");
+        }
+
+        if (e->three_prime_partial) {
+            strcat(attribute, ";3_prime_partial=true");
+        }
+
+        sprintf(tmpstr, ";exon_type=%s", e->Type);
+        strcat(attribute, tmpstr);
+
+        if (!e->evidence) {
+            if (e->Strand == cFORWARD) {
+                if (!strcmp(e->Type, sFIRST)) {
+                    sprintf(tmpstr, ";start_score=%1.2f;donor_score=%1.2f", e->Acceptor->Score, e->Donor->Score);
+                    strcat(attribute, tmpstr);
+                }
+
+                if (!strcmp(e->Type, sINTERNAL)) {
+                    sprintf(tmpstr, ";acceptor_score=%1.2f;donor_score=%1.2f", e->Acceptor->Score, e->Donor->Score);
+                    strcat(attribute, tmpstr);
+
+                }
+
+                if (!strcmp(e->Type, sTERMINAL)) {
+                    sprintf(tmpstr, ";acceptor_score=%1.2f", e->Acceptor->Score);
+                    strcat(attribute, tmpstr);
+                }
+
+                if (!strcmp(e->Type, sSINGLE)) {
+                    sprintf(tmpstr, ";start_score=%1.2f", e->Acceptor->Score);
+                    strcat(attribute, tmpstr);
+                }
+
+            }
+            else {
+                if (!strcmp(e->Type, sFIRST)) {
+                    sprintf(tmpstr, ";start_score=%1.2f;donor_score=%1.2f", e->Donor->Score, e->Acceptor->Score);
+                    strcat(attribute, tmpstr);
+                }
+
+                if (!strcmp(e->Type, sINTERNAL)) {
+                    sprintf(tmpstr, ";acceptor_score=%1.2f;donor_score=%1.2f", e->Donor->Score, e->Acceptor->Score);
+                    strcat(attribute, tmpstr);
+
+                }
+
+                if (!strcmp(e->Type, sTERMINAL)) {
+                    sprintf(tmpstr, ";acceptor_score=%1.2f", e->Donor->Score);
+                    strcat(attribute, tmpstr);
+                }
+
+                if (!strcmp(e->Type, sSINGLE)) {
+                    sprintf(tmpstr, ";start_score=%1.2f", e->Donor->Score);
+                    strcat(attribute, tmpstr);
+                }
+
+            }
+
+            sprintf(tmpstr, ";coding_potential=%1.2f", e->PartialScore);
+            strcat(attribute, tmpstr);
+
+            if (SRP) {
+                sprintf(tmpstr, ";start_score=%1.2f", e->HSPScore);
+                strcat(attribute, tmpstr);
+            }
+        }
+
+        /* It's really not necessary to print out exons unless we can predict UTR exons (leave this commented for now) */
+/*       printf ("%s\t%s\t%s\t%ld\t%ld\t%1.2f\t%c\t%hd\tID=exon_%s%s_%ld.%i;Parent=mRNA_%s%s_%ld;type=%s\n", */
+/*            /\* correct stop codon position, Terminal- & Terminal+ *\/  */
+/*            Name, */
+/*            (e->evidence)? EVIDENCE : VERSION,      */
+/*            "exon", */
+/*            (e->evidence)? e->Acceptor->Position : e->Acceptor->Position + e->offset1, */
+/*            (e->evidence)? e->Donor->Position : e->Donor->Position + e->offset2, */
+/*            (e->Score==MAXSCORE)? 0.0:e->Score, */
+/*            e->Strand, */
+/*            e->Frame, */
+/*            GenePrefix, */
+/*            Name, */
+/*            ngen, */
+/*            nExon, */
+/*            GenePrefix, */
+/*            Name, */
+/*            ngen, */
+/*            e->Type); */
+        printf("%s\t%s\t%s\t%ld\t%ld\t%1.2f\t%c\t%hd\tID=cds_%s%s_%ld.%i;Parent=mRNA_%s%s_%ld;Target=%s_predicted_protein_%s%s_%ld %d %d%s\n",
+               /* correct stop codon position, Terminal- & Terminal+ */
+               Name,
+               (e->evidence) ? EVIDENCE : VERSION,
+               "CDS",
+               (e->evidence) ? e->Acceptor->Position : e->Acceptor->Position + e->offset1,
+               (e->evidence) ? e->Donor->Position : e->Donor->Position + e->offset2,
+               (e->Score == MAXSCORE) ? 0.0 : e->Score,
+               e->Strand,
+               e->Frame,
+               GenePrefix,
+               Name,
+               ngen,
+               nExon,
+               GenePrefix,
+               Name,
+               ngen,
+               VERSION,
+               GenePrefix,
+               Name,
+               ngen,
+               (e->Strand == '+') ? nAA - AA2 + COFFSET : AA1,
+               (e->Strand == '+') ? nAA - AA1 + COFFSET : AA2,
+               attribute);
+
+    }
+    else {
+        if (GFF) {
+            /* GFF format */
+            printf("%s\t%s\t%s\t%ld\t%ld\t%1.2f\t%c\t%hd\t%s%s_%ld\n",
+                   /* correct stop codon position, Terminal- & Terminal+ */
+                   Name,
+                   (e->evidence) ? EVIDENCE : VERSION,
+                   e->Type,
+                   (e->evidence) ? e->Acceptor->Position : e->Acceptor->Position + e->offset1,
+                   (e->evidence) ? e->Donor->Position : e->Donor->Position + e->offset2,
+                   (e->Score == MAXSCORE) ? 0.0 : e->Score,
+                   e->Strand,
+                   e->Frame,
+                   GenePrefix,
+                   Name,
+                   ngen);
+        }
+        else {
+            /* Default format for genes */
+            printf("%8s %8ld %8ld\t%5.2f\t%c %hd %hd\t%5.2f\t%5.2f\t%5.2f\t%5.2f\tAA %3d:%3d %s%s_%ld\n",
+                   /* correct stop codon position, Terminal- & Terminal+ */
+                   e->Type,
+                   (e->evidence) ? e->Acceptor->Position : e->Acceptor->Position + e->offset1,
+                   (e->evidence) ? e->Donor->Position : e->Donor->Position + e->offset2,
+                   (e->Score == MAXSCORE) ? 0.0 : e->Score,
+                   e->Strand,
+                   e->Frame,
+                   (3 - e->Remainder) % 3,
+                   e->Acceptor->Score,
+                   e->Donor->Score,
+                   e->PartialScore,
+                   e->HSPScore,
+                   (e->Strand == '+') ? nAA - AA2 + COFFSET : AA1,
+                   (e->Strand == '+') ? nAA - AA1 + COFFSET : AA2,
+                   GenePrefix,
+                   Name,
+                   ngen);
+        }
     }
 }
 
 /* Print a predicted gene from a assembled gene: gff/geneid format */
 void PrintGGene(exonGFF *s,
-		exonGFF *e,
-                char Name[],
-                long ngen,
-                float score,
-		char* GenePrefix)
-{
-  if (GFF3)
-    {
-      /* GFF3 format */
-      printf ("%s\t%s\tgene\t%ld\t%ld\t%.2f\t%c\t.\tID=%s%s_%ld;Name=%s%s_%ld\n",
-	      /* correct stop codon position, Terminal- & Terminal+ */ 
-	      Name,
-	      (e->evidence)? EVIDENCE : VERSION,     
-	      (e->evidence)? e->Acceptor->Position : e->Acceptor->Position + e->offset1,
-	      (e->evidence)? s->Donor->Position : s->Donor->Position + s->offset2,
-	      score,
-	      e->Strand,
-	      GenePrefix,
-	      Name,
-	      ngen,
-	      GenePrefix,
-	      Name,
-	      ngen); 
+                exonGFF *e,
+                char    Name[],
+                long    ngen,
+                float   score,
+                char    *GenePrefix){
+    if (GFF3) {
+        /* GFF3 format */
+        printf("%s\t%s\tgene\t%ld\t%ld\t%.2f\t%c\t.\tID=%s%s_%ld;Name=%s%s_%ld\n",
+               /* correct stop codon position, Terminal- & Terminal+ */
+               Name,
+               (e->evidence) ? EVIDENCE : VERSION,
+               (e->evidence) ? e->Acceptor->Position : e->Acceptor->Position + e->offset1,
+               (e->evidence) ? s->Donor->Position : s->Donor->Position + s->offset2,
+               score,
+               e->Strand,
+               GenePrefix,
+               Name,
+               ngen,
+               GenePrefix,
+               Name,
+               ngen);
     }
-  else
-    {
-      if (GFF){
-	/* GFF format */
-	printf ("%s\t%s\tgene\t%ld\t%ld\t%.2f\t%c\t.\t%s%s_%ld\n",
-		/* correct stop codon position, Terminal- & Terminal+ */ 
-		Name,
-		(e->evidence)? EVIDENCE : VERSION,     
-		(e->evidence)? s->Acceptor->Position : s->Acceptor->Position + e->offset1,
-		(e->evidence)? e->Donor->Position : e->Donor->Position + e->offset2,
-		score,
-		e->Strand,
-		GenePrefix,
-		Name,
-		ngen);
-      }
+    else {
+        if (GFF) {
+            /* GFF format */
+            printf("%s\t%s\tgene\t%ld\t%ld\t%.2f\t%c\t.\t%s%s_%ld\n",
+                   /* correct stop codon position, Terminal- & Terminal+ */
+                   Name,
+                   (e->evidence) ? EVIDENCE : VERSION,
+                   (e->evidence) ? s->Acceptor->Position : s->Acceptor->Position + e->offset1,
+                   (e->evidence) ? e->Donor->Position : e->Donor->Position + e->offset2,
+                   score,
+                   e->Strand,
+                   GenePrefix,
+                   Name,
+                   ngen);
+        }
     }
 }
 /* Print a predicted mRNA from a assembled gene: gff/geneid format */
 void PrintGmRNA(exonGFF *s,
-		exonGFF *e,
-                char Name[],
-                long ngen,
-                float score,
-		char* GenePrefix)
-{
-  if (GFF3)
-    {
-		
-      /* GFF3 format */
-      printf ("%s\t%s\tmRNA\t%ld\t%ld\t%1.2f\t%c\t.\tID=mRNA_%s%s_%ld;Parent=%s%s_%ld\n",
-	      /* correct stop codon position, Terminal- & Terminal+ */ 
-	      Name,
-	      (e->evidence)? EVIDENCE : VERSION,     
-	      (e->evidence)? e->Acceptor->Position : e->Acceptor->Position + e->offset1,
-	      (e->evidence)? s->Donor->Position : s->Donor->Position + s->offset2,
-	      score,
-	      e->Strand,
-	      GenePrefix,
-	      Name,
-	      ngen,
-	      GenePrefix,
-	      Name,
-	      ngen);
+                exonGFF *e,
+                char    Name[],
+                long    ngen,
+                float   score,
+                char    *GenePrefix){
+    if (GFF3) {
+
+        /* GFF3 format */
+        printf("%s\t%s\tmRNA\t%ld\t%ld\t%1.2f\t%c\t.\tID=mRNA_%s%s_%ld;Parent=%s%s_%ld\n",
+               /* correct stop codon position, Terminal- & Terminal+ */
+               Name,
+               (e->evidence) ? EVIDENCE : VERSION,
+               (e->evidence) ? e->Acceptor->Position : e->Acceptor->Position + e->offset1,
+               (e->evidence) ? s->Donor->Position : s->Donor->Position + s->offset2,
+               score,
+               e->Strand,
+               GenePrefix,
+               Name,
+               ngen,
+               GenePrefix,
+               Name,
+               ngen);
     }
-  else
-    {
-      if (GFF){
-	/* GFF format */
-	printf ("%s\t%s\tgene\t%ld\t%ld\t%1.2f\t%c\t.\t%s%s_%ld\n",
-		/* correct stop codon position, Terminal- & Terminal+ */ 
-		Name,
-		(e->evidence)? EVIDENCE : VERSION,     
-		(e->evidence)? s->Acceptor->Position : s->Acceptor->Position + e->offset1,
-		(e->evidence)? e->Donor->Position : e->Donor->Position + e->offset2,
-		score,
-		e->Strand,
-		GenePrefix,
-		Name,
-		ngen);
-      }
+    else {
+        if (GFF) {
+            /* GFF format */
+            printf("%s\t%s\tgene\t%ld\t%ld\t%1.2f\t%c\t.\t%s%s_%ld\n",
+                   /* correct stop codon position, Terminal- & Terminal+ */
+                   Name,
+                   (e->evidence) ? EVIDENCE : VERSION,
+                   (e->evidence) ? s->Acceptor->Position : s->Acceptor->Position + e->offset1,
+                   (e->evidence) ? e->Donor->Position : e->Donor->Position + e->offset2,
+                   score,
+                   e->Strand,
+                   GenePrefix,
+                   Name,
+                   ngen);
+        }
     }
 }
 /* Print a predicted intron from an assembled gene: gff/geneid format */
 void PrintGIntron(exonGFF *d,
-		  exonGFF *a,
-		  char Name[],
-		  long ngen,
-		  int numInt,
-		  char* GenePrefix,
-		  int evidence,
-		  float score)
-{
-  char attribute[MAXSTRING] = "";
-  char tmpstr[MAXSTRING] = "";
-  /* float score = 0.0; */
-  char intronType[MAXTYPE]; 
-  strcpy(intronType,"U2");
-  char intronSubtype[MAXTYPE]; 
-  strcpy(intronSubtype,"GT-AG");
-  short phase = (3 - d->Remainder)%3;
-  /* short phase = MIN(0, 3 - a->Frame); */
-  long start = (a->evidence)? a->Acceptor->Position: d->Donor->Position + 1 + d->offset2;
-  long end = (a->evidence)? a->Donor->Position: a->Acceptor->Position -1 + a->offset1;
+                  exonGFF *a,
+                  char    Name[],
+                  long    ngen,
+                  int     numInt,
+                  char    *GenePrefix,
+                  int     evidence,
+                  float   score){
+    char attribute[MAXSTRING] = "";
+    char tmpstr[MAXSTRING]    = "";
+    /* float score = 0.0; */
+    char intronType[MAXTYPE];
 
-  if (evidence){
-    /* score = a->Score; */
-  }else{
-    score = (d->Donor->Score + a->Acceptor->Score)/2;
-  }
-  if (!(strcmp(d->Donor->subtype,sU12gtag))||!(strcmp(d->Donor->subtype,sU12atac))){
-    strcpy(intronType,"U12");
-  }
-  if (!(strcmp(d->Donor->subtype,sU12gtag))){
-    strcpy(intronSubtype,"GT-AG");
-  }
-  if (!(strcmp(d->Donor->subtype,sU12atac))){
-    strcpy(intronSubtype,"AT-AC");
-  }
-  if (d->Strand == '-'){
-    phase = (3 - a->Remainder)%3;
-  }
-  if (GFF3) {
-    /* GFF3 format */
-      if (! d->evidence){
-	if (d->Strand == cFORWARD){
-	  sprintf(tmpstr,";donor_score=%1.2f;acceptor_score=%1.2f;acceptor_profile_score=%1.2f",d->Donor->Score,a->Acceptor->Score,a->Acceptor->ScoreAccProfile);strcat(attribute,tmpstr);
-	    
-	  if (PPT){
-	    sprintf(tmpstr,";ppt_score=%1.2f;ppt_pos=%i",a->Acceptor->ScorePPT,a->Acceptor->PositionPPT);strcat(attribute,tmpstr);
-	    }
-	  if ((BP && a->Acceptor->class == U2)||(a->Acceptor->class != U2)){
-	    sprintf(tmpstr,";bp_score=%1.2f;bp_pos=%i",a->Acceptor->ScoreBP,a->Acceptor->PositionBP);strcat(attribute,tmpstr);
-	  } 
-	}else{
-	  sprintf(tmpstr,";donor_score=%1.2f;acceptor_score=%1.2f;acceptor_profile_score=%1.2f",a->Acceptor->Score,d->Donor->Score,d->Donor->ScoreAccProfile);strcat(attribute,tmpstr);
-	    
-	  if (PPT){
-	    sprintf(tmpstr,";ppt_score=%1.2f;ppt_pos=%i",d->Donor->ScorePPT,d->Donor->PositionPPT);strcat(attribute,tmpstr);
-	    }
-	  if ((BP && d->Donor->class == U2)||(d->Donor->class != U2)){
-	    sprintf(tmpstr,";bp_score=%1.2f;bp_pos=%i",d->Donor->ScoreBP,d->Donor->PositionBP);strcat(attribute,tmpstr);
-	  }
-	}
-      }
-    
-    printf ("%s\t%s\tintron\t%ld\t%ld\t%1.2f\t%c\t%hd\tID=intron_%s%s_%ld.%i;Parent=%s%s_%ld;type=%s;subtype=%s%s\n",
-	    /* correct stop codon position, Terminal- & Terminal+ */ 
-	    Name,
-	    evidence? EVIDENCE : VERSION,     
-	    start,
-	    end,
-	    (score==MAXSCORE)? 0.0:score,
-	    a->Strand,
-	    phase,
-	    GenePrefix,
-	    Name,
-	    ngen,
-	    numInt,
-	    GenePrefix,
-	    Name,
-	    ngen,
-	    intronType,
-	    intronSubtype,
-	    attribute
-	    );
-  } else {
-    if (GFF){		 
-      /* GFF format */
-      printf ("%s\t%s\t%s_intron\t%ld\t%ld\t%1.2f\t%c\t%hd\t%s%s_%ld\n",
-	      /* correct stop codon position, Terminal- & Terminal+ */ 
-	      Name,
-	      evidence? EVIDENCE : VERSION,     
-	      intronType,
-	      start,
-	      end,
-	      (score==MAXSCORE)? 0.0:score,
-	      a->Strand,
-	      phase,
-	      GenePrefix,
-	      Name,
-	      ngen);	  	
+    strcpy(intronType, "U2");
+    char  intronSubtype[MAXTYPE];
+    strcpy(intronSubtype, "GT-AG");
+    short phase = (3 - d->Remainder) % 3;
+    /* short phase = MIN(0, 3 - a->Frame); */
+    long  start = (a->evidence) ? a->Acceptor->Position : d->Donor->Position + 1 + d->offset2;
+    long  end   = (a->evidence) ? a->Donor->Position : a->Acceptor->Position - 1 + a->offset1;
+
+    if (evidence) {
+        /* score = a->Score; */
     }
-  }
+    else {
+        score = (d->Donor->Score + a->Acceptor->Score) / 2;
+    }
+
+    if (!(strcmp(d->Donor->subtype, sU12gtag)) || !(strcmp(d->Donor->subtype, sU12atac))) {
+        strcpy(intronType, "U12");
+    }
+
+    if (!(strcmp(d->Donor->subtype, sU12gtag))) {
+        strcpy(intronSubtype, "GT-AG");
+    }
+
+    if (!(strcmp(d->Donor->subtype, sU12atac))) {
+        strcpy(intronSubtype, "AT-AC");
+    }
+
+    if (d->Strand == '-') {
+        phase = (3 - a->Remainder) % 3;
+    }
+
+    if (GFF3) {
+        /* GFF3 format */
+        if (!d->evidence) {
+            if (d->Strand == cFORWARD) {
+                sprintf(tmpstr, ";donor_score=%1.2f;acceptor_score=%1.2f;acceptor_profile_score=%1.2f", d->Donor->Score, a->Acceptor->Score, a->Acceptor->ScoreAccProfile);
+                strcat(attribute, tmpstr);
+
+                if (PPT) {
+                    sprintf(tmpstr, ";ppt_score=%1.2f;ppt_pos=%i", a->Acceptor->ScorePPT, a->Acceptor->PositionPPT);
+                    strcat(attribute, tmpstr);
+                }
+
+                if ((BP && a->Acceptor->class == U2) || (a->Acceptor->class != U2)) {
+                    sprintf(tmpstr, ";bp_score=%1.2f;bp_pos=%i", a->Acceptor->ScoreBP, a->Acceptor->PositionBP);
+                    strcat(attribute, tmpstr);
+                }
+            }
+            else {
+                sprintf(tmpstr, ";donor_score=%1.2f;acceptor_score=%1.2f;acceptor_profile_score=%1.2f", a->Acceptor->Score, d->Donor->Score, d->Donor->ScoreAccProfile);
+                strcat(attribute, tmpstr);
+
+                if (PPT) {
+                    sprintf(tmpstr, ";ppt_score=%1.2f;ppt_pos=%i", d->Donor->ScorePPT, d->Donor->PositionPPT);
+                    strcat(attribute, tmpstr);
+                }
+
+                if ((BP && d->Donor->class == U2) || (d->Donor->class != U2)) {
+                    sprintf(tmpstr, ";bp_score=%1.2f;bp_pos=%i", d->Donor->ScoreBP, d->Donor->PositionBP);
+                    strcat(attribute, tmpstr);
+                }
+            }
+        }
+
+        printf("%s\t%s\tintron\t%ld\t%ld\t%1.2f\t%c\t%hd\tID=intron_%s%s_%ld.%i;Parent=%s%s_%ld;type=%s;subtype=%s%s\n",
+               /* correct stop codon position, Terminal- & Terminal+ */
+               Name,
+               evidence ? EVIDENCE : VERSION,
+               start,
+               end,
+               (score == MAXSCORE) ? 0.0 : score,
+               a->Strand,
+               phase,
+               GenePrefix,
+               Name,
+               ngen,
+               numInt,
+               GenePrefix,
+               Name,
+               ngen,
+               intronType,
+               intronSubtype,
+               attribute
+               );
+    }
+    else {
+        if (GFF) {
+            /* GFF format */
+            printf("%s\t%s\t%s_intron\t%ld\t%ld\t%1.2f\t%c\t%hd\t%s%s_%ld\n",
+                   /* correct stop codon position, Terminal- & Terminal+ */
+                   Name,
+                   evidence ? EVIDENCE : VERSION,
+                   intronType,
+                   start,
+                   end,
+                   (score == MAXSCORE) ? 0.0 : score,
+                   a->Strand,
+                   phase,
+                   GenePrefix,
+                   Name,
+                   ngen);
+        }
+    }
 
 }
 
 /* Print a predicted exon from a assembled gene: XML format */
 void PrintXMLExon(exonGFF *e,
-                  char Name[],
-                  long ngen,
-                  long nExon,
-                  int type1,
-                  int type2,
-                  int nExons,
-		  char* GenePrefix) 
-{
-  char Type[MAXTYPE];
-  
-  /* XML format */
-  /* exon*/
-  printf("      <exon idExon=\"%s%s.G%ldE%ld\" type=\"%s\" frame=\"%hd\" score=\"%.2f\">\n",
-		 GenePrefix,Name,ngen,nExons-nExon+1,e->Type,e->Frame,e->Score);
-  
-  /* Both sites */
-  Type[0] = '\0';
-  switch(type1)
-    {
-    case ACC: strcpy(Type,sACC); break;
-    case STA: strcpy(Type,sSTA); break;
-    case DON: strcpy(Type,sDON); break;
-    case STO: strcpy(Type,sSTO); break;
+                  char    Name[],
+                  long    ngen,
+                  long    nExon,
+                  int     type1,
+                  int     type2,
+                  int     nExons,
+                  char    *GenePrefix){
+    char Type[MAXTYPE];
+
+    /* XML format */
+    /* exon*/
+    printf("      <exon idExon=\"%s%s.G%ldE%ld\" type=\"%s\" frame=\"%hd\" score=\"%.2f\">\n",
+           GenePrefix, Name, ngen, nExons - nExon + 1, e->Type, e->Frame, e->Score);
+
+    /* Both sites */
+    Type[0] = '\0';
+    switch (type1) {
+        case ACC:
+            strcpy(Type, sACC);
+            break;
+        case STA:
+            strcpy(Type, sSTA);
+            break;
+        case DON:
+            strcpy(Type, sDON);
+            break;
+        case STO:
+            strcpy(Type, sSTO);
+            break;
     }
-  
-  printf("         <site idSite=\"%s%s.G%ldE%ldS1\" type=\"%s\" position=\"%ld\" score=\"%.2f\" />\n",
-		 GenePrefix,Name,ngen,nExons-nExon+1,Type,e->Acceptor->Position + e->offset1,e->Acceptor->Score);
-  
-  Type[0] = '\0';
-  switch(type2)
-    {
-    case ACC: strcpy(Type,sACC); break;
-    case STA:strcpy(Type,sSTA); break;
-    case DON:strcpy(Type,sDON); break;
-    case STO:strcpy(Type,sSTO); break;
+
+    printf("         <site idSite=\"%s%s.G%ldE%ldS1\" type=\"%s\" position=\"%ld\" score=\"%.2f\" />\n",
+           GenePrefix, Name, ngen, nExons - nExon + 1, Type, e->Acceptor->Position + e->offset1, e->Acceptor->Score);
+
+    Type[0] = '\0';
+    switch (type2) {
+        case ACC:
+            strcpy(Type, sACC);
+            break;
+        case STA:
+            strcpy(Type, sSTA);
+            break;
+        case DON:
+            strcpy(Type, sDON);
+            break;
+        case STO:
+            strcpy(Type, sSTO);
+            break;
     }
-  
-  printf("         <site idSite=\"%s%s.G%ldE%ldS2\" type=\"%s\" position=\"%ld\" score=\"%.2f\" />\n",
-		 GenePrefix,Name,ngen,nExons-nExon+1,Type,e->Donor->Position + e->offset2,e->Donor->Score);
-  
-  printf("      </exon>\n");
+
+    printf("         <site idSite=\"%s%s.G%ldE%ldS2\" type=\"%s\" position=\"%ld\" score=\"%.2f\" />\n",
+           GenePrefix, Name, ngen, nExons - nExon + 1, Type, e->Donor->Position + e->offset2, e->Donor->Score);
+
+    printf("      </exon>\n");
 }

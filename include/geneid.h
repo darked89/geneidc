@@ -26,59 +26,74 @@
 *  You should have received a copy of the GNU General Public License     *
 *  along with this program; if not, write to the Free Software           *
 *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.             *
-*************************************************************************/     
+*************************************************************************/
 
 /* $Id: geneid.h,v 1.49 2010-01-04 15:17:58 talioto Exp $ */
+#pragma once
 
 /* Required libraries */
+#define _POSIX_C_SOURCE 2
+
 #include <stdlib.h>
+#include <assert.h>
 #include <stdio.h>
+
+#include <stdint.h>
+#include <float.h>
+#include <stdbool.h>
+
 #include <unistd.h>
 #include <string.h>
-#include <time.h>
 #include <math.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 
+#include <time.h>
 /*************************************************************************
 A. DEFINITIONS
 *************************************************************************/
 
-/* Length of every processed fragment       */ 
-#define LENGTHSi 220000          
+/* The name of the game                     */
+#define VERSION   "geneid_v1.3"
+#define SITES     "geneid_v1.3"
+#define EXONS     "geneid_v1.3"
+#define EVIDENCE  "evidence"
+
+/* Length of every processed fragment       */
+#define LENGTHSi 220000
 
 /* Overlap between 2 fragments              */
-#define OVERLAP 10000            
+#define OVERLAP 10000
 
 /* One signal per L / RSITES bp             */
 #define RSITES 0.1
 
 /* /\* One U12 signal per L / RU12SITES bp             *\/ */
-/* #define RU12SITES 6   */               
+/* #define RU12SITES 6   */
 
 /* One exon per L / REXONS bp               */
-#define REXONS 3                 
+#define REXONS 3
 
 /* /\* One U12 intron-flanking exon per L / RU12EXONS bp               *\/ */
 /* #define RU12EXONS 6  */
 
 /* Estimated amount of backup signals       */
-#define RBSITES 75               
+#define RBSITES 75
 
 /* Estimated amount of backup exons         */
-#define RBEXONS 125              
+#define RBEXONS 125
 
 /* Ratios for every exon type               */
-#define RFIRST 1                 
+#define RFIRST 1
 #define RINTER 0.2
 #define RTERMI 1
-#define RSINGL 3 
+#define RSINGL 3
 #define RORF   3
 
 /* Total number of exons/fragment (factor)  */
-#define FSORT 8                  
+#define FSORT 8
 
-/* Number of exons to save every fragment   */ 
+/* Number of exons to save every fragment   */
 #define FDARRAY 5
 
 /* Basic values (in addition to ratios)     */
@@ -87,48 +102,48 @@ A. DEFINITIONS
 #define BASEVALUESITES_LARGE 600000
 #define BASEVALUEEXONS_LARGE 300000
 
-/* Max number of annotations per locus      */
-#define MAXEVIDENCES 12000000       
-#define MAXSITESEVIDENCES 3*MAXEVIDENCES
+/* Max number of annotations per fasta contig      */
+#define MAXEVIDENCES 12000000
+#define MAXSITESEVIDENCES 3 * MAXEVIDENCES
 
-/* Max number of HSP per locus/frame/strand */
-#define MAXHSP 1000000             
+/* Max number of HSP per fasta contig/frame/strand */
+#define MAXHSP 1000000
 
 /* Max number of locus in multi-fasta files */
-#define MAXNSEQUENCES 50         
+#define MAXNSEQUENCES 50
 
 /* Maximum number of predicted genes        */
-#define MAXGENE 15000            
+#define MAXGENE 15000
 
 /* Maximum number of exons in a gene        */
-#define MAXEXONGENE 1000         
+#define MAXEXONGENE 1000
 
 /* Maximum length of a protein              */
-#define MAXAA 50000              
+#define MAXAA 50000
 
 /* Maximum length of (cDNA) in genes        */
-#define MAXCDNA MAXAA*3          
+#define MAXCDNA MAXAA *3
 
 /* Maximum number of isochores              */
-#define MAXISOCHORES 4           
+#define MAXISOCHORES 4
 
 /* Minimum exon length (internal exons)     */
-#define EXONLENGTH 18            
+#define EXONLENGTH 18
 
 /* Minimum single gene length               */
-#define SINGLEGENELENGTH 60      
+#define SINGLEGENELENGTH 60
 
 /* Minimum ORF length                       */
-#define ORFLENGTH 60             
+#define ORFLENGTH 60
 
 /* Min length to compute coding potential   */
-#define MINEXONLENGTH 6          
+#define MINEXONLENGTH 6
 
 /* Score for exons with L <  MINEXONLENGTH  */
-#define MINSCORELENGTH 0.0       
+#define MINSCORELENGTH 0.0
 
 /* Region around exon to measure G+C        */
-#define ISOCONTEXT 1000          
+#define ISOCONTEXT 1000
 
 /* Number of nucloetides to scan for PPTs   */
 /* or Branch Points before the Acceptor site*/
@@ -154,71 +169,65 @@ A. DEFINITIONS
 #define sRSS_ACCEPTOR_SCORE_CUTOFF "RSS_Acceptor_Score_Cutoff"
 
 /* Markov score penalty for unknown symbols */
-#define NULL_OLIGO_SCORE  -4     
+#define NULL_OLIGO_SCORE  -4
 
 /* Maximum profile dimension (length)       */
-#define PROFILEDIM 100           
+#define PROFILEDIM 100
 
 /* Maximum number of chars (locus names)    */
-#define LOCUSLENGTH 500          
+#define LOCUSLENGTH 500
 
 /* Maximum oligo (word) length (Markov)     */
-#define OLIGOLENGTH 10           
+#define OLIGOLENGTH 10
 
 /* Maximum chars per input line             */
-#define MAXLINE 1000             
+#define MAXLINE 1000
 
 /* Characters per fasta line                */
-#define FASTALINE 60             
+#define FASTALINE 60
 
 /* Maximum length for strings (mess)        */
-#define MAXSTRING 100            
+#define MAXSTRING 100
 
 /* Mark rules up as blocking in Gene model  */
-#define BLOCK 1                  
-#define NONBLOCK 0               
+#define BLOCK 1
+#define NONBLOCK 0
 
 /* Array range in C: 0..N-1                 */
-#define COFFSET 1                
+#define COFFSET 1
 
 /* Dictionary definitions (hash)            */
-#define MAXENTRY 97              
-#define MAXTYPE 50               
-#define MAXINFO 100
-#define NOTFOUND -1
+#define MAXENTRY  97
+#define MAXTYPE   50
+#define MAXINFO  100
+#define NOTFOUND  -1
 #define UNKNOWNAA 'X'
 
-/* Dumpster hash table size (factor)        */ 
-#define HASHFACTOR 3             
+/* Dumpster hash table size (factor)        */
+#define HASHFACTOR 3
 
 /* maximum length of filenames              */
-#define FILENAMELENGTH 5000       
+#define FILENAMELENGTH 5000
 
 /* Name of default parameter file           */
-#define PARAMETERFILE  "param.default"   
-
-/* The name of the game                     */
-#define VERSION   "geneid_v1.3"  
-#define SITES     "geneid_v1.3"  
-#define EXONS     "geneid_v1.3"       
-#define EVIDENCE  "evidence"           
+#define PARAMETERFILE  "param.default"
 
 /* Constants:                               */
-#define FRAMES 3                   
-#define STRANDS 2                      
-#define LENGTHCODON 3                  
-#define PERCENT 100
-#define MINUTE 60                    
-#define MEGABYTE 1048576
-#define MAXTIMES 100
-#define PROT 0
-#define DNA  1
+#define FRAMES      3
+#define STRANDS     2
+#define LENGTHCODON 3
+#define PERCENT     100
+#define MINUTE      60
+#define MEGABYTE    1048576
+#define MAXTIMES    100
+#define PROT        0
+#define DNA         1
 
 /* Strands                                  */
 #define cFORWARD '+'
 #define cREVERSE '-'
 
-#define FORWARD 0                      
+#define FORWARD 0
 #define REVERSE 1
 
 #define sFORWARD "Forward"
@@ -228,7 +237,7 @@ A. DEFINITIONS
 #define xmlREVERSE "rvs"
 
 /* Signals                                  */
-#define ACC 0                    
+#define ACC 0
 #define DON 1
 #define STA 2
 #define STO 3
@@ -241,7 +250,7 @@ A. DEFINITIONS
 #define sBP  "BranchPoint"
 
 /* Splice Classes                                  */
-#define U2 0                    
+#define U2 0
 #define U12gtag 1
 #define U12atac 2
 
@@ -252,8 +261,8 @@ A. DEFINITIONS
 /* Intron Subtypes                           */
 #define MAXSUBTYPE 10
 #define MAXSPLICETYPE 5
-#define sU2 "U2"  
-#define sU2gcag "U2gcag"            
+#define sU2 "U2"
+#define sU2gcag "U2gcag"
 #define sU12gtag "U12gtag"
 #define sU12atac "U12atac"
 #define sU2gta "U2gta"
@@ -286,15 +295,15 @@ A. DEFINITIONS
 #define sU12_EXON_WEIGHT "U12_Exon_weight"
 
 /* Exons                                    */
-#define FIRST      0               
-#define INTERNAL   1
-#define TERMINAL   2
-#define SINGLE     3
-#define ORF        4
-#define ZEROLENGTH 5
-#define INTRON     6
+#define FIRST             0
+#define INTERNAL          1
+#define TERMINAL          2
+#define SINGLE            3
+#define ORF               4
+#define ZEROLENGTH        5
+#define INTRON            6
 
-#define sFIRST    "First"              
+#define sFIRST    "First"
 #define sINTERNAL "Internal"
 #define sINTRON   "Intron"
 #define sZEROLENGTH "RSS"
@@ -302,7 +311,7 @@ A. DEFINITIONS
 #define sSINGLE   "Single"
 #define sORF      "ORF"
 #define sEXON     "Exon"
-#define sPROMOTER "Promoter"              
+#define sPROMOTER "Promoter"
 
 #define sBEGIN    "Begin"
 #define sBEGINFWD "Begin+"
@@ -312,24 +321,24 @@ A. DEFINITIONS
 #define sENDRVS   "End-"
 
 /* Infinity: positions in sequence          */
-#define INFI 3999999999           
+#define INFI 3999999999
 
 /* Infinity: word in Gene model             */
-#define SINFI "Infinity"         
+#define SINFI "Infinity"
 
 /* Infinity: score functions                */
-#define INF  1.7976931348623157E+308  
+#define INF  1.7976931348623157E+308
 
 /* Score (annotations with score=".")       */
-#define MAXSCORE 10000.0         
+#define MAXSCORE 10000.0
 
 /* ReadSeq: Message (info)/X chars          */
-#define MESSAGE_FREQ 100000      
+#define MESSAGE_FREQ 100000
 
 /* Field group in gff: Not grouped exons    */
-#define NOGROUP "NON_GROUPED"    
+#define NOGROUP "NON_GROUPED"
 
-#define NOVALUE 0              
+#define NOVALUE 0
 
 /* Estimation values: memory account        */
 #define AVG_DIM   15
@@ -337,651 +346,822 @@ A. DEFINITIONS
 #define OLIGO_DIM  5
 
 /* Macros (functions)                       */
-#define MIN(a,b) (a<b)?a:b;
-#define MAX(a,b) (a>b)?a:b;
-
+#define MIN(a, b) (a < b) ? a : b;
+#define MAX(a, b) (a > b) ? a : b;
+#define FREE(p)   do { free(p); (p) = NULL; } while (0)
 
 /*************************************************************************
 B. DATA TYPES
 *************************************************************************/
 
-typedef struct s_node *pnode;          
+typedef struct s_node *pnode;
 typedef struct s_node
 {
-  char s[MAXSTRING];
-  int key;
-  pnode next;
-} node; 
+    char  s[MAXSTRING];
+    int   key;
+    pnode next;
+} node;
 
-typedef struct s_dict                  
+typedef struct s_dict
 {
-  pnode T[MAXENTRY];
-  int nextFree; 
+    pnode T[MAXENTRY];
+    int   nextFree;
 } dict;
 
-typedef struct s_profile               
+typedef struct s_profile
 {
-  int    dimension;
-  int    offset;
-  float  cutoff;
-  int    order;
-  float  afactor;
-  float  bfactor;
-  int    acc_context;
-  int    dist;
-  int    opt_dist;
-  float    penalty_factor;
-
-  long dimensionTrans;
-  float*  transitionValues[PROFILEDIM];
+    int   dimension;
+    int   offset;
+    float cutoff;
+    int   order;
+    float afactor;
+    float bfactor;
+    int   acc_context;
+    int   dist;
+    int   opt_dist;
+    float penalty_factor;
+    long  dimensionTrans;
+    float *transitionValues[PROFILEDIM];
 } profile;
 
-typedef struct s_site                  
+typedef struct s_site
 {
-  long Position;                       
-  float Score;                        
-  float ScoreBP;
-  float ScorePPT;
-  float ScoreAccProfile;
-  int PositionBP;
-  int PositionPPT;
-  char type[MAXSPLICETYPE];
-  char subtype[MAXSUBTYPE];
-  short class;
+    long  Position;
+    float Score;
+    float ScoreAccProfile;
+    float ScoreBP;
+    float ScorePPT;
+
+    int   PositionBP;
+    int   PositionPPT;
+    char  type[MAXSPLICETYPE];
+    char  subtype[MAXSUBTYPE];
+    short class;
 } site;
 
-typedef struct s_packSites             
+typedef struct s_packSites
 {
-  site* StartCodons;                   
-  site* AcceptorSites;
-  site* DonorSites;
-  site* StopCodons;
+    site *StartCodons;
+    site *AcceptorSites;
+    site *DonorSites;
+    site *StopCodons;
 
-  long  nStartCodons;                  
-  long  nAcceptorSites;
-  long  nDonorSites;
-  long  nStopCodons;
+    long nStartCodons;
+    long nAcceptorSites;
+    long nDonorSites;
+    long nStopCodons;
 
-  long nSites;                         
+    long nSites;
 } packSites;
 
-typedef struct s_exonGFF *pexonGFF;    
+typedef struct s_exonGFF *pexonGFF;
 typedef struct s_exonGFF
 {
-  site* Acceptor;
-  site* Donor;
-  char Type[MAXTYPE];
-  short Frame;
-  short Remainder;
-  char Strand;
-  float PartialScore;
-  float HSPScore;
-  float Score;
-  pexonGFF PreviousExon;
-  double GeneScore;
-  char Group[MAXSTRING];
-  int offset1;
-  int offset2;
-  short lValue;
-  short rValue;
-  short evidence;
-  short selected;
-  short three_prime_partial;
-  short five_prime_partial;
+    site     *Acceptor;
+    site     *Donor;
+    char     Type[MAXTYPE];
+    short    Frame;
+    short    Remainder;
+    char     Strand;
+    float    PartialScore;
+    float    HSPScore;
+    float    Score;
+    pexonGFF PreviousExon;
+    double   GeneScore;
+    char     Group[MAXSTRING];
+    int      offset1;
+    int      offset2;
+    short    lValue;
+    short    rValue;
+    short    evidence;
+    short    selected;
+    short    three_prime_partial;
+    short    five_prime_partial;
 } exonGFF;
 
-typedef struct s_packExons             
+typedef struct s_packExons
 {
-  exonGFF* InitialExons;               
-  exonGFF* InternalExons;
-  exonGFF* ZeroLengthExons;
-  exonGFF* TerminalExons;
-  exonGFF* Singles;
-  exonGFF* ORFs;
-  long nInitialExons;                  
-  long nInternalExons;
-  long nZeroLengthExons;
-  long nTerminalExons;
-  long nSingles;
-  long nORFs;
-  long nExons;                         
+    exonGFF *InitialExons;
+    exonGFF *InternalExons;
+    exonGFF *ZeroLengthExons;
+    exonGFF *TerminalExons;
+    exonGFF *Singles;
+    exonGFF *ORFs;
+    long    nInitialExons;
+    long    nInternalExons;
+    long    nZeroLengthExons;
+    long    nTerminalExons;
+    long    nSingles;
+    long    nORFs;
+    long    nExons;
 } packExons;
 
 typedef struct s_packGenes
 {
-  exonGFF* ***Ga;
-  exonGFF* Ghost;
-  exonGFF* GOptim;
-  exonGFF* **d;
-  long* km;
-  long* je;
+    exonGFF ****Ga;
+    exonGFF *Ghost;
+    exonGFF *GOptim;
+    exonGFF ***d;
+    long    *km;
+    long    *je;
 } packGenes;
 
 typedef struct s_packEvidence
 {
-  site* vSites;
-  long nvSites;
-  exonGFF* vExons; 
-  long nvExons;  
+    site    *vSites;
+    long    nvSites;
+    exonGFF *vExons;
+    long    nvExons;
 } packEvidence;
 
 typedef struct s_HSP
 {
-  long Pos1;
-  long Pos2;
-  float Score;
+    long  Pos1;
+    long  Pos2;
+    float Score;
 } HSP;
 
 typedef struct s_packHSP
 {
-  HSP*** sPairs;
-  long* nSegments;
-  long nTotalSegments;
-  int visited;
+    HSP  ***sPairs;
+    long *nSegments;
+    long nTotalSegments;
+    int  visited;
 } packHSP;
 
 typedef struct s_packExternalInformation
 {
-  dict* locusNames;
+    dict *locusNames;
 
-  packHSP** homology;
-  packEvidence** evidence;
+    packHSP      **homology;
+    packEvidence **evidence;
 
-  long nSequences;
-  long nvExons;
-  long nHSPs;
+    long nSequences;
+    long nvExons;
+    long nHSPs;
 
-  long i1vExons;
-  long i2vExons;
-  long ivExons;
-  
-  long* iSegments;
-  float** sr;
+    long i1vExons;
+    long i2vExons;
+    long ivExons;
+
+    long  *iSegments;
+    float **sr;
 } packExternalInformation;
 
-typedef struct s_dumpNode *pdumpNode;  
+typedef struct s_dumpNode *pdumpNode;
 typedef struct s_dumpNode
 {
-  long acceptor;                      
-  long donor;
-  short aclass;
-  short dclass;
-  char asub[MAXSUBTYPE];
-  char dsub[MAXSUBTYPE];
-  short frame;
-  char strand;
-  char type[MAXTYPE];
+    long  acceptor;
+    long  donor;
+    short aclass;
+    short dclass;
+    char  asub[MAXSUBTYPE];
+    char  dsub[MAXSUBTYPE];
+    short frame;
+    char  strand;
+    char  type[MAXTYPE];
 
-  exonGFF* exon;                      
-  pdumpNode next;
-} dumpNode; 
+    exonGFF   *exon;
+    pdumpNode next;
+} dumpNode;
 
-typedef struct s_dumpHash              
+typedef struct s_dumpHash
 {
-  pdumpNode* T;
-  long total; 
+    pdumpNode *T;
+    long      total;
 } dumpHash;
 
 typedef struct s_packDump
-{ 
-  site* dumpSites;                     
-  long ndumpSites;
-  
-  exonGFF* dumpExons;                  
-  long ndumpExons;
+{
+    site *dumpSites;
+    long ndumpSites;
 
-  dumpHash* h; 
+    exonGFF *dumpExons;
+    long    ndumpExons;
+
+    dumpHash *h;
 } packDump;
 
-typedef struct s_account               
+typedef struct s_account
 {
-  long starts, starts_r,
-    stops, stops_r,
-    acc, acc_r,
-    don, don_r;
+    long starts,
+         starts_r,
+         stops,
+         stops_r,
+         acc,
+         acc_r,
+         don,
+         don_r;
 
-  long first, first_r,
-    internal, internal_r,
-    terminal, terminal_r,
-    single, single_r,
-    orf, orf_r;
+    long first,
+         first_r,
+         internal,
+         internal_r,
+         terminal,
+         terminal_r,
+         single,
+         single_r,
+         orf,
+         orf_r;
 
-  long totalExons;
-  
+    long totalExons;
 
-  int tSites, tExons, tGenes, tSort, tScore, tBackup;
-  time_t tStart;
+    int tSites,
+        tExons,
+        tGenes,
+        tSort,
+        tScore,
+        tBackup;
+    time_t tStart;
 
 } account;
 
 typedef struct s_packGC
 {
-  long* GC;
-  long* N;
+    long *GC;
+    long *N;
 } packGC;
 
-typedef struct s_paramexons            
+typedef struct s_paramexons
 {
-  float siteFactor;
+    float siteFactor;
 
-  float exonFactor;
-  float OligoCutoff;
+    float exonFactor;
+    float OligoCutoff;
 
-  float HSPFactor;
+    float HSPFactor;
 
-  float ExonWeight;
+    float ExonWeight;
 /*   float U12atacExonWeight; */
 /*   float U12gtagExonWeight; */
-  float ExonCutoff;
+    float ExonCutoff;
 } paramexons;
 
-typedef struct s_gparam                
+typedef struct s_gparam
 {
-  int leftValue;
-  int rightValue;
+    int leftValue;
+    int rightValue;
 
-  profile* StartProfile;               
-  profile* AcceptorProfile;
-  profile* PolyPTractProfile;
-  profile* BranchPointProfile;
-  profile* DonorProfile;
-  profile* U2gcagDonorProfile;
-  profile* U2gtaDonorProfile;
-  profile* U2gtgDonorProfile;
-  profile* U2gtyDonorProfile;
-  profile* U12gtagAcceptorProfile;
-  profile* U12BranchPointProfile;
-  profile* U12gtagDonorProfile;
-  profile* U12atacAcceptorProfile;
-  profile* U12atacDonorProfile;
-  profile* StopProfile;
+    profile *StartProfile;
+    profile *AcceptorProfile;
+    profile *PolyPTractProfile;
+    profile *BranchPointProfile;
+    profile *DonorProfile;
+    profile *U2gcagDonorProfile;
+    profile *U2gtaDonorProfile;
+    profile *U2gtgDonorProfile;
+    profile *U2gtyDonorProfile;
+    profile *U12gtagAcceptorProfile;
+    profile *U12BranchPointProfile;
+    profile *U12gtagDonorProfile;
+    profile *U12atacAcceptorProfile;
+    profile *U12atacDonorProfile;
+    profile *StopProfile;
 
-  float* OligoLogsIni[3];              
-  float* OligoLogsTran[3];
+    float *OligoLogsIni[3];
+    float *OligoLogsTran[3];
 
-  long OligoDim;                       
-  long OligoDim_1;           
-  int  OligoLength;
+    long OligoDim;
+    long OligoDim_1;
+    int  OligoLength;
 
-  paramexons* Initial;                 
-  paramexons* Internal;
-  paramexons* Terminal;
-  paramexons* Single;
-                                                                            
-  float* OligoDistIni[FRAMES]; 
-  float* OligoDistTran[FRAMES];
-  
-  int MaxDonors;                       
+    paramexons *Initial;
+    paramexons *Internal;
+    paramexons *Terminal;
+    paramexons *Single;
 
-  dict* D;                             
-  int*  nc;
-  int*  ne;
-  long* md;
-  long* Md;
-  int UC[MAXENTRY][MAXENTRY];
-  int DE[MAXENTRY][MAXENTRY];
-  int block[MAXENTRY];
-  int nclass;
+    float *OligoDistIni[FRAMES];
+    float *OligoDistTran[FRAMES];
+
+    int MaxDonors;
+
+    dict *D;
+    int  *nc;
+    int  *ne;
+    long *md;
+    long *Md;
+    int  UC[MAXENTRY][MAXENTRY];
+    int  DE[MAXENTRY][MAXENTRY];
+    int  block[MAXENTRY];
+    int  nclass;
 
 } gparam;
-
 
 /*************************************************************************
 C. IMPORTED HEADERS
 *************************************************************************/
-void PrintExonGFF(exonGFF *e, char* Name, char* Source);
 
-void PrintGeneGFF(exonGFF *e, char* Name, char* Source);
+void PrintExonGFF(exonGFF *e,
+                  char    *Name,
+                  char    *Source);
+
+void PrintGeneGFF(exonGFF *e,
+                  char    *Name,
+                  char    *Source);
 
 void printError(char *s);
 
-void printMess(char* s);
+void printMess(char *s);
 
-void printRes(char* s);
+void printRes(char *s);
 
-void printReadingInfo(char* s);
+void printReadingInfo(char *s);
 
-long GetSitesWithProfile(char *s, profile *p, site *st, long l1, long l2); 
+long GetSitesWithProfile(char    *s,
+                         profile *p,
+                         site    *st,
+                         long    l1,
+                         long    l2);
 
-long BuildDonors(char* s,short class,char* type,
-		 char* subtype,
-		 profile* p,
-		 site* st, 
-		 long l1, 
-		 long l2,
-		 long ns,
-		 long nsites
-		 ); 
+long BuildDonors(char    *s,
+                 short   class,
+                 char    *type,
+                 char    *subtype,
+                 profile *p,
+                 site    *st,
+                 long    l1,
+                 long    l2,
+                 long    ns,
+                 long    nsites
+                 );
+
 /* long BuildU12Donors(char* s, */
-/* 		    char* type, */
-/* 		    char* subtype, */
-/* 		    profile* u12gtag_p, */
-/* 		    profile* u12atac_p, */
-/* 		    site* st,  */
-/* 		    long l1,  */
-/* 		    long l2);  */
+/*                  char* type, */
+/*                  char* subtype, */
+/*                  profile* u12gtag_p, */
+/*                  profile* u12atac_p, */
+/*                  site* st,  */
+/*                  long l1,  */
+/*                  long l2);  */
 
-long GetStopCodons(char *s, profile *p, site *sc, long l1, long l2);
+long GetStopCodons(char    *s,
+                   profile *p,
+                   site    *sc,
+                   long    l1,
+                   long    l2);
 
-long BuildInitialExons(site *Start, long nStarts, 
-                       site *Donor, long nDonors,
-                       site *Stop, long nStops,
-                       int MaxDonors,
-		       char* ExonType,
-		       char* Sequence,
-                       exonGFF *Exon,long nexons );
+long BuildInitialExons(site    *Start,
+                       long    nStarts,
+                       site    *Donor,
+                       long    nDonors,
+                       site    *Stop,
+                       long    nStops,
+                       int     MaxDonors,
+                       char    *ExonType,
+                       char    *Sequence,
+                       exonGFF *Exon,
+                       long    nexons );
 
-long BuildInternalExons(site *Acceptor, long nAcceptors, 
-                        site *Donor, long nDonors,
-                        site *Stop, long nStops,
-                        int MaxDonors,
-			char* ExonType,
-			char* Sequence,
-                        exonGFF* Exon,long nexons);
-long BuildZeroLengthExons(site *Acceptor, long nAcceptors, 
-                        site *Donor, long nDonors,
-                        site *Stop, long nStops,
-                        int MaxDonors,
-			char* ExonType,
-			char* Sequence,
-                        exonGFF* Exon,long nexons); 
-long BuildTerminalExons (site *Acceptor, long nAcceptors, 
-                         site *Stop, long nStops,
-                         long LengthSequence,
-                         long cutPoint,
-			 char* ExonType,
-			 char* Sequence,
-			 exonGFF* Exon,long nexons);
+long BuildInternalExons(site    *Acceptor,
+                        long    nAcceptors,
+                        site    *Donor,
+                        long    nDonors,
+                        site    *Stop,
+                        long    nStops,
+                        int     MaxDonors,
+                        char    *ExonType,
+                        char    *Sequence,
+                        exonGFF *Exon,
+                        long    nexons);
 
-long BuildSingles(site *Start, long nStarts, 
-                  site *Stop, long nStops,
-                  long cutPoint,
-		  char* Sequence,
+long BuildZeroLengthExons(site    *Acceptor,
+                          long    nAcceptors,
+                          site    *Donor,
+                          long    nDonors,
+                          site    *Stop,
+                          long    nStops,
+                          int     MaxDonors,
+                          char    *ExonType,
+                          char    *Sequence,
+                          exonGFF *Exon,
+                          long    nexons);
+
+long BuildTerminalExons (site    *Acceptor,
+                         long    nAcceptors,
+                         site    *Stop,
+                         long    nStops,
+                         long    LengthSequence,
+                         long    cutPoint,
+                         char    *ExonType,
+                         char    *Sequence,
+                         exonGFF *Exon,
+                         long    nexons);
+
+long BuildSingles(site    *Start,
+                  long    nStarts,
+                  site    *Stop,
+                  long    nStops,
+                  long    cutPoint,
+                  char    *Sequence,
                   exonGFF *Exon);
 
-long BuildORFs(site *Start, long nStarts, 
-	       site *Stop, long nStops,
-	       long cutPoint,
-	       char* Sequence,
-	       exonGFF *Exon);
+long BuildORFs(site    *Start,
+               long    nStarts,
+               site    *Stop,
+               long    nStops,
+               long    cutPoint,
+               char    *Sequence,
+               exonGFF *Exon);
 
-packSites* RequestMemorySites();
-packExons* RequestMemoryExons();
-exonGFF* RequestMemorySortExons();
-site* RequestMemorySortSites();
-gparam* RequestMemoryParams();
-packGenes* RequestMemoryGenes();
-packDump* RequestMemoryDumpster();
-dict* RequestMemoryAaDictionary();
-void RequestMemoryProfile(profile* p);
-account* RequestMemoryAccounting();
-packExternalInformation* RequestMemoryExternalInformation();
+packSites *RequestMemorySites();
 
-void readargv (int argc,char *argv[],
-	       char *ParamFile, char* SequenceFile,
-	       char *ExonsFile, char* HSPFile, char* GenePrefix);
+packExons *RequestMemoryExons();
 
-int readparam (char *name, gparam** isochores);
+exonGFF *RequestMemorySortExons();
 
-account* InitAcc();
+site *RequestMemorySortSites();
 
-void OutputHeader(char* locus, long l);
+gparam *RequestMemoryParams();
 
-int IniReadSequence(FILE* seqfile, char* line);
+packGenes *RequestMemoryGenes();
 
-int ReadSequence (FILE* seqfile, char* Sequence, char* nextLocus);
+packDump *RequestMemoryDumpster();
 
-long FetchSequence(char *s, char* r);
+dict *RequestMemoryAaDictionary();
+void RequestMemoryProfile(profile *p);
 
-long ReadExonsGFF (char *FileName, 
-		   packExternalInformation* external, 
-		   dict* d);
+account *RequestMemoryAccounting();
+
+packExternalInformation *RequestMemoryExternalInformation();
+
+void readargv (int  argc,
+               char *argv[],
+               char *ParamFile,
+               char *SequenceFile,
+               char *ExonsFile,
+               char *HSPFile,
+               char *GenePrefix);
+
+int readparam (char   *name,
+               gparam **isochores);
+
+account *InitAcc();
+
+void OutputHeader(char *locus,
+                  long l);
+
+int IniReadSequence(FILE *seqfile,
+                    char *line);
+
+int ReadSequence (FILE *seqfile,
+                  char *Sequence,
+                  char *nextLocus);
+
+long FetchSequence(char *s,
+                   char *r);
+
+long ReadExonsGFF (char                    *FileName,
+                   packExternalInformation *external,
+                   dict                    *d);
 
 void SwitchPositions(packExons *allExons);
 
-void SearchEvidenceExons(packExternalInformation* external,
-			 packEvidence* pv, 
-			 long l2);
+void SearchEvidenceExons(packExternalInformation *external,
+                         packEvidence            *pv,
+                         long                    l2);
 
-void SortExons(packExons* allExons, 
-               packExons* allExons_r, 
-	       packExternalInformation* external,
-	       packEvidence* pv,
-               exonGFF* Exons,         
-               long l1, long l2,long lowerlimit,
-	       long upperlimit);
+void SortExons(packExons               *allExons,
+               packExons               *allExons_r,
+               packExternalInformation *external,
+               packEvidence            *pv,
+               exonGFF                 *Exons,
+               long                    l1,
+               long                    l2,
+               long                    lowerlimit,
+               long                    upperlimit);
 
-void SortSites(site *Sites, long nSites, site *sortedSites,        
-               long l1, long l2
-	       );
+void SortSites(site *Sites,
+               long nSites,
+               site *sortedSites,
+               long l1,
+               long l2);
 
-void SwitchCounters(packExternalInformation* external);
+void SwitchCounters(packExternalInformation *external);
 
-void Output(packSites* allSites, packSites* allSites_r,
-            packExons* allExons, packExons* allExons_r,
-            exonGFF* exons, long nExons, char* Locus, 
-	    long l1, long l2, long lowerlimit, char* Sequence, gparam* gp, dict* dAA, char* GenePrefix);
+void Output(packSites *allSites,
+            packSites *allSites_r,
+            packExons *allExons,
+            packExons *allExons_r,
+            exonGFF   *exons,
+            long      nExons,
+            char      *Locus,
+            long      l1,
+            long      l2,
+            long      lowerlimit,
+            char      *Sequence,
+            gparam    *gp,
+            dict      *dAA,
+            char      *GenePrefix);
 
-void updateTotals(account *m,
-                  packSites* allSites,
-                  packSites* allSites_r,
-                  packExons* allExons,
-                  packExons* allExons_r);
+void updateTotals(account   *m,
+                  packSites *allSites,
+                  packSites *allSites_r,
+                  packExons *allExons,
+                  packExons *allExons_r);
 
-void genamic(exonGFF *E, long nExons, packGenes* pg, gparam* gp);
+void genamic(exonGFF   *E,
+             long      nExons,
+             packGenes *pg,
+             gparam    *gp);
 
-void BackupGenes(packGenes* pg, int nclass, packDump* d);
+void BackupGenes(packGenes *pg,
+                 int       nclass,
+                 packDump  *d);
 
-void BackupArrayD(packGenes* pg, long accSearch,
-                  gparam* gp, packDump* dumpster);
+void BackupArrayD(packGenes *pg,
+                  long      accSearch,
+                  gparam    *gp,
+                  packDump  *dumpster);
 
-void cleanGenes(packGenes* pg, int nclass, packDump* dumpster);
+void cleanGenes(packGenes *pg,
+                int       nclass,
+                packDump  *dumpster);
 
 void cleanDumpHash(dumpHash *h);
 
-void OutputGene(packGenes* pg, long nExons, char* Locus,
-                char* Sequence, gparam* gp, dict* dAA, char* GenePrefix);
+void OutputGene(packGenes *pg,
+                long      nExons,
+                char      *Locus,
+                char      *Sequence,
+                gparam    *gp,
+                dict      *dAA,
+                char      *GenePrefix);
 
-void OutputStats(char* Locus);
+void OutputStats(char *Locus);
+
 void OutputTime();
 
-void RecomputePositions(packSites* allSites, long l);
+void RecomputePositions(packSites *allSites,
+                        long      l);
 
-void cleanAcc(account* m);
+void RecomputePositions(packSites *allSites,
+                        long      l);
 
-void PrintProfile (profile *p, char* signal);
+void cleanAcc(account *m);
 
-long ReadGeneModel (FILE *file, 
-		    dict *d, 
-		    int nc[], 
-		    int ne[], 
-                    int UC[][MAXENTRY], 
-		    int DE[][MAXENTRY], 
-		    long md[], 
-		    long Md[], 
-		    int block[]);
+void PrintProfile (profile *p,
+                   char    *signal);
 
-long ForceGeneModel (dict* d,
-		     int nc[], int ne[],
-		     int UC[][MAXENTRY],
-		     int DE[][MAXENTRY],
-		     long md[], long Md[],
-		     int block[]);
+long ReadGeneModel (FILE *file,
+                    dict *d,
+                    int  nc[],
+                    int  ne[],
+                    int  UC[][MAXENTRY],
+                    int  DE[][MAXENTRY],
+                    long md[],
+                    long Md[],
+                    int  block[]);
 
-void PrintSites (site *s, long ns,int type,
-                 char Name[], int Strand,
-                 long l1, long l2, long lowerlimit,
-                 char* seq,
+long ForceGeneModel (dict *d,
+                     int  nc[],
+                     int  ne[],
+                     int  UC[][MAXENTRY],
+                     int  DE[][MAXENTRY],
+                     long md[],
+                     long Md[],
+                     int  block[]);
+
+void PrintSites (site    *s,
+                 long    ns,
+                 int     type,
+                 char    Name[],
+                 int     Strand,
+                 long    l1,
+                 long    l2,
+                 long    lowerlimit,
+                 char    *seq,
                  profile *p);
 
-void PrintExons (exonGFF *e, long ne, int type, char Name[],
-                 long l1, long l2, char* Sequence,  dict* dAA, char* GenePrefix); 
+void PrintExons (exonGFF *e,
+                 long    ne,
+                 int     type,
+                 char    Name[],
+                 long    l1,
+                 long    l2,
+                 char    *Sequence,
+                 dict    *dAA,
+                 char    *GenePrefix);
 
-void resetDict(dict* d);
+void resetDict(dict *d);
 
-int setkeyDict(dict *d, char s[]);
+int setkeyDict(dict *d,
+               char s[]);
 
-int getkeyDict(dict *d, char s[]);
+int getkeyDict(dict *d,
+               char s[]);
 
-int Translate(long p1, long p2, short fra, short rmd,
-              char *s, dict* dAA, char sAux[]);
+int Translate(long  p1,
+              long  p2,
+              short fra,
+              short rmd,
+              char  *s,
+              dict  *dAA,
+              char  sAux[]);
 
-void ReverseSubSequence(long p1, long p2, char* s, char* r);
+void ReverseSubSequence(long p1,
+                        long p2,
+                        char *s,
+                        char *r);
 
 void CorrectExon(exonGFF *e);
 
 void CorrectORF(exonGFF *e);
 
-void SwitchFrames(exonGFF* e, long n);
+void SwitchFrames(exonGFF *e,
+                  long    n);
 
-void SwitchFramesDa(packGenes* pg, int nclass);
+void SwitchFramesDa(packGenes *pg,
+                    int       nclass);
 
-void SwitchFramesDb(packGenes* pg, int nclass);
+void SwitchFramesDb(packGenes *pg,
+                    int       nclass);
 
-void UndoFrames(exonGFF *e, long n);
+void UndoFrames(exonGFF *e,
+                long    n);
 
-void BuildSort(dict *D, int nc[], int ne[], int UC[][MAXENTRY], 
-               int DE[][MAXENTRY], int nclass, long km[], 
-	       exonGFF* **d, exonGFF *E, long nexons);
+void BuildSort(dict    *D,
+               int     nc[],
+               int     ne[],
+               int     UC[][MAXENTRY],
+               int     DE[][MAXENTRY],
+               int     nclass,
+               long    km[],
+               exonGFF ***d,
+               exonGFF *E,
+               long    nexons);
 
-void PrintSite(site *s, int type, char Name[], int Strand,
-               char* seq, profile *p);
+void PrintSite(site    *s,
+               int     type,
+               char    Name[],
+               int     Strand,
+               char    *seq,
+               profile *p);
 
-void PrintGExon(exonGFF *e, char Name[], char* s, dict* dAA, 
-		long ngen, int AA1, int AA2, int nAA,
-		int numInt, char* GenePrefix);
-			   
-void PrintGIntron(exonGFF *d, exonGFF *a, char Name[],long ngen,
-		  int numInt, char* GenePrefix, int evidence, float score);
+void PrintGExon(exonGFF *e,
+                char    Name[],
+                char    *s,
+                dict    *dAA,
+                long    ngen,
+                int     AA1,
+                int     AA2,
+                int     nAA,
+                int     numInt,
+                char    *GenePrefix);
 
-void PrintGGene(exonGFF *s, exonGFF *e, char Name[],
-		long ngen, float score, char* GenePrefix);
+void PrintGIntron(exonGFF *d,
+                  exonGFF *a,
+                  char    Name[],
+                  long    ngen,
+                  int     numInt,
+                  char    *GenePrefix,
+                  int     evidence,
+                  float   score);
 
-void PrintGmRNA(exonGFF *s, exonGFF *e, char Name[],
-		long ngen, float score, char* GenePrefix);
+void PrintGGene(exonGFF *s,
+                exonGFF *e,
+                char    Name[],
+                long    ngen,
+                float   score,
+                char    *GenePrefix);
 
+void PrintGmRNA(exonGFF *s,
+                exonGFF *e,
+                char    Name[],
+                long    ngen,
+                float   score,
+                char    *GenePrefix);
 
-void PrintXMLExon(exonGFF *e, char Name[], 
-		  long ngen, long nExon, 
-		  int type1, int type2, 
-		  int nExons, char* GenePrefix);
+void PrintXMLExon(exonGFF *e,
+                  char    Name[],
+                  long    ngen,
+                  long    nExon,
+                  int     type1,
+                  int     type2,
+                  int     nExons,
+                  char    *GenePrefix);
 
-void TranslateGene(exonGFF* e,
-                   char* s,
-                   dict* dAA,
-                   long nExons,
-                   int** tAA,
-                   char* prot,
-                   long* nAA);
+void TranslateGene(exonGFF *e,
+                   char    *s,
+                   dict    *dAA,
+                   long    nExons,
+                   int     **tAA,
+                   char    *prot,
+                   long    *nAA);
 
-void resetDumpHash(dumpHash* h);
+void resetDumpHash(dumpHash *h);
 
-void setExonDumpHash(exonGFF* E, dumpHash *h);
+void setExonDumpHash(exonGFF *E, dumpHash *h);
 
-exonGFF* getExonDumpHash(exonGFF* E, dumpHash *h);
- 
+exonGFF *getExonDumpHash(exonGFF *E, dumpHash *h);
+
 void setAADict(dict *d, char s[], char aA);
 
 char getAADict(dict *d, char s[]);
 
-void CookingGenes(exonGFF *e, char Name[], char* s,
-                  gparam* gp, dict* dAA, char* GenePrefix);
+void CookingGenes(exonGFF *e, char Name[], char *s,
+                  gparam *gp, dict *dAA, char *GenePrefix);
 
-float MeasureSequence(long l1,long l2,char* s);
+float MeasureSequence(long l1, long l2, char *s);
 
-gparam ** RequestMemoryIsochoresParams();
+gparam **RequestMemoryIsochoresParams();
 
-long ReadHSP (char* FileName, packExternalInformation* external);
+long ReadHSP (char *FileName, packExternalInformation *external);
 
-void shareGeneModel(gparam** isochores, int n);
+void shareGeneModel(gparam **isochores, int n);
 
 long OligoToInt(char *s, int ls, int cardinal);
 
-char* RequestMemorySequence(long L);
+char *RequestMemorySequence(long L);
 
-void ScoreExons(char *Sequence, 
-                packExons* allExons, 
-                long l1,
-                long l2,
-                int Strand,
-		packExternalInformation* external,
-                packHSP* hsp,
-                gparam** isochores,
-                int nIsochores,
-                packGC* GCInfo);
+void ScoreExons(char                    *Sequence,
+                packExons               *allExons,
+                long                    l1,
+                long                    l2,
+                int                     Strand,
+                packExternalInformation *external,
+                packHSP                 *hsp,
+                gparam                  **isochores,
+                int                     nIsochores,
+                packGC                  *GCInfo);
 
-void GetcDNA(exonGFF* e, char* s, long nExons, char* cDNA, long* nNN);
+void GetcDNA(exonGFF *e, char *s, long nExons, char *cDNA, long *nNN);
 
-float ComputeGC(packGC* GCInfo, long inigc, long endgc);
+float ComputeGC(packGC *GCInfo, long inigc, long endgc);
 
-void GCScan(char* s, packGC* GCInfo, long l1, long l2);
+void GCScan(char *s, packGC *GCInfo, long l1, long l2);
 
 void beggar(long L);
 
-void SetRatios(long* NUMSITES,
-               long* NUMEXONS,
-               long* MAXBACKUPSITES,
-               long* MAXBACKUPEXONS,
+void SetRatios(long *NUMSITES,
+               long *NUMEXONS,
+               long *MAXBACKUPSITES,
+               long *MAXBACKUPEXONS,
                long L);
 
-long analizeFile(char* SequenceFile);
+long analizeFile(char *SequenceFile);
 
-packGC* RequestMemoryGC();
+packGC *RequestMemoryGC();
 
-int SelectIsochore(float percent, gparam** isochores);
+int SelectIsochore(float  percent,
+                   gparam **isochores);
 
-void  manager(char *Sequence, long LengthSequence,
-	      packSites* allSites,
-	      packExons* allExons,
-	      long l1, long l2,long lower, long upper,
-	      int Strand,
-	      packExternalInformation* external,
-	      packHSP* hsp,
-	      gparam* gp,
-	      gparam** isochores,
-	      int nIsochores,
-	      packGC* GCInfo,
-	      site* acceptorsites,
-	      site* donorsites
-	      );
+void  manager(char                    *Sequence,
+              long                    LengthSequence,
+              packSites               *allSites,
+              packExons               *allExons,
+              long                    l1,
+              long                    l2,
+              long                    lower,
+              long                    upper,
+              int                     Strand,
+              packExternalInformation *external,
+              packHSP                 *hsp,
+              gparam                  *gp,
+              gparam                  **isochores,
+              int                     nIsochores,
+              packGC                  *GCInfo,
+              site                    *acceptorsites,
+              site                    *donorsites
+              );
 
-void resetEvidenceCounters(packExternalInformation* external);
+void resetEvidenceCounters(packExternalInformation *external);
 
-void ComputeStopInfo(exonGFF* e, char* s);
+void ComputeStopInfo(exonGFF *e,
+                     char    *s);
 
-packHSP* SelectHSP(packExternalInformation* external,
-		   char* Locus, 
-		   long LengthSequence);
+packHSP *SelectHSP(packExternalInformation *external,
+                   char                    *Locus,
+                   long                    LengthSequence);
 
-packEvidence* SelectEvidence(packExternalInformation* external,
-			     char* Locus);
+packEvidence *SelectEvidence(packExternalInformation *external,
+                             char                    *Locus);
 
-void SortHSPs(packHSP* p);
+void SortHSPs(packHSP *p);
 
-HSP* RequestNewHSP();
+HSP *RequestNewHSP();
 
-long  BuildU12Acceptors(char* s,
-			short class,
-			char* type,
-			char* subtype,
-			profile* u12_p,
-			profile* u12bp,
-			profile* ppt,
-			site* st, 
-			long l1, 
-			long l2,
-			long ns,
-			long nsites);
-					 
-long  BuildAcceptors(char* s,
-		     short class,
-		     char* type,
-		     char* subtype,
-		     profile* p,
-		     profile* ppt,
-		     profile* bp,
-		     site* st, 
-		     long l1, 
-		     long l2,
-		     long ns,
-		     long nsites);
+long  BuildU12Acceptors(char    *s,
+                        short   class,
+                        char    *type,
+                        char    *subtype,
+                        profile *u12_p,
+                        profile *u12bp,
+                        profile *ppt,
+                        site    *st,
+                        long    l1,
+                        long    l2,
+                        long    ns,
+                        long    nsites);
+
+long  BuildAcceptors(char    *s,
+                     short   class,
+                     char    *type,
+                     char    *subtype,
+                     profile *p,
+                     profile *ppt,
+                     profile *bp,
+                     site    *st,
+                     long    l1,
+                     long    l2,
+                     long    ns,
+                     long    nsites);
