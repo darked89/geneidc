@@ -73,7 +73,7 @@ float ComputeU2BranchProfile(char    *s,
             }
         }
 
-        score = score - p->penalty_factor * (((float) (abs(i + p->offset - Opt)) / ((float) (p->acc_context - p->offset - p->opt_dist))) * ((float) (abs(i + p->offset
+        score = score - p->penalty_factor * (((float) (labs(i + p->offset - Opt)) / ((float) (p->acc_context - p->offset - p->opt_dist))) * ((float) (labs(i + p->offset
                                                                                                                                                          - Opt)) / ((float) (p->acc_context - p->offset - p->opt_dist))));
         score = p->afactor + (p->bfactor * score);
 

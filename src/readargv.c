@@ -30,19 +30,39 @@
 #include "geneid.h"
 
 /* geneid.c external vars */
-extern int SFP, SDP, SAP, STP,
-           EFP, EIP, ETP, EXP, ESP, EOP,
-           U12, PRINTINT, RSS,
-           VRB,
-           FWD, RVS,
-           GENEID, GENAMIC,
-           GFF, GFF3, X10,
-           EVD, SRP, BEG,
-           scanORF, XML, cDNA, PSEQ,
-           SGE;
+extern int SFP;
+extern int SDP;
+extern int SAP;
+extern int STP;
+extern int EFP;
+extern int EIP;
+extern int ETP;
+extern int EXP;
+extern int ESP;
+extern int EOP;
+extern int U12;
+extern int PRINTINT;
+extern int RSS;
+extern int VRB;
+extern int FWD;
+extern int RVS;
+extern int GENEID;
+extern int GENAMIC;
+extern int GFF;
+extern int GFF3;
+extern int X10;
+extern int EVD;
+extern int SRP;
+extern int BEG;
+extern int scanORF;
+extern int XML;
+extern int cDNA;
+extern int PSEQ;
+extern int SGE;
 extern float EW;
 extern float EvidenceEW;
-extern long  LOW, HI;
+extern long LOW;
+extern long HI;
 
 /* required by getopts */
 extern char *optarg;

@@ -145,7 +145,8 @@ int main(int  argc,
     long LengthSequence;
 
     /* Current split ends */
-    long      l1, l2;
+    long      l1;
+    long      l2;
     long      upperlimit;
     long      lowerlimit;
     /* Forward semse data structures */
@@ -195,10 +196,10 @@ int main(int  argc,
     /* Measure of C+G content to select the isochore */
     packGC *GCInfo;
     packGC *GCInfo_r;
-    int    inigc;
-    int    endgc;
-    float  percentGC;
-    int    currentIsochore;
+    long    inigc;
+    long    endgc;
+    double  percentGC;
+    int     currentIsochore;
     int    nIsochores;
     int    reading;
     int    lastSplit;

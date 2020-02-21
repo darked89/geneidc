@@ -174,7 +174,7 @@ A. DEFINITIONS
 /* Maximum profile dimension (length)       */
 #define PROFILEDIM 100
 
-/* Maximum number of chars (locus names)    */
+/* Maximum number of chars (contig names)    */
 #define LOCUSLENGTH 500
 
 /* Maximum oligo (word) length (Markov)     */
@@ -912,14 +912,14 @@ long ReadGeneModel (FILE *file,
                     long Md[],
                     int  block[]);
 
-long ForceGeneModel (dict *d,
-                     int  nc[],
-                     int  ne[],
-                     int  UC[][MAXENTRY],
-                     int  DE[][MAXENTRY],
-                     long md[],
-                     long Md[],
-                     int  block[]);
+long ForceGeneModel(dict *d,
+                    int  nc[],
+                    int  ne[],
+                    int  UC[][MAXENTRY],
+                    int  DE[][MAXENTRY],
+                    long md[],
+                    long Md[],
+                    int  block[]);
 
 void PrintSites (site    *s,
                  long    ns,
@@ -1050,7 +1050,8 @@ void TranslateGene(exonGFF *e,
 
 void resetDumpHash(dumpHash *h);
 
-void setExonDumpHash(exonGFF *E, dumpHash *h);
+void setExonDumpHash(exonGFF  *E,
+                     dumpHash *h);
 
 exonGFF *getExonDumpHash(exonGFF *E, dumpHash *h);
 
@@ -1058,8 +1059,12 @@ void setAADict(dict *d, char s[], char aA);
 
 char getAADict(dict *d, char s[]);
 
-void CookingGenes(exonGFF *e, char Name[], char *s,
-                  gparam *gp, dict *dAA, char *GenePrefix);
+void CookingGenes(exonGFF *e,
+                  char    Name[],
+                  char    *s,
+                  gparam  *gp,
+                  dict    *dAA,
+                  char    *GenePrefix);
 
 float MeasureSequence(long l1, long l2, char *s);
 
@@ -1067,9 +1072,12 @@ gparam **RequestMemoryIsochoresParams();
 
 long ReadHSP (char *FileName, packExternalInformation *external);
 
-void shareGeneModel(gparam **isochores, int n);
+void shareGeneModel(gparam **isochores,
+                    int    n);
 
-long OligoToInt(char *s, int ls, int cardinal);
+long OligoToInt(char *s,
+                int  ls,
+                int  cardinal);
 
 char *RequestMemorySequence(long L);
 
@@ -1084,11 +1092,20 @@ void ScoreExons(char                    *Sequence,
                 int                     nIsochores,
                 packGC                  *GCInfo);
 
-void GetcDNA(exonGFF *e, char *s, long nExons, char *cDNA, long *nNN);
+void GetcDNA(exonGFF *e, 
+             char *s,
+	     long nExons,
+	     char *cDNA,
+	     long *nNN);
 
-float ComputeGC(packGC *GCInfo, long inigc, long endgc);
+float ComputeGC(packGC *GCInfo,
+               long inigc,
+	       long endgc);
 
-void GCScan(char *s, packGC *GCInfo, long l1, long l2);
+void GCScan(char *s,
+            packGC *GCInfo,
+	    long l1,
+	    long l2);
 
 void beggar(long L);
 

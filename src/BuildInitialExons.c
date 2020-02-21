@@ -49,7 +49,7 @@ long BuildInitialExons(site    *Start,
     exonGFF *LocalExon;
     int     nLocalExons;
     int     LowestLocalExon;
-    float   LowestLocalScore;
+    float    LowestLocalScore;
 
     /* Maximum allowed number of predicted initial exons per fragment */
     long HowMany;

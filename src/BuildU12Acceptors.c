@@ -39,10 +39,10 @@ extern int BP;
 extern int PPT;
 
 float ComputeU12BranchProfile(char    *s,
-                              long    positionAcc,
-                              long    limitRight,
-                              profile *p,
-                              site    *splicesite){
+                            long    positionAcc,
+                            long    limitRight,
+                            profile *p,
+                            site    *splicesite){
     float maxScore;
     float score;
     int   index;
@@ -73,7 +73,7 @@ float ComputeU12BranchProfile(char    *s,
             }
         }
 
-        score = score - p->penalty_factor * (((float) (abs(i + p->offset - Opt)) / ((float) (p->acc_context - p->offset - p->opt_dist))) * ((float) (abs(i + p->offset
+        score = score - p->penalty_factor * (((float) (labs(i + p->offset - Opt)) / ((float) (p->acc_context - p->offset - p->opt_dist))) * ((float) (labs(i + p->offset
                                                                                                                                                          - Opt)) / ((float) (p->acc_context - p->offset - p->opt_dist))));
 
         if (score >= maxScore) {
@@ -85,10 +85,10 @@ float ComputeU12BranchProfile(char    *s,
 }
 
 float ComputePPTProfile(char    *s,
-                        long    positionAcc,
-                        long    limitRight,
-                        profile *p,
-                        site    *splicesite){
+                      long    positionAcc,
+                      long    limitRight,
+                      profile  *p,
+                      site    *splicesite){
     float maxScore;
     float score;
     int   index;
