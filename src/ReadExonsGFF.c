@@ -117,6 +117,7 @@ long ReadExonsGFF(char                    *exons_gff_fn,
     /* 0. Open exons file to read the information */
     if ((exons_gff_fptr = fopen(exons_gff_fn, "r")) == NULL) {
         printError("The exonsGFF file can not be opened to read");
+        exit(EXIT_FAILURE);
     }
 
     /* 1. Reset counters */
@@ -155,12 +156,14 @@ long ReadExonsGFF(char                    *exons_gff_fn,
                 || column_7 == NULL || column_8 == NULL) {
                 sprintf(mess, "Wrong GFF format in HSPs (number of records):\n-->%s\n", lineCopy);
                 printError(mess);
+                exit(EXIT_FAILURE);
             }
 
             /* 1. contig_name: leave the exon into the correct array */
             if (sscanf(column_1, "%s", contig_name) != 1) {
                 sprintf(mess, "Wrong GFF format in annotations (locusname):\n-->%s\n", lineCopy);
                 printError(mess);
+                exit(EXIT_FAILURE);
             }
 
             /* 2. Look-up the ID for that sequence */
@@ -168,6 +171,7 @@ long ReadExonsGFF(char                    *exons_gff_fn,
 
             if (a >= MAXNSEQUENCES) {
                 printError("Too many DNA sequences: increase MAXNSEQUENCES parameter");
+                exit(EXIT_FAILURE);
             }
 
             /* 3. Exon feature: Single, First, Internal, Terminal, ... */
@@ -175,6 +179,7 @@ long ReadExonsGFF(char                    *exons_gff_fn,
                        (external->evidence[a]->vExons + external->evidence[a]->nvExons)->Type) != 1) {
                 sprintf(mess, "Wrong GFF format in annotations (feature):\n-->%s\n", lineCopy);
                 printError(mess);
+                exit(EXIT_FAILURE);
             }
 
             /* 4. Starting position */
@@ -182,6 +187,7 @@ long ReadExonsGFF(char                    *exons_gff_fn,
                        &((external->evidence[a]->vSites + external->evidence[a]->nvSites)->Position)) != 1) {
                 sprintf(mess, "Wrong GFF format in annotations (starting position):\n-->%s\n", lineCopy);
                 printError(mess);
+                exit(EXIT_FAILURE);
             }
 
             /* 5. Finishing position */
@@ -189,6 +195,7 @@ long ReadExonsGFF(char                    *exons_gff_fn,
                        &((external->evidence[a]->vSites + external->evidence[a]->nvSites + 1)->Position)) != 1) {
                 sprintf(mess, "Wrong GFF format in annotations (finishing position):\n-->%s\n", lineCopy);
                 printError(mess);
+                exit(EXIT_FAILURE);
             }
 
             /* 6. Score = double value or '.'(infinitum) */
@@ -196,6 +203,7 @@ long ReadExonsGFF(char                    *exons_gff_fn,
                 if ((sscanf(column_6, "%c", &c) != 1) || (c != '.')) {
                     sprintf(mess, "Wrong GFF format in annotations (score):\n-->%s\n", lineCopy);
                     printError(mess);
+                    exit(EXIT_FAILURE);
                 }
 
                 (external->evidence[a]->vExons + external->evidence[a]->nvExons)->Score = MAXSCORE;
@@ -213,6 +221,7 @@ long ReadExonsGFF(char                    *exons_gff_fn,
                  ((external->evidence[a]->vExons + external->evidence[a]->nvExons)->Strand != '-'))) {
                 sprintf(mess, "Wrong GFF format in annotations (strand):\n-->%s\n", lineCopy);
                 printError(mess);
+                exit(EXIT_FAILURE);
             }
 
             if (((((external->evidence[a]->vExons + external->evidence[a]->nvExons)->Strand == '-') && RVS)
@@ -228,6 +237,7 @@ long ReadExonsGFF(char                    *exons_gff_fn,
                     if ((sscanf(column_8, "%c", &c) != 1) || (c != '.')) {
                         sprintf(mess, "Wrong GFF format in annotations (frame):\n-->%s\n", lineCopy);
                         printError(mess);
+                        exit(EXIT_FAILURE);
                     }
 
                     /* make three copies */
@@ -240,6 +250,7 @@ long ReadExonsGFF(char                    *exons_gff_fn,
                         ((external->evidence[a]->vExons + external->evidence[a]->nvExons)->Frame > 2)) {
                         sprintf(mess, "Wrong GFF value in annotations (frame not between 0..2):\n-->%s\n", lineCopy);
                         printError(mess);
+                        exit(EXIT_FAILURE);
                     }
                 }
 
@@ -249,6 +260,7 @@ long ReadExonsGFF(char                    *exons_gff_fn,
                                (external->evidence[a]->vExons + external->evidence[a]->nvExons)->Group) != 1) {
                         sprintf(mess, "Wrong GFF value in annotations (group):\n-->%s\n", lineCopy);
                         printError(mess);
+                        exit(EXIT_FAILURE);
                     }
 
                     if (!(strcmp((external->evidence[a]->vExons + external->evidence[a]->nvExons)->Group, "."))) {
@@ -399,6 +411,7 @@ long ReadExonsGFF(char                    *exons_gff_fn,
                                 lastAcceptor[a],
                                 lineCopy);
                         printError(mess);
+                        exit(EXIT_FAILURE);
                     }
 
                     else {
@@ -608,10 +621,12 @@ long ReadExonsGFF(char                    *exons_gff_fn,
 
                         if ((i + FRAMES) > MAXEVIDENCES) {
                             printError("Too many annotations: increase MAXEVIDENCES definition");
+                            exit(EXIT_FAILURE);
                         }
 
                         if ((external->evidence[a]->nvSites + (2 * FRAMES)) > MAXSITESEVIDENCES) {
                             printError("Too many site annotations: increase MAXEVIDENCES definition");
+                            exit(EXIT_FAILURE);
                         }
 
                     } /* End of sorting checkpoint */
