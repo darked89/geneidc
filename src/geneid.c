@@ -37,69 +37,69 @@
 
 /* geneid setup flags */
 /* sites to print */
-int    SFP      = 0;
-int    SDP      = 0;
-int    SAP      = 0;
-int    STP      = 0;
+int SFP      = 0;
+int SDP      = 0;
+int SAP      = 0;
+int STP      = 0;
 /* exons to print */
-int    EFP      = 0;
-int    EIP      = 0;
-int    ETP      = 0;
-int    EXP      = 0;
-int    ESP      = 0;
-int    EOP      = 0;
+int EFP      = 0;
+int EIP      = 0;
+int ETP      = 0;
+int EXP      = 0;
+int ESP      = 0;
+int EOP      = 0;
 /* introns to print */
-int    PRINTINT = 0;
+int PRINTINT = 0;
 /* Partial or full prediction engine */
-int    GENAMIC  = 1;
-int    GENEID   = 1;
+int GENAMIC  = 1;
+int GENEID   = 1;
 /* Only forward or reverse prediction engine */
-int    FWD      = 1;
-int    RVS      = 1;
+int FWD      = 1;
+int RVS      = 1;
 /* switch ORF prediction on */
-int    scanORF  = 0;
+int scanORF  = 0;
 /* Input annotations or homology to protein information */
-int    EVD      = 0;
-int    SRP      = 0;
+int EVD      = 0;
+int SRP      = 0;
 /* Output formats */
-int    GFF      = 0;
-int    GFF3     = 0;
-int    X10      = 0;
-int    XML      = 0;
-int    cDNA     = 0;
-int    PSEQ     = 0;
+int GFF      = 0;
+int GFF3     = 0;
+int X10      = 0;
+int XML      = 0;
+int cDNA     = 0;
+int PSEQ     = 0;
 /* Verbose flag (memory/processing information) */
-int    BEG      = 0;
-int    VRB      = 0;
+int BEG      = 0;
+int VRB      = 0;
 /* Score for regions not-supported by protein homology */
-int   NO_SCORE;
+int NO_SCORE;
 /* Force single prediction: 1 gene */
-int    SGE                        = 0;
+int SGE     = 0;
 /* Detection of PolyPTracts in Acceptors */
-int    PPT                        = 0;
+int PPT     = 0;
 /* Detection of BranchPoints in Acceptors */
-int    BP                         = 0;
+int BP      = 0;
 /* Detection of recursive splice sites */
-int    RSS                        = 0;
+int RSS     = 0;
 /* Detection of U12 introns */
-int U12                        = 0;
+int U12     = 0;
 /* Detection of U12gtag sites (acceptor uses BranchPoint)*/
-int U12GTAG                    = 0;
+int U12GTAG = 0;
 /* Detection of U12atac sites (acceptor uses BranchPoint)*/
-int U12ATAC                    = 0;
+int U12ATAC = 0;
 /* Detection of U2gcag sites */
-int U2GCAG                     = 0;
+int U2GCAG  = 0;
 /* Detection of U2gta donor sites */
-int U2GTA                      = 0;
+int U2GTA   = 0;
 /* Detection of U2gtg donor sites */
-int U2GTG                      = 0;
+int U2GTG   = 0;
 /* Detection of U2gty donor sites */
-int U2GTY                      = 0;
+int U2GTY   = 0;
 
 /* Splice classes: the number of compatible splice site combinations used in genamic for joining exons */
 unsigned short SPLICECLASSES = 1;
 
-// 20200218 bug? makes sense for a single contig fasta only 
+/* 20200218 bug? makes sense for a single contig fasta only */
 /* User defined lower limit */
 long LOW = 0;
 /* User defined upper limit */
@@ -136,8 +136,8 @@ account *m;
                             geneid MAIN program
 ************************************************************************/
 
-int main(int    argc,
-         char  *argv[]){
+int main(int  argc,
+         char *argv[]){
     /* DNA sequence data structures */
     FILE *seqfile;
     char *Sequence;
@@ -165,9 +165,9 @@ int main(int    argc,
     long    nExons;
 
     /* External information: reannotation */
-    packExternalInformation  *external;
-    packEvidence             *evidence;
-    packHSP                  *hsp;
+    packExternalInformation *external;
+    packEvidence            *evidence;
+    packHSP                 *hsp;
 
     /* Best partial predicted genes */
     packGenes *genes;
@@ -197,7 +197,7 @@ int main(int    argc,
     packGC *GCInfo_r;
     int    inigc;
     int    endgc;
-    float   percentGC;
+    float  percentGC;
     int    currentIsochore;
     int    nIsochores;
     int    reading;
@@ -221,13 +221,13 @@ int main(int    argc,
     m = (account *) InitAcc();
 
     /* 0.c. Read setup options */
-    readargv(argc, 
-             argv, 
-	     ParamFile, 
-	     SequenceFile, 
-	     ExonsFile, 
-	     HSPFile, 
-	     GenePrefix);
+    readargv(argc,
+             argv,
+             ParamFile,
+             SequenceFile,
+             ExonsFile,
+             HSPFile,
+             GenePrefix);
     printRes("\n\n\t\t\t** Running geneid 1.3 2003 geneid@imim.es **\n\n");
 
     /* 0.d. Prediction of DNA sequence length to request memory */
@@ -424,23 +424,23 @@ int main(int    argc,
                     /* Forward strand predictions */
                     sprintf(mess, "Running FWD  %s: %ld - %ld", Locus, l1, l2);
                     printMess(mess);
-                    manager(Sequence, 
-		            LengthSequence,
-                            allSites, 
-			    allExons,
-                            l1, 
-			    l2, 
-			    lowerlimit, 
-			    upperlimit,
+                    manager(Sequence,
+                            LengthSequence,
+                            allSites,
+                            allExons,
+                            l1,
+                            l2,
+                            lowerlimit,
+                            upperlimit,
                             FORWARD,
-                            external, 
-			    hsp, 
-			    gp,
-                            isochores, 
-			    nIsochores,
-                            GCInfo, 
-			    acceptorsites, 
-			    donorsites);
+                            external,
+                            hsp,
+                            gp,
+                            isochores,
+                            nIsochores,
+                            GCInfo,
+                            acceptorsites,
+                            donorsites);
                 }
 
                 if (RVS) {
@@ -449,22 +449,22 @@ int main(int    argc,
                             Locus, LengthSequence - 1 - l2,
                             LengthSequence - 1 - l1, l1, l2);
                     printMess(mess);
-                    manager(RSequence, 
-			    LengthSequence,
-                            allSites_r, 
-			    allExons_r,
+                    manager(RSequence,
+                            LengthSequence,
+                            allSites_r,
+                            allExons_r,
                             LengthSequence - 1 - l2,
                             LengthSequence - 1 - l1,
-                            LengthSequence - 1 - upperlimit, 
-			    LengthSequence - 1 - lowerlimit,
+                            LengthSequence - 1 - upperlimit,
+                            LengthSequence - 1 - lowerlimit,
                             REVERSE,
-                            external, 
-			    hsp, gp,
-                            isochores, 
-			    nIsochores,
-                            GCInfo_r, 
-			    acceptorsites, 
-			    donorsites);
+                            external,
+                            hsp, gp,
+                            isochores,
+                            nIsochores,
+                            GCInfo_r,
+                            acceptorsites,
+                            donorsites);
 
                     /* normalised positions: according to forward sense reading */
                     RecomputePositions(allSites_r, LengthSequence);
@@ -527,27 +527,27 @@ int main(int    argc,
                 }
 
                 /* B.4. Printing current fragment predictions (sites and exons) */
-                Output(allSites, 
-		       allSites_r, 
-		       allExons, 
-		       allExons_r,
-                       exons, 
-		       nExons, 
-		       Locus, 
-		       l1, 
-		       l2, 
-		       lowerlimit, 
+                Output(allSites,
+                       allSites_r,
+                       allExons,
+                       allExons_r,
+                       exons,
+                       nExons,
+                       Locus,
+                       l1,
+                       l2,
+                       lowerlimit,
                        Sequence,
                        gp,
                        dAA,
-		       GenePrefix);
+                       GenePrefix);
 
                 /* recompute stats about splice sites and exons */
-                updateTotals(m, 
-		             allSites, 
-			     allSites_r, 
-			     allExons, 
-			     allExons_r);
+                updateTotals(m,
+                             allSites,
+                             allSites_r,
+                             allExons,
+                             allExons_r);
 
                 /* B.5. Calling to genamic for assembling the best gene */
                 if (GENAMIC && nExons) {
@@ -584,11 +584,11 @@ int main(int    argc,
                            (EVD && evidence != NULL) ?
                            m->totalExons + evidence->nvExons :
                            m->totalExons,
-                           Locus, 
-			   Sequence, 
-			   gp, 
-			   dAA, 
-			   GenePrefix);
+                           Locus,
+                           Sequence,
+                           gp,
+                           dAA,
+                           GenePrefix);
 
                 /* Reset best genes data structures for next input sequence */
                 printMess("Cleaning gene structures and dumpster");

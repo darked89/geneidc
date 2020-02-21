@@ -40,14 +40,14 @@ long get_fasta_size(char *fasta_fn){
 
     if ((buf = (struct stat *) malloc(sizeof(struct stat))) == NULL) {
         printError("Not enough memory: analizing input sequence file");
-	exit(EXIT_FAILURE);
+        exit(EXIT_FAILURE);
     }
 
     assert(buf != NULL);
 
     if (stat(fasta_fn, buf) != 0) {
         printError("Impossible to access fasta sequence file");
-	exit(EXIT_FAILURE);
+        exit(EXIT_FAILURE);
     }
 
     /* Size (bytes) of this file */
@@ -55,7 +55,7 @@ long get_fasta_size(char *fasta_fn){
 
     if (size == 0) {
         printError("Empty input fasta file!");
-	exit(EXIT_FAILURE);
+        exit(EXIT_FAILURE);
     }
 
     free(buf);
@@ -66,7 +66,7 @@ long get_fasta_size(char *fasta_fn){
 /* Get the header of the first DNA sequence (Name) */
 /* The sequence file is allowed to contain more than one fasta sequence */
 
-int IniReadSequence(FILE *fasta_fptr, 
+int IniReadSequence(FILE *fasta_fptr,
                     char *line){
     int  res;
     char sAux[MAXSTRING];
@@ -110,8 +110,8 @@ int IniReadSequence(FILE *fasta_fptr,
 
 /* Reading content of current DNA sequence and the header of next one */
 
-int ReadSequence(FILE *fasta_fptr, 
-                 char *Sequence, 
+int ReadSequence(FILE *fasta_fptr,
+                 char *Sequence,
                  char *nextLocus){
     long pos;
     int  res;

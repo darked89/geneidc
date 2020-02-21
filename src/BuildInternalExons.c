@@ -35,46 +35,46 @@
 extern long MAXBACKUPSITES;
 extern int  RSS;
 
-long BuildInternalExons(site     *Acceptor, 
-                        long      nAcceptors,
-                        site     *Donor, 
-                        long      nDonors,
-                        site     *Stop, 
-                        long      nStops,
-                        int       MaxDonors,
-                        char     *ExonType,
-                        char     *Sequence,
-                        exonGFF  *Exon, 
-                        long      nexons){
+long BuildInternalExons(site    *Acceptor,
+                        long    nAcceptors,
+                        site    *Donor,
+                        long    nDonors,
+                        site    *Stop,
+                        long    nStops,
+                        int     MaxDonors,
+                        char    *ExonType,
+                        char    *Sequence,
+                        exonGFF *Exon,
+                        long    nexons){
     /* Best exons built using the current Acceptor and frame availability */
     struct iexon
     {
-        site  *Acceptor;
-        site  *Donor;
-        int    Frame[FRAMES];
+        site *Acceptor;
+        site *Donor;
+        int  Frame[FRAMES];
     } *LocalExon;
-    
+
     int   nLocalExons;
     int   LowestLocalExon;
-    float  LowestLocalScore;
+    float LowestLocalScore;
 
     /* Boolean array of windows: closed or opened */
     int  Frame[FRAMES];
 
-    long  i;
-    long  j;
-    long  js;
-    long  k;
-    long  ks;
-    int   f;
-    int   l;
-    int   ll;
+    long i;
+    long j;
+    long js;
+    long k;
+    long ks;
+    int  f;
+    int  l;
+    int  ll;
 
     /* Maximum allowed number of predicted internal exons per fragment */
-    long  HowMany;
+    long HowMany;
 
     /* Final number of predicted internal exons */
-    long  nExon;
+    long nExon;
 
     /* Allocating space for exons built by using the current Acceptor */
     /* MaxDonors is the maximum allowed number of exons with this signal */
@@ -83,6 +83,7 @@ long BuildInternalExons(site     *Acceptor,
         printError("Not enough memory: local initial exons");
         exit(EXIT_FAILURE);
     }
+
     assert(LocalExon != NULL);
     /* Main loop, forall Acceptor looking for donor sites... */
     /* ...until 3 windows are closed due to 3 stop codons */

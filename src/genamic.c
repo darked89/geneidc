@@ -114,8 +114,8 @@ void genamic(exonGFF   *E,
                     current_exon_is_u12 = 0;
                 }
                 else {
-                    if (((E + i)->Acceptor->class == U12gtag) 
-		        || ((E + i)->Acceptor->class == U12atac)) {
+                    if (((E + i)->Acceptor->class == U12gtag)
+                        || ((E + i)->Acceptor->class == U12atac)) {
                         current_exon_is_u12 = 1;
                     }
                 }
@@ -281,8 +281,8 @@ void genamic(exonGFF   *E,
 
                 /* Updating the best gene assembled (final gene) */
                 if ((((E + i)->GeneScore) > (pg->GOptim->GeneScore))) {
-                    if (((E + i)->PreviousExon->Strand == '*') 
-		        && (!strcmp((E + i)->Type, "Intron"))) {
+                    if (((E + i)->PreviousExon->Strand == '*')
+                        && (!strcmp((E + i)->Type, "Intron"))) {
                     }
                     else {
                         pg->GOptim = (E + i);
@@ -308,4 +308,3 @@ void genamic(exonGFF   *E,
     /* Finishing process */
     printMess("-- Finishing gene assembling (genamic) --\n");
 }
-

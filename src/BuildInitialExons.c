@@ -34,33 +34,33 @@
 /* extern long NUMEXONS; */
 extern long MAXBACKUPSITES;
 
-long BuildInitialExons(site     *Start, 
-                       long      nStarts,
-                       site     *Donor, 
-                       long      nDonors,
-                       site     *Stop, 
-                       long      nStops,
-                       int       MaxDonors,
-                       char     *ExonType,
-                       char     *Sequence,
-                       exonGFF  *Exon, 
-                       long      nexons){
+long BuildInitialExons(site    *Start,
+                       long    nStarts,
+                       site    *Donor,
+                       long    nDonors,
+                       site    *Stop,
+                       long    nStops,
+                       int     MaxDonors,
+                       char    *ExonType,
+                       char    *Sequence,
+                       exonGFF *Exon,
+                       long    nexons){
     /* Best exons built by using the current start codon */
-    exonGFF  *LocalExon;
-    int       nLocalExons; 
-    int       LowestLocalExon;
-    float      LowestLocalScore;
+    exonGFF *LocalExon;
+    int     nLocalExons;
+    int     LowestLocalExon;
+    float   LowestLocalScore;
 
     /* Maximum allowed number of predicted initial exons per fragment */
     long HowMany;
 
-    int   Frame;
-    long  i;
-    long  j; 
-    long  js; 
-    long  k; 
-    long  ks;
-    int   l;
+    int  Frame;
+    long i;
+    long j;
+    long js;
+    long k;
+    long ks;
+    int  l;
 
     /* Final number of predicted initial exons */
     long nExon;
@@ -71,6 +71,7 @@ long BuildInitialExons(site     *Start,
         printError("Not enough memory: local first exons");
         exit(EXIT_FAILURE);
     }
+
     assert(LocalExon != NULL);
     /* Main loop, forall start codon looking for donor sites... */
     /* ...until the first stop codon in frame is reached */
