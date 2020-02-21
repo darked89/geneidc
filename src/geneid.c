@@ -362,6 +362,7 @@ int main(int    argc,
         /** A.3. Input DNA sequences (perhaps more than one) **/
         if ((fasta_fptr = fopen(fasta_fn, "rb")) == NULL) {
             printError("The input sequence file can not be accessed");
+            exit(EXIT_FAILURE);
         }
 
         /* reading the locusname of sequence (in Fasta format) */
@@ -695,6 +696,7 @@ int main(int    argc,
         if (external->nSequences > 1) {
             sprintf(mess, "Exons in more than one different contig were detected (%ld sequences)\n", external->nSequences);
             printError(mess);
+            exit(EXIT_FAILURE);
         }
 
         if (external->nvExons > 0) {
