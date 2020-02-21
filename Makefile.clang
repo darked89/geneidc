@@ -13,22 +13,30 @@ HEADERS = $(INCLUDE)/geneid.h
 PROGRAM= geneid
 PRODUCT= $(BIN)/$(PROGRAM)
 
-
+CC=clang
 
 #tested with:
-#clang version 8.0.1 (tags/RELEASE_801/final)
-#Target: x86_64-pc-linux-gnu
-#Manjaro 18.1
+#clang version 9.0.1
 
-#also:
-#AMD AOCC.LLVM.2.0.0.B191.2019_07_19 clang version 8.0.0
-#Manjaro 18.1
+# for working executable:
+#
+OPTS=-I$(INCLUDE) -O3 -std=c11 -Wall -march=native
 
-#scan-build make
+# for scan-build:
+#
+# scan-build make -j 8 -f Makefile.clang
+# OPTS=-I$(INCLUDE)  -std=c11 -ggdb -g3 -march=native  -Wshadow -Wstrict-overflow -fno-strict-aliasing 
 
-OPTS=-I$(INCLUDE)  -std=c11 -ggdb -g3 -march=native  -Wshadow -Wstrict-overflow -fno-strict-aliasing -fsanitize=address  -fno-omit-frame-pointer -fno-optimize-sibling-calls -fsanitize-address-use-after-scope
-# -Weverything
-#-fsanitize=address
+# for sanitize address:
+#
+# make -j 8 -f Makefile.clang
+# OPTS=-I$(INCLUDE)  -std=c11 -ggdb -g3 -march=native  -Wshadow -Wstrict-overflow -fno-strict-aliasing -fsanitize=address  -fno-omit-frame-pointer -fno-optimize-sibling-calls -fsanitize-address-use-after-scope
+
+# for all warnings:
+#
+# make -j 8 -f Makefile.clang
+# OPTS=-I$(INCLUDE)  -std=c11 -ggdb -g3 -march=native  -Wshadow -Wstrict-overflow -fno-strict-aliasing -Weverything -fsanitize=address  -fno-omit-frame-pointer -fno-optimize-sibling-calls -fsanitize-address-use-after-scope
+
 
 
 
