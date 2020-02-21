@@ -83,9 +83,9 @@ packHSP *SelectHSP(packExternalInformation *external,
 }
 
 /* Input blast HSPs from external file */
-long ReadHSP(char                    *blastHSP_gff_fn, 
+long ReadHSP(char                    *blastHSP_gff_fn,
              packExternalInformation *external){
-    long i; 
+    long i;
     long j;
     FILE *blastHSP_gff_fptr;
     char line[MAXLINE];
@@ -109,7 +109,7 @@ long ReadHSP(char                    *blastHSP_gff_fn,
     char  mess[MAXSTRING];
     long  pos1;
     long  pos2;
-    float  score;
+    float score;
     char  strand;
     short frame;
     char  c;

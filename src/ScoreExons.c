@@ -27,16 +27,16 @@
 
 #include "geneid.h"
 
-extern float  MRM;
+extern float MRM;
 extern int   UTR;
 extern int   scanORF;
-extern float  EW;
-extern float  U12EW;
+extern float EW;
+extern float U12EW;
 extern int   SRP;
-extern float  NO_SCORE;
+extern float NO_SCORE;
 extern int   U12GTAG;
 extern int   U12ATAC;
-extern float  RSSMARKOVSCORE;
+extern float RSSMARKOVSCORE;
 extern int   RSS;
 extern int   BKGD_SUBTRACT_FLANK_LENGTH;
 
@@ -66,12 +66,12 @@ int TRANS[] = {
 
 /* Translation from string into integer: for oligonucleotides with this length */
 /* s: sequence; ls: length of sequence; cardinal: length of the alphabet */
-long OligoToInt(char  *s, 
-                int    ls, 
-                int    cardinal){
-    long   index;
-    int    weight;
-    short  i;
+long OligoToInt(char *s,
+                int  ls,
+                int  cardinal){
+    long  index;
+    int   weight;
+    short i;
 
     index  = 0;
     weight = 1;
@@ -84,11 +84,11 @@ long OligoToInt(char  *s,
 }
 
 /* Select the isochore trained to work with this G+C content */
-int SelectIsochore(float      percent, 
-                   gparam  **isochores){
+int SelectIsochore(float  percent,
+                   gparam **isochores){
 
-    int  i;
-    int  stop;
+    int i;
+    int stop;
 
     /* Translation from 0.xy to XY */
     percent = PERCENT * percent;
@@ -112,9 +112,9 @@ int SelectIsochore(float      percent,
 }
 
 /* Compute the percentage of G+C nucleotides on a DNA sequence */
-float ComputeGC(packGC  *GCInfo,
-               long     inigc,
-               long     endgc){
+float ComputeGC(packGC *GCInfo,
+                long   inigc,
+                long   endgc){
 
     float GC_fraction;
 
@@ -125,16 +125,16 @@ float ComputeGC(packGC  *GCInfo,
                 / ((float) (endgc - inigc + 1 - (GCInfo->N[endgc] - GCInfo->N[inigc])));
     */
     GC_fraction = ((float) (GCInfo->GC[endgc] - GCInfo->GC[inigc]))
-                / ((float) (endgc - inigc + 1 - (GCInfo->N[endgc] - GCInfo->N[inigc])));
-    
+                  / ((float) (endgc - inigc + 1 - (GCInfo->N[endgc] - GCInfo->N[inigc])));
+
     return (GC_fraction);
 }
 
 /* Counting the frequency of C/Gs or Ns found until reaching very position */
-void GCScan(char    *s,
-            packGC  *GCInfo,
-            long     l1,
-            long     l2){
+void GCScan(char   *s,
+            packGC *GCInfo,
+            long   l1,
+            long   l2){
     long i;
 
     /* Initializing array values: setting first nucleotide */
@@ -196,19 +196,19 @@ void GCScan(char    *s,
 /* Compute the coding potential statistic for a sequence: pre-processing */
 /* There are Initial (penta) and Transition (hexa) score matrices: */
 /* Transition scores for every position are accumulated sums */
-void MarkovScan(char    *sequence,
-                gparam  *gp,
-                float    *OligoDistIni[3],
-                float    *OligoDistTran[3],
-                long     l1, 
-                long     l2){
+void MarkovScan(char   *sequence,
+                gparam *gp,
+                float  *OligoDistIni[3],
+                float  *OligoDistTran[3],
+                long   l1,
+                long   l2){
 
-    int    OligoLength_1;
-    long   i;
-    int    intword;
-    short  x;
-    short  cp;
-    float   previousScore;
+    int   OligoLength_1;
+    long  i;
+    int   intword;
+    short x;
+    short cp;
+    float previousScore;
 
     /* Pentanucleotides score: initial values for Markov chains */
     for (i = l1; (i <= l2 && *(sequence + i + gp->OligoLength - 1)); i++) {
@@ -261,24 +261,24 @@ void MarkovScan(char    *sequence,
 }
 
 /* Homology to protein score: using homology information (blast HSPs) */
-float ScoreHSPexon(exonGFF                  *exon,
-                  int                       Strand,
-                  packExternalInformation  *external,
-                  long                      l1, 
-                  long                      l2){
+float ScoreHSPexon(exonGFF                 *exon,
+                   int                     Strand,
+                   packExternalInformation *external,
+                   long                    l1,
+                   long                    l2){
 
-    int    index;
-    short  trueFrame;
-    long   iniExon;
-    long   endExon;
-    float   Score     = 0.0;
-    float   sum_left  = 0.0;
-    float   sum_right = 0.0;
-    long   left;
-    long   right;
-    long   len_left  = 0;
-    long   len_right = 0;
-    long   flank     = BKGD_SUBTRACT_FLANK_LENGTH;
+    int   index;
+    short trueFrame;
+    long  iniExon;
+    long  endExon;
+    float Score     = 0.0;
+    float sum_left  = 0.0;
+    float sum_right = 0.0;
+    long  left;
+    long  right;
+    long  len_left  = 0;
+    long  len_right = 0;
+    long  flank     = BKGD_SUBTRACT_FLANK_LENGTH;
 
     /* char mess[MAXSTRING]; */
 
@@ -335,16 +335,16 @@ float ScoreHSPexon(exonGFF                  *exon,
     return(Score);
 }
 /* Homology to protein score: using homology information (blast HSPs) */
-float GetReadCount(exonGFF                   *exon,
-                   int                       Strand,
-                   packExternalInformation  *external,
-                   long                      l1, 
-                   long                      l2){
-    int    index;
-    short  trueFrame;
-    long   iniExon;
-    long   endExon;
-    float   Score;
+float GetReadCount(exonGFF                 *exon,
+                   int                     Strand,
+                   packExternalInformation *external,
+                   long                    l1,
+                   long                    l2){
+    int   index;
+    short trueFrame;
+    long  iniExon;
+    long  endExon;
+    float Score;
 
 /*   float kb = 1000.000; */
     iniExon = exon->Acceptor->Position - l1 + COFFSET;
@@ -373,38 +373,38 @@ float GetReadCount(exonGFF                   *exon,
     return(Score);
 }
 /* Computing the score of a list of exons from (Sites, Markov, homology) */
-long Score(exonGFF                  *Exons,
-           long                      nExons,
-           long                      l1,
-           long                      l2,
-           int                       Strand,
-           packExternalInformation  *external,
-           packHSP                  *hsp,
+long Score(exonGFF                 *Exons,
+           long                    nExons,
+           long                    l1,
+           long                    l2,
+           int                     Strand,
+           packExternalInformation *external,
+           packHSP                 *hsp,
            gparam                  **isochores,
-           packGC                   *GCInfo){
+           packGC                  *GCInfo){
 
-    long        iniExon;
-    long        endExon;
-    long        i;
-    long        j;
-    int         exonLen;
-    long        inigc;
-    long        endgc;
-    short       frame;
-    short       codonPosition;
-    long        n;
-    float        scoreMarkov;
-    float        scoreHSP;
-    float        exonR;
-    float        scoreTotal;
-    int         OligoLength_1;
-    float        ExonWeight;
-    float        percentGC;
-    int         currentIsochore;
+    long       iniExon;
+    long       endExon;
+    long       i;
+    long       j;
+    int        exonLen;
+    long       inigc;
+    long       endgc;
+    short      frame;
+    short      codonPosition;
+    long       n;
+    float      scoreMarkov;
+    float      scoreHSP;
+    float      exonR;
+    float      scoreTotal;
+    int        OligoLength_1;
+    float      ExonWeight;
+    float      percentGC;
+    int        currentIsochore;
     paramexons *p;
-    int         OligoLength;
+    int        OligoLength;
     gparam     *gp;
-    int         rss = 0;
+    int        rss = 0;
 
 /*   char mess[MAXSTRING]; */
 /*   float million = 1000000; */
@@ -438,7 +438,7 @@ long Score(exonGFF                  *Exons,
         }
 
         percentGC       = ComputeGC(GCInfo, inigc, endgc);
-        
+
         currentIsochore = SelectIsochore(percentGC, isochores);
         gp              = isochores[currentIsochore];
 

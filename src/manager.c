@@ -51,25 +51,25 @@ extern int  UTR;
 extern long NUMSITES, NUMEXONS;
 
 /* Management of splice sites prediction and exon construction/scoring */
-void  manager(char *Sequence,
-              long LengthSequence,
-              packSites *allSites,
-              packExons *allExons,
+void  manager(char                    *Sequence,
+              long                    LengthSequence,
+              packSites               *allSites,
+              packExons               *allExons,
               long                    l1,
               long                    l2,
               long                    lowerlimit,
               long                    upperlimit,
               int                     Strand,
               packExternalInformation *external,
-              packHSP *hsp,
-              gparam *gp,
-              gparam **isochores,
-              int nIsochores,
-              packGC *GCInfo,
-              site *acceptorsites,
-              site *donorsites,
-              site *tssites,
-              site *tesites
+              packHSP                 *hsp,
+              gparam                  *gp,
+              gparam                  **isochores,
+              int                     nIsochores,
+              packGC                  *GCInfo,
+              site                    *acceptorsites,
+              site                    *donorsites,
+              site                    *tssites,
+              site                    *tesites
               ){
     char mess[MAXSTRING];
 

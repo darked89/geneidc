@@ -38,7 +38,6 @@
 
 #define _POSIX_C_SOURCE 2
 
-
 #include <stdlib.h>
 #include <assert.h>
 #include <stdio.h>
@@ -288,7 +287,7 @@ A. DEFINITIONS
 
 /* Intron Subtypes                           */
 #define MAXSUBTYPE 10
-// 20200210dk change the subtype size to 8 from 5
+/* 20200210dk change the subtype size to 8 from 5 */
 #define MAXSPLICETYPE 8
 #define sU2 "U2"
 #define sU2gcag "U2gcag"
@@ -429,27 +428,27 @@ typedef struct s_dict
 
 typedef struct s_profile
 {
-    int    dimension;
-    int    offset;
-    float   cutoff;
-    int    order;
-    float   afactor;
-    float   bfactor;
-    int    acc_context;
-    int    dist;
-    int    opt_dist;
-    float   penalty_factor;
-    long   dimensionTrans;
-    float  *transitionValues[PROFILEDIM];
+    int   dimension;
+    int   offset;
+    float cutoff;
+    int   order;
+    float afactor;
+    float bfactor;
+    int   acc_context;
+    int   dist;
+    int   opt_dist;
+    float penalty_factor;
+    long  dimensionTrans;
+    float *transitionValues[PROFILEDIM];
 } profile;
 
 typedef struct s_site
 {
     long  Position;
-    float  Score;
-    float  ScoreAccProfile;
-    float  ScoreBP;
-    float  ScorePPT;
+    float Score;
+    float ScoreAccProfile;
+    float ScoreBP;
+    float ScorePPT;
     int   PositionBP;
     int   PositionPPT;
     char  type[MAXSPLICETYPE];
@@ -481,25 +480,25 @@ typedef struct s_exonGFF
 {
     site     *Acceptor;
     site     *Donor;
-    char      Type[MAXTYPE];
-    short     Frame;
-    short     Remainder;
-    char      Strand;
-    float      PartialScore;
-    float      HSPScore;
-    float      R;
-    float      Score;
-    pexonGFF  PreviousExon;
-    double    GeneScore;
-    char      Group[MAXSTRING];
-    int       offset1;
-    int       offset2;
-    short     lValue;
-    short     rValue;
-    short     evidence;
-    short     selected;
-    short     three_prime_partial;
-    short     five_prime_partial;
+    char     Type[MAXTYPE];
+    short    Frame;
+    short    Remainder;
+    char     Strand;
+    float    PartialScore;
+    float    HSPScore;
+    float    R;
+    float    Score;
+    pexonGFF PreviousExon;
+    double   GeneScore;
+    char     Group[MAXSTRING];
+    int      offset1;
+    int      offset2;
+    short    lValue;
+    short    rValue;
+    short    evidence;
+    short    selected;
+    short    three_prime_partial;
+    short    five_prime_partial;
 } exonGFF;
 
 typedef struct s_packExons
@@ -517,30 +516,30 @@ typedef struct s_packExons
     exonGFF *Utr3InternalHalfExons;
     exonGFF *UtrTerminalHalfExons;
     exonGFF *UtrTerminalExons;
-    long     nInitialExons;
-    long     nInternalExons;
-    long     nZeroLengthExons;
-    long     nTerminalExons;
-    long     nSingles;
-    long     nORFs;
-    long     nUtrInitialExons;
-    long     nUtrInitialHalfExons;
-    long     nUtrInternalExons;
-    long     nUtr5InternalHalfExons;
-    long     nUtr3InternalHalfExons;
-    long     nUtrTerminalHalfExons;
-    long     nUtrTerminalExons;
-    long     nExons;
+    long    nInitialExons;
+    long    nInternalExons;
+    long    nZeroLengthExons;
+    long    nTerminalExons;
+    long    nSingles;
+    long    nORFs;
+    long    nUtrInitialExons;
+    long    nUtrInitialHalfExons;
+    long    nUtrInternalExons;
+    long    nUtr5InternalHalfExons;
+    long    nUtr3InternalHalfExons;
+    long    nUtrTerminalHalfExons;
+    long    nUtrTerminalExons;
+    long    nExons;
 } packExons;
 
 typedef struct s_packGenes
 {
-    exonGFF  ****Ga;
-    exonGFF     *Ghost;
-    exonGFF     *GOptim;
-    exonGFF   ***d;
-    long        *km;
-    long        *je;
+    exonGFF ****Ga;
+    exonGFF *Ghost;
+    exonGFF *GOptim;
+    exonGFF ***d;
+    long    *km;
+    long    *je;
 } packGenes;
 
 typedef struct s_packEvidence
@@ -561,29 +560,29 @@ typedef struct s_HSP
 typedef struct s_packHSP
 {
     HSP  ***sPairs;
-    long   *nSegments;
-    long    nTotalSegments;
-    int     visited;
+    long *nSegments;
+    long nTotalSegments;
+    int  visited;
 } packHSP;
 
 typedef struct s_packExternalInformation
 {
-    dict           *locusNames;
+    dict *locusNames;
 
-    packHSP       **homology;
-    packEvidence  **evidence;
+    packHSP      **homology;
+    packEvidence **evidence;
 
-    long            nSequences;
-    long            nvExons;
-    long            nHSPs;
+    long nSequences;
+    long nvExons;
+    long nHSPs;
 
-    long            i1vExons;
-    long            i2vExons;
-    long            ivExons;
+    long i1vExons;
+    long i2vExons;
+    long ivExons;
 
-    long           *iSegments;
-    float          **sr;
-    float          **readcount;
+    long  *iSegments;
+    float **sr;
+    float **readcount;
 } packExternalInformation;
 
 typedef struct s_dumpNode *pdumpNode;
@@ -600,22 +599,22 @@ typedef struct s_dumpNode
     char  type[MAXTYPE];
 
     exonGFF   *exon;
-    pdumpNode  next;
+    pdumpNode next;
 } dumpNode;
 
 typedef struct s_dumpHash
 {
     pdumpNode *T;
-    long       total;
+    long      total;
 } dumpHash;
 
 typedef struct s_packDump
 {
-    site     *dumpSites;
-    long      ndumpSites;
+    site *dumpSites;
+    long ndumpSites;
 
-    exonGFF  *dumpExons;
-    long      ndumpExons;
+    exonGFF *dumpExons;
+    long    ndumpExons;
 
     dumpHash *h;
 } packDump;
@@ -688,58 +687,58 @@ typedef struct s_gparam
     int leftValue;
     int rightValue;
 
-    profile  *PolyASignalProfile;
-    profile  *StartProfile;
-    profile  *AcceptorProfile;
-    profile  *PolyPTractProfile;
-    profile  *BranchPointProfile;
-    profile  *DonorProfile;
-    profile  *U2gcagDonorProfile;
-    profile  *U2gtaDonorProfile;
-    profile  *U2gtgDonorProfile;
-    profile  *U2gtyDonorProfile;
-    profile  *U12gtagAcceptorProfile;
-    profile  *U12BranchPointProfile;
-    profile  *U12gtagDonorProfile;
-    profile  *U12atacAcceptorProfile;
-    profile  *U12atacDonorProfile;
-    profile  *StopProfile;
+    profile *PolyASignalProfile;
+    profile *StartProfile;
+    profile *AcceptorProfile;
+    profile *PolyPTractProfile;
+    profile *BranchPointProfile;
+    profile *DonorProfile;
+    profile *U2gcagDonorProfile;
+    profile *U2gtaDonorProfile;
+    profile *U2gtgDonorProfile;
+    profile *U2gtyDonorProfile;
+    profile *U12gtagAcceptorProfile;
+    profile *U12BranchPointProfile;
+    profile *U12gtagDonorProfile;
+    profile *U12atacAcceptorProfile;
+    profile *U12atacDonorProfile;
+    profile *StopProfile;
 
-    float    *OligoLogsIni[3];
-    float    *OligoLogsTran[3];
+    float *OligoLogsIni[3];
+    float *OligoLogsTran[3];
 
-    long     OligoDim;
-    long     OligoDim_1;
-    int      OligoLength;
+    long OligoDim;
+    long OligoDim_1;
+    int  OligoLength;
 
-    paramexons  *Initial;
-    paramexons  *Internal;
-    paramexons  *Terminal;
-    paramexons  *Single;
-    paramexons  *utr;
+    paramexons *Initial;
+    paramexons *Internal;
+    paramexons *Terminal;
+    paramexons *Single;
+    paramexons *utr;
 
-    float        *OligoDistIni[FRAMES];
-    float        *OligoDistTran[FRAMES];
+    float *OligoDistIni[FRAMES];
+    float *OligoDistTran[FRAMES];
 
-    int          MaxDonors;
+    int MaxDonors;
 
-    dict        *D;
-    int         *nc;
-    int         *ne;
-    long        *md;
-    long        *Md;
-    int          UC[MAXENTRY][MAXENTRY];
-    int          DE[MAXENTRY][MAXENTRY];
-    int          block[MAXENTRY];
-    int          nclass;
+    dict *D;
+    int  *nc;
+    int  *ne;
+    long *md;
+    long *Md;
+    int  UC[MAXENTRY][MAXENTRY];
+    int  DE[MAXENTRY][MAXENTRY];
+    int  block[MAXENTRY];
+    int  nclass;
 
 } gparam;
 
 /*************************************************************************
 C. IMPORTED HEADERS
 *************************************************************************/
-float strtof(const char  *nptr,
-            char       **endptr);
+float strtof(const char *nptr,
+             char       **endptr);
 
 void PrintExonGFF(exonGFF *e,
                   char    *Name,
@@ -757,55 +756,55 @@ void printRes(char *s);
 
 void printReadingInfo(char *s);
 
-long GetSitesWithProfile(char     *s,
-                         profile  *p,
+long GetSitesWithProfile(char    *s,
+                         profile *p,
                          site    *st,
-                         long     l1,
-                         long     l2);
+                         long    l1,
+                         long    l2);
 
-long GetTSS(site                     *sc,
-            site                     *Acceptors,
-            long                      nAcceptors,
-            packExternalInformation  *external,
-            packHSP                  *hsp,
-            int                       Strand,
-            long                      LengthSequence,
-            long                      l1,
-            long                      l2
+long GetTSS(site                    *sc,
+            site                    *Acceptors,
+            long                    nAcceptors,
+            packExternalInformation *external,
+            packHSP                 *hsp,
+            int                     Strand,
+            long                    LengthSequence,
+            long                    l1,
+            long                    l2
             );
 
-long GetTES(site                     *sc,
-            site                     *Donors,
-            long                     nDonors,
-            packExternalInformation  *external,
-            packHSP                  *hsp,
-            int                       Strand,
-            long                      LengthSequence,
-            long                      l1,
-            long                      l2,
-            long                      ns
+long GetTES(site                    *sc,
+            site                    *Donors,
+            long                    nDonors,
+            packExternalInformation *external,
+            packHSP                 *hsp,
+            int                     Strand,
+            long                    LengthSequence,
+            long                    l1,
+            long                    l2,
+            long                    ns
             );
 
 long BuildDonors(char                    *s,
-                 short                    xxspl_class,
+                 short                   xxspl_class,
                  char                    *type,
                  char                    *subtype,
-                 profile                  *p,
+                 profile                 *p,
                  site                    *st,
-                 long                     l1,
-                 long                     l2,
-                 long                     ns,
-                 long                     nsites,
-                 int                      Strand,
+                 long                    l1,
+                 long                    l2,
+                 long                    ns,
+                 long                    nsites,
+                 int                     Strand,
                  packExternalInformation *external
                  );
 
-float PeakEdgeScore(long                      Position,
-                    int                      Strand,
+float PeakEdgeScore(long                    Position,
+                    int                     Strand,
                     packExternalInformation *external,
-                    long                     l1,
-                    long                     l2,
-                    int                      win);
+                    long                    l1,
+                    long                    l2,
+                    int                     win);
 
 /* long BuildU12Donors(char* s, */
 /*                  char* type, */
@@ -815,41 +814,41 @@ float PeakEdgeScore(long                      Position,
 /*                  site* st,  */
 /*                  long l1,  */
 /*                  long l2);  */
-int ClusterEdge(long                     Position,
-                int                      Strand,
+int ClusterEdge(long                    Position,
+                int                     Strand,
                 packExternalInformation *external,
-                long                     l1,
-                long                     l2);
+                long                    l1,
+                long                    l2);
 
 long GetStopCodons(char    *s,
-                   profile  *p,
+                   profile *p,
                    site    *sc,
-                   long     l1,
-                   long     l2);
+                   long    l1,
+                   long    l2);
 
 long BuildInitialExons(site    *Start,
-                       long     nStarts,
+                       long    nStarts,
                        site    *Donor,
-                       long     nDonors,
+                       long    nDonors,
                        site    *Stop,
-                       long     nStops,
-                       int      MaxDonors,
+                       long    nStops,
+                       int     MaxDonors,
                        char    *ExonType,
                        char    *Sequence,
                        exonGFF *Exon,
-                       long     nexons );
+                       long    nexons );
 
 long BuildInternalExons(site    *Acceptor,
-                        long     nAcceptors,
+                        long    nAcceptors,
                         site    *Donor,
-                        long     nDonors,
+                        long    nDonors,
                         site    *Stop,
-                        long     nStops,
-                        int      MaxDonors,
+                        long    nStops,
+                        int     MaxDonors,
                         char    *ExonType,
                         char    *Sequence,
                         exonGFF *Exon,
-                        long     nexons);
+                        long    nexons);
 
 long BuildZeroLengthExons(site    *Acceptor,
                           long    nAcceptors,
@@ -901,7 +900,6 @@ long BuildUTRExons(site    *Start,
                    exonGFF *Exon,
                    long    nexons);
 
-
 packSites *RequestMemorySites(void);
 
 packExons *RequestMemoryExons(void);
@@ -918,14 +916,13 @@ packDump *RequestMemoryDumpster(void);
 
 dict *RequestMemoryAaDictionary(void);
 
-
 void RequestMemoryProfile(profile *p);
 
 account *RequestMemoryAccounting(void);
 
 packExternalInformation *RequestMemoryExternalInformation(void);
 
-void readargv (int   argc,
+void readargv (int  argc,
                char *argv[],
                char *param_fn,
                char *fasta_fn,
@@ -933,16 +930,16 @@ void readargv (int   argc,
                char *HSPFile,
                char *GenePrefix);
 
-int readparam (char    *name,
+int readparam (char   *name,
                gparam **isochores);
 
 account *InitAcc(void);
 
 void OutputHeader(char *locus,
-                  long  l);
+                  long l);
 
-int IniReadSequence(FILE  *fasta_fptr,
-                    char  *line);
+int IniReadSequence(FILE *fasta_fptr,
+                    char *line);
 
 int ReadSequence (FILE *fasta_fptr,
                   char *Sequence,
@@ -984,11 +981,11 @@ void Output(packSites *allSites,
             packExons *allExons,
             packExons *allExons_r,
             exonGFF   *exons,
-            long       nExons,
+            long      nExons,
             char      *Locus,
-            long       l1,
-            long       l2,
-            long       lowerlimit,
+            long      l1,
+            long      l2,
+            long      lowerlimit,
             char      *Sequence,
             gparam    *gp,
             dict      *dAA,
@@ -1001,27 +998,27 @@ void updateTotals(account   *m,
                   packExons *allExons_r);
 
 void genamic(exonGFF   *E,
-             long       nExons,
+             long      nExons,
              packGenes *pg,
              gparam    *gp);
 
 void BackupGenes(packGenes *pg,
-                 int        nclass,
+                 int       nclass,
                  packDump  *d);
 
 void BackupArrayD(packGenes *pg,
-                  long       accSearch,
+                  long      accSearch,
                   gparam    *gp,
                   packDump  *dumpster);
 
 void cleanGenes(packGenes *pg,
-                int        nclass,
+                int       nclass,
                 packDump  *dumpster);
 
 void cleanDumpHash(dumpHash *h);
 
 void OutputGene(packGenes *pg,
-                long       nExons,
+                long      nExons,
                 char      *Locus,
                 char      *Sequence,
                 gparam    *gp,
@@ -1033,12 +1030,12 @@ void OutputStats(char *Locus);
 void OutputTime(void);
 
 void RecomputePositions(packSites *allSites,
-                        long       l);
+                        long      l);
 
 void cleanAcc(account *m);
 
-void PrintProfile (profile  *p,
-                   char   *signal);
+void PrintProfile (profile *p,
+                   char    *signal);
 
 long ReadGeneModel (FILE *file,
                     dict *d,
@@ -1068,7 +1065,7 @@ void PrintSites (site    *s,
                  long    l2,
                  long    lowerlimit,
                  char    *seq,
-                 profile  *p);
+                 profile *p);
 
 void PrintExons (exonGFF *e,
                  long    ne,
@@ -1164,28 +1161,28 @@ void PrintGExon(exonGFF *a,
                 int     evidence,
                 float   score);
 
-void PrintGIntron(exonGFF  *d,
-                  exonGFF  *a,
-                  char      Name[],
-                  long      ngen,
-                  int       numInt,
-                  char     *GenePrefix,
-                  int       evidence,
-                  float      score,
-                  char     *eType);
+void PrintGIntron(exonGFF *d,
+                  exonGFF *a,
+                  char    Name[],
+                  long    ngen,
+                  int     numInt,
+                  char    *GenePrefix,
+                  int     evidence,
+                  float   score,
+                  char    *eType);
 
 void PrintGGene(exonGFF *s,
                 exonGFF *e,
-                char     Name[],
-                long     ngen,
-                float     score,
+                char    Name[],
+                long    ngen,
+                float   score,
                 char    *GenePrefix);
 
 void PrintGmRNA(exonGFF *s,
                 exonGFF *e,
-                char     Name[],
-                long     ngen,
-                float     score,
+                char    Name[],
+                long    ngen,
+                float   score,
                 char    *GenePrefix);
 
 void PrintXMLExon(exonGFF *e,
@@ -1220,19 +1217,18 @@ char getAADict(dict *d,
                char s[]);
 
 void CookingGenes(exonGFF *e,
-                  char     Name[],
+                  char    Name[],
                   char    *s,
                   gparam  *gp,
                   dict    *dAA,
                   char    *GenePrefix);
 
-//unused
+/*unused */
 /*
 float MeasureSequence(long   l1,
                      long   l2,
                      char  *s);
 */
-
 
 gparam **RequestMemoryIsochoresParams(void);
 
@@ -1240,11 +1236,11 @@ long ReadHSP (char                    *blastHSP_gff_fn,
               packExternalInformation *external);
 
 void shareGeneModel(gparam **isochores,
-                    int      n);
+                    int    n);
 
 long OligoToInt(char *s,
-                int   ls,
-                int   cardinal);
+                int  ls,
+                int  cardinal);
 
 char *RequestMemorySequence(long L);
 
@@ -1271,10 +1267,9 @@ void GetcDNA(exonGFF *e,
              char    *cDNA,
              long    *nNN);
 
-
 void GetTDNA(exonGFF *e,
              char    *s,
-             long     nExons,
+             long    nExons,
              char    *tDNA,
              long    *nTN);
 
@@ -1282,10 +1277,10 @@ float ComputeGC(packGC *GCInfo,
                 long   inigc,
                 long   endgc);
 
-void GCScan(char    *s,
-            packGC  *GCInfo,
-            long     l1,
-            long     l2);
+void GCScan(char   *s,
+            packGC *GCInfo,
+            long   l1,
+            long   l2);
 
 void beggar(long L);
 
@@ -1293,29 +1288,29 @@ void SetRatios(long *NUMSITES,
                long *NUMEXONS,
                long *MAXBACKUPSITES,
                long *MAXBACKUPEXONS,
-               long  L);
+               long L);
 
 long get_fasta_size(char *fasta_fn);
 
 packGC *RequestMemoryGC(void);
 
-int SelectIsochore(float     percent,
+int SelectIsochore(float  percent,
                    gparam **isochores);
 
 void  manager(char                    *Sequence,
-              long                     LengthSequence,
+              long                    LengthSequence,
               packSites               *allSites,
               packExons               *allExons,
-              long                     l1,
-              long                     l2,
-              long                     lower,
-              long                     upper,
-              int                      Strand,
+              long                    l1,
+              long                    l2,
+              long                    lower,
+              long                    upper,
+              int                     Strand,
               packExternalInformation *external,
               packHSP                 *hsp,
               gparam                  *gp,
-              gparam                 **isochores,
-              int                      nIsochores,
+              gparam                  **isochores,
+              int                     nIsochores,
               packGC                  *GCInfo,
               site                    *acceptorsites,
               site                    *donorsites,
@@ -1340,31 +1335,31 @@ void SortHSPs(packHSP *p);
 HSP *RequestNewHSP(void);
 
 long  BuildU12Acceptors(char                    *s,
-                        short                    class,
+                        short                   class,
                         char                    *type,
                         char                    *subtype,
-                        profile                  *u12_p,
-                        profile                  *u12bp,
-                        profile                  *ppt,
+                        profile                 *u12_p,
+                        profile                 *u12bp,
+                        profile                 *ppt,
                         site                    *st,
-                        long                     l1,
-                        long                     l2,
-                        long                     ns,
-                        long                     nsites,
-                        int                      Strand,
+                        long                    l1,
+                        long                    l2,
+                        long                    ns,
+                        long                    nsites,
+                        int                     Strand,
                         packExternalInformation *external);
 
 long  BuildAcceptors(char                    *s,
-                     short                    class,
+                     short                   class,
                      char                    *type,
                      char                    *subtype,
-                     profile                  *p,
-                     profile                  *ppt,
-                     profile                  *bp,
+                     profile                 *p,
+                     profile                 *ppt,
+                     profile                 *bp,
                      site                    *st,
-                     long                     l1,
-                     long                     l2,
-                     long                     ns,
-                     long                     nsites,
-                     int                      Strand,
+                     long                    l1,
+                     long                    l2,
+                     long                    ns,
+                     long                    nsites,
+                     int                     Strand,
                      packExternalInformation *external);

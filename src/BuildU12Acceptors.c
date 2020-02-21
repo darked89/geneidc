@@ -40,12 +40,12 @@ extern int PPT;
 extern int UTR;
 
 float ComputeU12BranchProfile(char    *s,
-                            long     positionAcc,
-                            long     limitRight,
-                            profile  *p,
-                            site    *splicesite){
-    float  maxScore;
-    float  score;
+                              long    positionAcc,
+                              long    limitRight,
+                              profile *p,
+                              site    *splicesite){
+    float maxScore;
+    float score;
     int   index;
     int   Opt;
     long  end;
@@ -87,12 +87,12 @@ float ComputeU12BranchProfile(char    *s,
 }
 
 float ComputePPTProfile(char    *s,
-                      long     positionAcc,
-                      long     limitRight,
-                      profile  *p,
-                      site    *splicesite){
-    float  maxScore;
-    float  score;
+                        long    positionAcc,
+                        long    limitRight,
+                        profile *p,
+                        site    *splicesite){
+    float maxScore;
+    float score;
     int   index;
     long  end;
     long  i;
@@ -136,32 +136,32 @@ float ComputePPTProfile(char    *s,
 
 /* Search for acceptor splice sites, using additional profiles */
 long  BuildU12Acceptors(char                    *s,
-                        short                     class,
-                        char                     *type,
-                        char                     *subtype,
-                        profile                   *u12_p,
-                        profile                   *u12bp,
-                        profile                   *ppt,
-                        site                     *st,
-                        long                      l1,
-                        long                      l2,
-                        long                      ns,
-                        long                      nsites,
-                        int                       Strand,
-                        packExternalInformation  *external){
-    int    i;
-    int    j;
+                        short                   class,
+                        char                    *type,
+                        char                    *subtype,
+                        profile                 *u12_p,
+                        profile                 *u12bp,
+                        profile                 *ppt,
+                        site                    *st,
+                        long                    l1,
+                        long                    l2,
+                        long                    ns,
+                        long                    nsites,
+                        int                     Strand,
+                        packExternalInformation *external){
+    int   i;
+    int   j;
     char  *sOriginal;
-    float   score;
-    float   scoreBP;
-    float   scorePPT;
-    float   scoreAcc;
+    float score;
+    float scoreBP;
+    float scorePPT;
+    float scoreAcc;
     /*   long ns,is; */
-    long   is;
-    long   left;
-    long   right;
-    int    index;
-    float   cutoff;
+    long  is;
+    long  left;
+    long  right;
+    int   index;
+    float cutoff;
 
     /* Back-up the origin of the sequence */
     sOriginal = s;

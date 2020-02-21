@@ -70,7 +70,7 @@ long ReadExonsGFF(char                    *exons_gff_fn,
     FILE *exons_gff_fptr;
 
     /* Final number of exons loaded from file (including copies) */
-    long i; 
+    long i;
     long j;
 
     /* Split every input line into several tokens (gff records) */
@@ -651,4 +651,3 @@ long ReadExonsGFF(char                    *exons_gff_fn,
 
     return(i);
 }
-

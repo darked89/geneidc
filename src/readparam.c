@@ -29,7 +29,7 @@
 #include <strings.h>
 #include "geneid.h"
 
-extern float  NO_SCORE;
+extern float NO_SCORE;
 extern int   PPT;
 extern int   BP;
 extern int   U12GTAG;
@@ -42,19 +42,19 @@ extern int   SGE;
 extern int   PAS;
 extern int   BKGD_SUBTRACT_FLANK_LENGTH;
 extern short SPLICECLASSES;
-extern float  U12_SPLICE_SCORE_THRESH;
-extern float  U12_EXON_SCORE_THRESH;
-extern float  U12EW;
-extern float  RSSMARKOVSCORE;
-extern float  RSSDON;
-extern float  RSSACC;
-extern float  EvidenceEW;
-extern float  EvidenceFactor;
+extern float U12_SPLICE_SCORE_THRESH;
+extern float U12_EXON_SCORE_THRESH;
+extern float U12EW;
+extern float RSSMARKOVSCORE;
+extern float RSSDON;
+extern float RSSACC;
+extern float EvidenceEW;
+extern float EvidenceFactor;
 
 /* Numeric values: read one line skipping comments and empty lines */
 void readLine(FILE *File,
               char *line){
-    
+
     char *res;
 
     res = fgets(line, MAXLINE, File);
@@ -87,16 +87,16 @@ void readHeader(FILE *File,
     }
 }
 
-void SetProfile(profile  *p,
-               FILE    *RootFile,
-               char    *signal){
+void SetProfile(profile *p,
+                FILE    *RootFile,
+                char    *signal){
 
-    int   i;
-    int   j;
-    int   x;
-    int   y;
-    char  line[MAXLINE];
-    char  mess[MAXSTRING];
+    int  i;
+    int  j;
+    int  x;
+    int  y;
+    char line[MAXLINE];
+    char mess[MAXSTRING];
 
     /* According to the order of Markov chain, select a different method */
     /* Position weight array: transition probabilities in every position */
@@ -319,13 +319,13 @@ void SetProfile(profile  *p,
 /* Read information useful to predict Start codons, donors, stop codons */
 /* H parameter: 0 for not reading header, 1 for reading the header */
 void ReadProfile(FILE    *RootFile,
-                profile  *p,
-                char    *signal,
-                int      H){
+                 profile *p,
+                 char    *signal,
+                 int     H){
 
-    char  line[MAXLINE];
-    char  mess[MAXSTRING];
-    int   numProfileParams = 0;
+    char line[MAXLINE];
+    char mess[MAXSTRING];
+    int  numProfileParams = 0;
 
     p->afactor        = 0;
     p->bfactor        = 1;
@@ -384,18 +384,18 @@ void ReadProfile(FILE    *RootFile,
 }
 
 /* Read information useful to predict Acceptor splice sites */
-void ReadProfileSpliceSites(FILE    *RootFile, 
-                           gparam  *gp){
-                                
-    char     line[MAXLINE];
-    char     mess[MAXSTRING];
-    char     header[MAXSTRING];
-    profile  *p;
-    int      u12bp      = 0;
-    int      u12gtagAcc = 0;
-    int      u12atacAcc = 0;
-    int      u12gtagDon = 0;
-    int      u12atacDon = 0;
+void ReadProfileSpliceSites(FILE   *RootFile,
+                            gparam *gp){
+
+    char    line[MAXLINE];
+    char    mess[MAXSTRING];
+    char    header[MAXSTRING];
+    profile *p;
+    int     u12bp      = 0;
+    int     u12gtagAcc = 0;
+    int     u12atacAcc = 0;
+    int     u12gtagDon = 0;
+    int     u12atacDon = 0;
 
     /* A. Optional profiles: U12GTAG, U12ATAC Donor, acceptor and branch points
     and U2 branch points and Poly Pyrimidine Tract */
@@ -582,10 +582,10 @@ void ReadProfileSpliceSites(FILE    *RootFile,
 
 /* Read information about signal and exon prediction in one isochore */
 /* - isochores are specific DNA regions according to the G+C content - */
-void ReadIsochore(FILE    *RootFile,
-                  gparam  *gp){
-  
-    float  lscore;
+void ReadIsochore(FILE   *RootFile,
+                  gparam *gp){
+
+    float lscore;
     int   OligoLength_1;
     int   i;
     int   j;
@@ -970,18 +970,18 @@ void ReadIsochore(FILE    *RootFile,
 }
 
 /* Read the input of statistics data model */
-int readparam(char     *name, 
-              gparam  **isochores){
-    
-    FILE  *RootFile;
-    char  *Geneid;
-    char   ExternalFileName[FILENAMELENGTH];
+int readparam(char   *name,
+              gparam **isochores){
 
-    int    i;
-    char   line[MAXLINE];
-    char   mess[MAXSTRING];
-    char   header[MAXSTRING];
-    int    nIsochores;
+    FILE *RootFile;
+    char *Geneid;
+    char ExternalFileName[FILENAMELENGTH];
+
+    int  i;
+    char line[MAXLINE];
+    char mess[MAXSTRING];
+    char header[MAXSTRING];
+    int  nIsochores;
 
     /* 0. Select parameters filename for reading it */
     /* Filename must be: option P, env.var GENEID or default (none) */
@@ -1123,4 +1123,3 @@ int readparam(char     *name,
 
     return(nIsochores);
 }
-

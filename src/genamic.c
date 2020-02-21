@@ -311,4 +311,3 @@ void genamic(exonGFF   *E,
     /* Finishing process */
     printMess("-- Finishing gene assembling (genamic) --\n");
 }
-
