@@ -573,6 +573,7 @@ void CookingGenes(exonGFF *e,
     /* Get info about each gene */
     if ((info = (gene *) calloc(MAXGENE, sizeof(gene))) == NULL) {
         printError("Not enough memory: post-processing genes");
+        exit(EXIT_FAILURE);
     }
 
     /* tAA[gene][exon[0] is the first amino acid of that exon */
@@ -773,7 +774,11 @@ void CookingGenes(exonGFF *e,
     for (i = 0; i < MAXEXONGENE; i++) {
         free(tAA[i]);
     }
-
+    
+    if (tAA){
+       free(tAA);
+    }
+    
     if (cDNA) {
         free(tmpDNA);
     }
