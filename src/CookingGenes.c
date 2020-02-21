@@ -1016,6 +1016,7 @@ void CookingGenes(exonGFF  *e,
     /* Get info about each gene */
     if ((info = (gene *) calloc(MAXGENE, sizeof(gene))) == NULL) {
         printError("Not enough memory: post-processing genes");
+        exit(EXIT_FAILURE);
     }
 
     /* tAA[gene][exon[0] is the first amino acid of that exon */
@@ -1047,6 +1048,7 @@ void CookingGenes(exonGFF  *e,
     if (cDNA) {
         if ((tmpDNA = (char *) calloc(MAXCDNA, sizeof(char))) == NULL) {
             printError("Not enough memory: cDNA product");
+            exit(EXIT_FAILURE);
         }
     }
 
