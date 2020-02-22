@@ -42,7 +42,7 @@ typedef struct s_gene
 {
     long    nexons;
     long    nintrons;
-    float   score;
+    double  score;
     exonGFF *start;
     exonGFF *end;
 } gene;
@@ -774,11 +774,11 @@ void CookingGenes(exonGFF *e,
     for (i = 0; i < MAXEXONGENE; i++) {
         free(tAA[i]);
     }
-    
-    if (tAA){
-       free(tAA);
+
+    if (tAA) {
+        free(tAA);
     }
-    
+
     if (cDNA) {
         free(tmpDNA);
     }

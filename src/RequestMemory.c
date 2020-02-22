@@ -404,14 +404,14 @@ packExternalInformation *RequestMemoryExternalInformation(){
 
         /* Pre-processing array */
         if ((p->sr
-                 = (float **) calloc(HowMany, sizeof(float *))) == NULL) {
+                 = (double **) calloc(HowMany, sizeof(double *))) == NULL) {
             printError("Not enough memory: general preprocessing array of HSPs");
             exit(EXIT_FAILURE);
         }
 
         for (i = 0; i < HowMany; i++) {
             if ((p->sr[i]
-                     = (float *) calloc(LENGTHSi, sizeof(float))) == NULL) {
+                     = (double *) calloc(LENGTHSi, sizeof(double))) == NULL) {
                 printError("Not enough memory: individual preprocessing array of HSPs");
                 exit(EXIT_FAILURE);
             }
@@ -551,70 +551,70 @@ gparam *RequestMemoryParams(){
     }
 
     /* 2. Markov model: initial and transition values */
-    OligoDim = (int) pow((float) 4, (float) OLIGOLENGTH);
+    OligoDim = (int) pow((double) 4, (double) OLIGOLENGTH);
 
-    if ((gp->OligoLogsIni[0] = (float *) calloc(OligoDim, sizeof(float))) == NULL) {
+    if ((gp->OligoLogsIni[0] = (double *) calloc(OligoDim, sizeof(double))) == NULL) {
         printError("Not enough memory: Markov initial pentanucleotides (0)");
         exit(EXIT_FAILURE);
     }
 
-    if ((gp->OligoLogsIni[1] = (float *) calloc(OligoDim, sizeof(float))) == NULL) {
+    if ((gp->OligoLogsIni[1] = (double *) calloc(OligoDim, sizeof(double))) == NULL) {
         printError("Not enough memory: Markov initial pentanucleotides (1)");
         exit(EXIT_FAILURE);
     }
 
-    if ((gp->OligoLogsIni[2] = (float *) calloc(OligoDim, sizeof(float))) == NULL) {
+    if ((gp->OligoLogsIni[2] = (double *) calloc(OligoDim, sizeof(double))) == NULL) {
         printError("Not enough memory: Markov initial pentanucleotides (2)");
         exit(EXIT_FAILURE);
     }
 
-    if ((gp->OligoLogsTran[0] = (float *) calloc(OligoDim, sizeof(float))) == NULL) {
+    if ((gp->OligoLogsTran[0] = (double *) calloc(OligoDim, sizeof(double))) == NULL) {
         printError("Not enough memory: Markov chains - hexanucleotides (0)");
     }
 
-    if ((gp->OligoLogsTran[1] = (float *) calloc(OligoDim, sizeof(float))) == NULL) {
+    if ((gp->OligoLogsTran[1] = (double *) calloc(OligoDim, sizeof(double))) == NULL) {
         printError("Not enough memory: Markov chains - hexanucleotides (1)");
         exit(EXIT_FAILURE);
     }
 
-    if ((gp->OligoLogsTran[2] = (float *) calloc(OligoDim, sizeof(float))) == NULL) {
+    if ((gp->OligoLogsTran[2] = (double *) calloc(OligoDim, sizeof(double))) == NULL) {
         printError("Not enough memory: Markov chains - hexanucleotides (2)");
         exit(EXIT_FAILURE);
     }
 
     /* 3. Markov temporary data structures to compute every split: LENGTHSi */
     if ((gp->OligoDistIni[0]
-             = (float *) calloc(LENGTHSi, sizeof(float))) == NULL) {
+             = (double *) calloc(LENGTHSi, sizeof(double))) == NULL) {
         printError("Not enough memory: temp. initial pentanucleotides sum (0)");
         exit(EXIT_FAILURE);
     }
 
     if ((gp->OligoDistIni[1]
-             = (float *) calloc(LENGTHSi, sizeof(float))) == NULL) {
+             = (double *) calloc(LENGTHSi, sizeof(double))) == NULL) {
         printError("Not enough memory: temp. initial pentanucleotides sum (1)");
         exit(EXIT_FAILURE);
     }
 
     if ((gp->OligoDistIni[2]
-             = (float *) calloc(LENGTHSi, sizeof(float))) == NULL) {
+             = (double *) calloc(LENGTHSi, sizeof(double))) == NULL) {
         printError("Not enough memory: temp. initial pentanucleotides sum (2)");
         exit(EXIT_FAILURE);
     }
 
     if ((gp->OligoDistTran[0]
-             = (float *) calloc(LENGTHSi, sizeof(float))) == NULL) {
+             = (double *) calloc(LENGTHSi, sizeof(double))) == NULL) {
         printError("Not enough memory: temp. Markov hexanucleotides sum (0)");
         exit(EXIT_FAILURE);
     }
 
     if ((gp->OligoDistTran[1]
-             = (float *) calloc(LENGTHSi, sizeof(float))) == NULL) {
+             = (double *) calloc(LENGTHSi, sizeof(double))) == NULL) {
         printError("Not enough memory: temp. Markov hexanucleotides sum (1)");
         exit(EXIT_FAILURE);
     }
 
     if ((gp->OligoDistTran[2]
-             = (float *) calloc(LENGTHSi, sizeof(float))) == NULL) {
+             = (double *) calloc(LENGTHSi, sizeof(double))) == NULL) {
         printError("Not enough memory: temp. Markov hexanucleotides sum (2)");
         exit(EXIT_FAILURE);
     }
@@ -696,11 +696,11 @@ void RequestMemoryProfile(profile *p){
     int i;
 
     /* Transition probabilities in every position of the PWA */
-    p->dimensionTrans = (int) pow((float) 5, (float) (p->order + 1));
+    p->dimensionTrans = (int) pow((double) 5, (double) (p->order + 1));
 
     for (i = 0; i < p->dimension; i++) {
         if ((p->transitionValues[i]
-                 = (float *) calloc(p->dimensionTrans, sizeof(float))) == NULL) {
+                 = (double *) calloc(p->dimensionTrans, sizeof(double))) == NULL) {
             printError("Not enough memory: signal profile transition values");
             exit(EXIT_FAILURE);
         }
@@ -761,14 +761,14 @@ packGenes *RequestMemoryGenes(){
 
     /* FIXME line below problematic with uncrustify
      * Too many pointers
-     */
+    */
 
 
-    if ((pg->Ga = (exonGFF ****) calloc(MAXENTRY, sizeof(exonGFF * * *))) == NULL) {
+    if ((pg->Ga = (exonGFF ****) calloc(MAXENTRY, sizeof(exonGFF ***))) == NULL) {
         printError("Not enough memory: Ga array of genes");
         exit(EXIT_FAILURE);
-    }
-    
+    } 
+
     /* Initialize Ga-exons: everybody looking at the Ghost exon */
     /* MAXENTRY represents the maximum number of gene classes */
     for (aux = 0; aux < MAXENTRY; aux++) {

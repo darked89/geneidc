@@ -39,7 +39,8 @@
 #include <stdio.h>
 
 #include <stdint.h>
-#include <float.h>
+/* #include <double.h> */
+
 #include <stdbool.h>
 
 #include <unistd.h>
@@ -370,27 +371,27 @@ typedef struct s_dict
 
 typedef struct s_profile
 {
-    int   dimension;
-    int   offset;
-    float cutoff;
-    int   order;
-    float afactor;
-    float bfactor;
-    int   acc_context;
-    int   dist;
-    int   opt_dist;
-    float penalty_factor;
-    long  dimensionTrans;
-    float *transitionValues[PROFILEDIM];
+    int    dimension;
+    int    offset;
+    double cutoff;
+    int    order;
+    double afactor;
+    double bfactor;
+    int    acc_context;
+    int    dist;
+    int    opt_dist;
+    double penalty_factor;
+    long   dimensionTrans;
+    double *transitionValues[PROFILEDIM];
 } profile;
 
 typedef struct s_site
 {
-    long  Position;
-    float Score;
-    float ScoreAccProfile;
-    float ScoreBP;
-    float ScorePPT;
+    long   Position;
+    double Score;
+    double ScoreAccProfile;
+    double ScoreBP;
+    double ScorePPT;
 
     int   PositionBP;
     int   PositionPPT;
@@ -423,9 +424,9 @@ typedef struct s_exonGFF
     short    Frame;
     short    Remainder;
     char     Strand;
-    float    PartialScore;
-    float    HSPScore;
-    float    Score;
+    double   PartialScore;
+    double   HSPScore;
+    double   Score;
     pexonGFF PreviousExon;
     double   GeneScore;
     char     Group[MAXSTRING];
@@ -476,9 +477,9 @@ typedef struct s_packEvidence
 
 typedef struct s_HSP
 {
-    long  Pos1;
-    long  Pos2;
-    float Score;
+    long   Pos1;
+    long   Pos2;
+    double Score;
 } HSP;
 
 typedef struct s_packHSP
@@ -504,8 +505,8 @@ typedef struct s_packExternalInformation
     long i2vExons;
     long ivExons;
 
-    long  *iSegments;
-    float **sr;
+    long   *iSegments;
+    double **sr;
 } packExternalInformation;
 
 typedef struct s_dumpNode *pdumpNode;
@@ -584,17 +585,17 @@ typedef struct s_packGC
 
 typedef struct s_paramexons
 {
-    float siteFactor;
+    double siteFactor;
 
-    float exonFactor;
-    float OligoCutoff;
+    double exonFactor;
+    double OligoCutoff;
 
-    float HSPFactor;
+    double HSPFactor;
 
-    float ExonWeight;
-/*   float U12atacExonWeight; */
-/*   float U12gtagExonWeight; */
-    float ExonCutoff;
+    double ExonWeight;
+/*   double U12atacExonWeight; */
+/*   double U12gtagExonWeight; */
+    double ExonCutoff;
 } paramexons;
 
 typedef struct s_gparam
@@ -618,8 +619,8 @@ typedef struct s_gparam
     profile *U12atacDonorProfile;
     profile *StopProfile;
 
-    float *OligoLogsIni[3];
-    float *OligoLogsTran[3];
+    double *OligoLogsIni[3];
+    double *OligoLogsTran[3];
 
     long OligoDim;
     long OligoDim_1;
@@ -630,8 +631,8 @@ typedef struct s_gparam
     paramexons *Terminal;
     paramexons *Single;
 
-    float *OligoDistIni[FRAMES];
-    float *OligoDistTran[FRAMES];
+    double *OligoDistIni[FRAMES];
+    double *OligoDistTran[FRAMES];
 
     int MaxDonors;
 
@@ -1015,20 +1016,20 @@ void PrintGIntron(exonGFF *d,
                   int     numInt,
                   char    *GenePrefix,
                   int     evidence,
-                  float   score);
+                  double  score);
 
 void PrintGGene(exonGFF *s,
                 exonGFF *e,
                 char    Name[],
                 long    ngen,
-                float   score,
+                double  score,
                 char    *GenePrefix);
 
 void PrintGmRNA(exonGFF *s,
                 exonGFF *e,
                 char    Name[],
                 long    ngen,
-                float   score,
+                double  score,
                 char    *GenePrefix);
 
 void PrintXMLExon(exonGFF *e,
@@ -1066,7 +1067,7 @@ void CookingGenes(exonGFF *e,
                   dict    *dAA,
                   char    *GenePrefix);
 
-float MeasureSequence(long l1, long l2, char *s);
+double MeasureSequence(long l1, long l2, char *s);
 
 gparam **RequestMemoryIsochoresParams();
 
@@ -1092,20 +1093,20 @@ void ScoreExons(char                    *Sequence,
                 int                     nIsochores,
                 packGC                  *GCInfo);
 
-void GetcDNA(exonGFF *e, 
-             char *s,
-	     long nExons,
-	     char *cDNA,
-	     long *nNN);
+void GetcDNA(exonGFF *e,
+             char    *s,
+             long    nExons,
+             char    *cDNA,
+             long    *nNN);
 
-float ComputeGC(packGC *GCInfo,
-               long inigc,
-	       long endgc);
+double ComputeGC(packGC *GCInfo,
+                 long   inigc,
+                 long   endgc);
 
-void GCScan(char *s,
+void GCScan(char   *s,
             packGC *GCInfo,
-	    long l1,
-	    long l2);
+            long   l1,
+            long   l2);
 
 void beggar(long L);
 
@@ -1119,7 +1120,7 @@ long analizeFile(char *SequenceFile);
 
 packGC *RequestMemoryGC();
 
-int SelectIsochore(float  percent,
+int SelectIsochore(double percent,
                    gparam **isochores);
 
 void  manager(char                    *Sequence,

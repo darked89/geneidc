@@ -30,10 +30,10 @@
 #include "geneid.h"
 
 /* Complete gene prediction (sites and exons) or only assembling */
-extern int   GENEID;
-extern int   RSS;
-extern float U12_SPLICE_SCORE_THRESH;
-extern float U12_EXON_SCORE_THRESH;
+extern int    GENEID;
+extern int    RSS;
+extern double U12_SPLICE_SCORE_THRESH;
+extern double U12_EXON_SCORE_THRESH;
 
 void genamic(exonGFF   *E,
              long      nExons,

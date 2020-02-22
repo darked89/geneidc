@@ -25,12 +25,12 @@ CC=clang
 # for scan-build:
 #
 # scan-build make -j 8 -f Makefile.clang
-OPTS=-I$(INCLUDE)  -std=c11 -ggdb -g3 -march=native  -Wshadow -Wstrict-overflow -fno-strict-aliasing 
+# OPTS=-I$(INCLUDE)  -std=c11 -ggdb -g3 -march=native  -Wshadow -Wstrict-overflow -fno-strict-aliasing 
 
 # for sanitize address:
 #
 # make -j 8 -f Makefile.clang
-# OPTS=-I$(INCLUDE)  -std=c11 -ggdb -g3 -march=native  -Wshadow -Wstrict-overflow -fno-strict-aliasing -fsanitize=address  -fno-omit-frame-pointer -fno-optimize-sibling-calls -fsanitize-address-use-after-scope
+OPTS=-I$(INCLUDE)  -std=c11 -ggdb -g3 -march=native  -Wshadow -Wstrict-overflow -fno-strict-aliasing -fsanitize=address  -fno-omit-frame-pointer -fno-optimize-sibling-calls -fsanitize-address-use-after-scope
 
 # for all warnings:
 #

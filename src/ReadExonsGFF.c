@@ -28,11 +28,11 @@
 /*  $Id: ReadExonsGFF.c,v 1.12 2008-03-10 15:31:39 talioto Exp $  */
 
 #include "geneid.h"
-extern float EvidenceEW;
-extern int   FWD;
-extern int   RVS;
-extern long  LOW;
-extern long  HI;
+extern double EvidenceEW;
+extern int    FWD;
+extern int    RVS;
+extern long   LOW;
+extern long   HI;
 
 /* According to Locusname, select a group of annotations */
 packEvidence *SelectEvidence(packExternalInformation *external,
@@ -181,8 +181,8 @@ long ReadExonsGFF(char                    *FileName,
                 printError(mess);
             }
 
-            /* 6. Score = float value or '.'(infinitum) */
-            if (sscanf(line6, "%f", &((external->evidence[a]->vExons + external->evidence[a]->nvExons)->Score)) != 1) {
+            /* 6. Score = double value or '.'(infinitum) */
+            if (sscanf(line6, "%lf", &((external->evidence[a]->vExons + external->evidence[a]->nvExons)->Score)) != 1) {
                 if ((sscanf(line6, "%c", &c) != 1) || (c != '.')) {
                     sprintf(mess, "Wrong GFF format in annotations (score):\n-->%s\n", lineCopy);
                     printError(mess);

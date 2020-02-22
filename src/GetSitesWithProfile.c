@@ -40,11 +40,11 @@ long  GetSitesWithProfile(char    *s,
                           site    *st,
                           long    l1,
                           long    l2){
-    int   i, j;
-    float score;
-    long  ns, is;
-    long  left, right;
-    int   index;
+    int    i, j;
+    double score;
+    long   ns, is;
+    long   left, right;
+    int    index;
 
     /* Final number of predicted signals (that type) */
     ns = 0;

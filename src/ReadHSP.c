@@ -101,14 +101,14 @@ long ReadHSP(char *FileName, packExternalInformation *external){
     int a;
 
     /* If frame = '.' then make three copies of current SR (3 frames) */
-    int   three;
-    char  Locusname[LOCUSLENGTH];
-    char  mess[MAXSTRING];
-    long  pos1, pos2;
-    float score;
-    char  strand;
-    short frame;
-    char  c;
+    int    three;
+    char   Locusname[LOCUSLENGTH];
+    char   mess[MAXSTRING];
+    long   pos1, pos2;
+    double score;
+    char   strand;
+    short  frame;
+    char   c;
 
     /* Coments: line begins with # */
     /* gff format = Name  Source  Type  Begin  End  Score  Strand  Frame */
@@ -178,7 +178,7 @@ long ReadHSP(char *FileName, packExternalInformation *external){
                 }
 
                 /* 6. HSP score */
-                if (sscanf(line6, "%f", &score) != 1) {
+                if (sscanf(line6, "%lf", &score) != 1) {
                     sprintf(mess, "Wrong GFF format in HSPs (score):\n-->%s\n", lineCopy);
                     printError(mess);
                 }

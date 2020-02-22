@@ -27,15 +27,15 @@
 
 #include "geneid.h"
 
-extern int   scanORF;
-extern float EW;
-extern float U12EW;
-extern int   SRP;
-extern float NO_SCORE;
-extern int   U12GTAG;
-extern int   U12ATAC;
-extern float RSSMARKOVSCORE;
-extern int   RSS;
+extern int    scanORF;
+extern double EW;
+extern double U12EW;
+extern int    SRP;
+extern double NO_SCORE;
+extern int    U12GTAG;
+extern int    U12ATAC;
+extern double RSSMARKOVSCORE;
+extern int    RSS;
 
 /* Matrix to translate characters to numbers. borrowed from jwf */
 int TRANS[] = {
@@ -79,7 +79,7 @@ long OligoToInt(char *s, int ls, int cardinal){
 }
 
 /* Select the isochore trained to work with this G+C content */
-int SelectIsochore(float percent, gparam **isochores){
+int SelectIsochore(double percent, gparam **isochores){
     int i;
     int stop;
 
@@ -105,14 +105,14 @@ int SelectIsochore(float percent, gparam **isochores){
 }
 
 /* Compute the percentage of G+C nucleotides on a DNA sequence */
-float ComputeGC(packGC *GCInfo, long inigc, long endgc){
-    float percentGC;
+double ComputeGC(packGC *GCInfo, long inigc, long endgc){
+    double percentGC;
 
     /* %GC = number of C|G divided by the number of "useful" nucleotides */
     /* The idea is to skip the N's in the computing */
     /* Accumulated sum technique: rest between both positions */
-    percentGC = ((float) (GCInfo->GC[endgc] - GCInfo->GC[inigc]))
-                / ((float) (endgc - inigc + 1 - (GCInfo->N[endgc] - GCInfo->N[inigc])));
+    percentGC = ((double) (GCInfo->GC[endgc] - GCInfo->GC[inigc]))
+                / ((double) (endgc - inigc + 1 - (GCInfo->N[endgc] - GCInfo->N[inigc])));
 
     return (percentGC);
 }
@@ -182,14 +182,14 @@ void GCScan(char *s, packGC *GCInfo, long l1, long l2){
 /* Transition scores for every position are accumulated sums */
 void MarkovScan(char *sequence,
                 gparam *gp,
-                float *OligoDistIni[3],
-                float *OligoDistTran[3],
+                double *OligoDistIni[3],
+                double *OligoDistTran[3],
                 long l1, long l2){
-    int   OligoLength_1;
-    long  i;
-    int   intword;
-    short x, cp;
-    float previousScore;
+    int    OligoLength_1;
+    long   i;
+    int    intword;
+    short  x, cp;
+    double previousScore;
 
     /* Pentanucleotides score: initial values for Markov chains */
     for (i = l1; (i <= l2 && *(sequence + i + gp->OligoLength - 1)); i++) {
@@ -247,10 +247,10 @@ void HSPScan(packExternalInformation *external,
              packHSP *hsp,
              int Strand,
              long l1, long l2){
-    short x;
-    short frameStart, frameEnd;
-    long  i, j;
-    float scoreHSP;
+    short  x;
+    short  frameStart, frameEnd;
+    long   i, j;
+    double scoreHSP;
 
     if (Strand == FORWARD) {
         frameStart = 0;
@@ -422,10 +422,10 @@ void HSPScan2(packExternalInformation *external,
               packHSP *hsp,
               int Strand,
               long l1, long l2){
-    short x;
-    long  i;
-    float previousScore;
-    short frameStart, frameEnd;
+    short  x;
+    long   i;
+    double previousScore;
+    short  frameStart, frameEnd;
 
     if (Strand == FORWARD) {
         frameStart = 0;
@@ -450,14 +450,14 @@ void HSPScan2(packExternalInformation *external,
 }
 
 /* Homology to protein score: using homology information (blast HSPs) */
-float ScoreHSPexon(exonGFF *exon,
-                   int Strand,
-                   packExternalInformation *external,
-                   long l1, long l2){
-    int   index;
-    short trueFrame;
-    long  iniExon, endExon;
-    float Score;
+double ScoreHSPexon(exonGFF *exon,
+                    int Strand,
+                    packExternalInformation *external,
+                    long l1, long l2){
+    int    index;
+    short  trueFrame;
+    long   iniExon, endExon;
+    double Score;
 
     iniExon = exon->Acceptor->Position - l1 + COFFSET;
     endExon = exon->Donor->Position - l1 + COFFSET;
@@ -496,12 +496,12 @@ long Score(exonGFF                 *Exons,
     short      frame;
     short      codonPosition;
     long       n;
-    float      scoreMarkov;
-    float      scoreHSP;
-    float      scoreTotal;
+    double     scoreMarkov;
+    double     scoreHSP;
+    double     scoreTotal;
     int        OligoLength_1;
-    float      ExonWeight;
-    float      percentGC;
+    double     ExonWeight;
+    double     percentGC;
     int        currentIsochore;
     paramexons *p;
     int        OligoLength;

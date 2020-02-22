@@ -35,7 +35,8 @@ extern long  MAXBACKUPSITES, MAXBACKUPEXONS;
 extern short SPLICECLASSES;
 
 /* Increase counters modulus a long number */
-long IncrMod(long x, long Modulus){
+long IncrMod(long x,
+             long Modulus){
     long z;
 
     z = x + 1;
@@ -48,8 +49,17 @@ long IncrMod(long x, long Modulus){
 }
 
 /* Saving exon information (features) into the dumpster */
-exonGFF *backupExon(exonGFF *E, exonGFF *Prev, packDump *d){
+
+exonGFF *backupExon(exonGFF  *E,
+                    exonGFF  *Prev,
+                    packDump *d){
+
+    int destin_size = 0;
+    int source_size = 0;
+
     /* back-up acceptor */
+    
+
     d->dumpSites[d->ndumpSites].Position        = E->Acceptor->Position;
     d->dumpSites[d->ndumpSites].Score           = E->Acceptor->Score;
     d->dumpSites[d->ndumpSites].ScoreAccProfile = E->Acceptor->ScoreAccProfile;
@@ -58,8 +68,22 @@ exonGFF *backupExon(exonGFF *E, exonGFF *Prev, packDump *d){
     d->dumpSites[d->ndumpSites].PositionBP      = E->Acceptor->PositionBP;
     d->dumpSites[d->ndumpSites].PositionPPT     = E->Acceptor->PositionPPT;
     d->dumpSites[d->ndumpSites].class           = E->Acceptor->class;
+
+    /* error, overlapping memory below: in 1.4.5 */
+    destin_size = sizeof(d->dumpSites[d->ndumpSites].subtype);
+    source_size = sizeof(E->Acceptor->subtype);
+    printf("AAA1 source size: %d\n", source_size);
+    printf("AAA1 dest size: %d\n", destin_size);
+    
     strcpy(d->dumpSites[d->ndumpSites].subtype, E->Acceptor->subtype);
+    
+    source_size = sizeof(E->Acceptor->type);
+    destin_size = sizeof(d->dumpSites[d->ndumpSites].type);
+    printf("AAA2 source size: %d\n", source_size);
+    printf("AAA2 dest size: %d\n", destin_size);   
+    
     strcpy(d->dumpSites[d->ndumpSites].type, E->Acceptor->type);
+
     d->dumpExons[d->ndumpExons].Acceptor = &(d->dumpSites[d->ndumpSites]);
     d->ndumpSites                        = IncrMod(d->ndumpSites, MAXBACKUPSITES);
 
@@ -72,21 +96,59 @@ exonGFF *backupExon(exonGFF *E, exonGFF *Prev, packDump *d){
     d->dumpSites[d->ndumpSites].PositionBP      = E->Donor->PositionBP;
     d->dumpSites[d->ndumpSites].PositionPPT     = E->Donor->PositionPPT;
     d->dumpSites[d->ndumpSites].class           = E->Donor->class;
+    
+    /* error, overlapping memory below: in 1.4.5 */
+    source_size = sizeof(E->Donor->subtype);
+    destin_size = sizeof(d->dumpSites[d->ndumpSites].subtype);
+    printf("AAA3 source size: %d\n", source_size);
+    printf("AAA3 dest size: %d\n", destin_size); 
+    
     strcpy(d->dumpSites[d->ndumpSites].subtype, E->Donor->subtype);
+    
+    
+    source_size = sizeof(E->Donor->type);
+    destin_size = sizeof(d->dumpSites[d->ndumpSites].type);
+    printf("AAA4 source size: %d\n", source_size);
+    printf("AAA4 dest size: %d\n", destin_size);
+        
     strcpy(d->dumpSites[d->ndumpSites].type, E->Donor->type);
+
     d->dumpExons[d->ndumpExons].Donor = &(d->dumpSites[d->ndumpSites]);
     d->ndumpSites                     = IncrMod(d->ndumpSites, MAXBACKUPSITES);
 
     /* back-up exon properties */
+    /* error, overlapping memory below: in 1.3.15 with doubles */
+
+    destin_size = strlen(d->dumpExons[d->ndumpExons].Type);
+    source_size = strlen(E->Type);
+    /* if (source_size > destin_size){ */
+    printf("ERR1 source size: %d\n", source_size);
+    printf("ERR1 dest size: %d\n", destin_size);
+    printf("ERR1 destin content: %s\n", d->dumpExons[d->ndumpExons].Type);
+    printf("ERR1 source content: %s\n", E->Type);
+
+    /*} */
+
     strcpy(d->dumpExons[d->ndumpExons].Type, E->Type);
+
     d->dumpExons[d->ndumpExons].Frame        = E->Frame;
     d->dumpExons[d->ndumpExons].Strand       = E->Strand;
     d->dumpExons[d->ndumpExons].Score        = E->Score;
     d->dumpExons[d->ndumpExons].PartialScore = E->PartialScore;
     d->dumpExons[d->ndumpExons].HSPScore     = E->HSPScore;
+
     d->dumpExons[d->ndumpExons].GeneScore    = E->GeneScore;
     d->dumpExons[d->ndumpExons].Remainder    = E->Remainder;
+    
+    source_size = sizeof(E->Group);
+    destin_size = sizeof(d->dumpExons[d->ndumpExons].Group);
+    printf("BBB1 source size: %d\n", source_size);
+    printf("BBB1 dest size: %d\n", destin_size);
+    printf("BBB1 destin content: %s\n", d->dumpExons[d->ndumpExons].Type);
+    printf("BBB1 source content: %s\n", E->Group);
+    
     strcpy(d->dumpExons[d->ndumpExons].Group, E->Group);
+
     d->dumpExons[d->ndumpExons].offset1      = E->offset1;
     d->dumpExons[d->ndumpExons].offset2      = E->offset2;
     d->dumpExons[d->ndumpExons].lValue       = E->lValue;
@@ -99,16 +161,20 @@ exonGFF *backupExon(exonGFF *E, exonGFF *Prev, packDump *d){
 }
 
 /* Saving all about a gene: exons, sites, properties */
-exonGFF *backupGene(exonGFF *E, packDump *d){
+
+exonGFF *backupGene(exonGFF  *E,
+                    packDump *d){
+
     exonGFF *PrevExon;
     exonGFF *ResExon;
 
     /* Ghost exon doesn't need backup */
-    if ((E->Strand == '*')) { /* ||(E->Strand != '+')||(E->Strand != '-')) */
+    if ((E->Strand == '*')) {
+        /* ||(E->Strand != '+')||(E->Strand != '-')) */
         ResExon = E;
     }
     else {
-        /* Ckeckpoint to discover if exon is already in the dumpster */
+        /* Checkpoint to discover if exon is already in the dumpster */
         ResExon = (exonGFF *) getExonDumpHash(E, d->h);
 
         /* New exon: save it and insert into the hash table */
@@ -128,8 +194,12 @@ exonGFF *backupGene(exonGFF *E, packDump *d){
 }
 
 /* It saves the information about partial genes (packGenes) */
-void BackupGenes(packGenes *pg, int nclass, packDump *d){
-    int i, j, k;
+void BackupGenes(packGenes *pg,
+                 int       nclass,
+                 packDump  *d){
+    int i;
+    int j;
+    int k;
 
     /* 1. back-up best partial genes */
     for (i = 0; i < nclass; i++) {
@@ -145,11 +215,15 @@ void BackupGenes(packGenes *pg, int nclass, packDump *d){
 }
 
 /* It saves information about d-exons: exons needed the next iteration */
-void BackupArrayD(packGenes *pg, long accSearch,
-                  gparam *gp, packDump *dumpster){
+
+void BackupArrayD(packGenes *pg,
+                  long      accSearch,
+                  gparam    *gp,
+                  packDump  *dumpster){
     int   i;
     long  j;
-    long  jUpdate, jMaxdist;
+    long  jUpdate;
+    long  jMaxdist;
     long  MinDist;
     long  MaxDist;
     long  nBackups = 0;
@@ -220,8 +294,13 @@ void BackupArrayD(packGenes *pg, long accSearch,
 }
 
 /* Reset counters and pointers for the next input sequence */
-void cleanGenes(packGenes *pg, int nclass, packDump *dumpster){
-    int aux, aux2, aux3;
+void cleanGenes(packGenes *pg,
+                int       nclass,
+                packDump  *dumpster){
+
+    int aux;
+    int aux2;
+    int aux3;
 
 /*   for(aux=0; aux<nclass; aux++) */
     for (aux = 0; aux < nclass; aux++) {

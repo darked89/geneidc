@@ -35,7 +35,7 @@ void SwitchFrames(exonGFF *e, long n){
     int  f;
 
 /*   short class; */
-/*   float score; */
+/*   double score; */
 
     /* Exchange frame/rmd in reverse exons and reset the selected flag */
     for (i = 0; i < n; i++) {
@@ -79,7 +79,7 @@ void SwitchFramesDa(packGenes *pg, int nclass){
     int  f;
 
 /*   short class; */
-/*   float score; */
+/*   double score; */
 
     /* Screening every class looking for exons... */
     for (i = 0; i < nclass; i++) {
@@ -114,7 +114,7 @@ void SwitchFramesDb(packGenes *pg, int nclass){
     int  f;
 
 /*   short class; */
-/*   float score; */
+/*   double score; */
 
     /* Screening every class looking for exons... */
     for (i = 0; i < nclass; i++) {
@@ -149,7 +149,7 @@ void UndoFrames(exonGFF *e, long n){
     long i;
     int  f;
 
-/*   float score; */
+/*   double score; */
 /*   short class; */
     /* Undo frame/rmd change*/
     for (i = 0; i < n; i++) {

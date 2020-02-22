@@ -46,11 +46,11 @@ long  BuildDonors(char    *s,
                   long    ns,
                   long    nsites
                   ){
-    int   i, j;
-    float score;
-    long  is;
-    long  left, right;
-    int   index;
+    int    i, j;
+    double score;
+    long   is;
+    long   left, right;
+    int    index;
 
     /* 1. Searching sites between beginning of the sequence and p->offset */
     if (!l1) {

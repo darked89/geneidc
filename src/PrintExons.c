@@ -468,7 +468,7 @@ void PrintGGene(exonGFF *s,
                 exonGFF *e,
                 char    Name[],
                 long    ngen,
-                float   score,
+                double  score,
                 char    *GenePrefix){
     if (GFF3) {
         /* GFF3 format */
@@ -509,7 +509,7 @@ void PrintGmRNA(exonGFF *s,
                 exonGFF *e,
                 char    Name[],
                 long    ngen,
-                float   score,
+                double  score,
                 char    *GenePrefix){
     if (GFF3) {
 
@@ -554,10 +554,10 @@ void PrintGIntron(exonGFF *d,
                   int     numInt,
                   char    *GenePrefix,
                   int     evidence,
-                  float   score){
+                  double  score){
     char attribute[MAXSTRING] = "";
     char tmpstr[MAXSTRING]    = "";
-    /* float score = 0.0; */
+    /* double score = 0.0; */
     char intronType[MAXTYPE];
 
     strcpy(intronType, "U2");
