@@ -37,52 +37,52 @@
 
 /* geneid setup flags */
 /* sites to print */
-int    SFP      = 0;
-int    SDP      = 0;
-int    SAP      = 0;
-int    STP      = 0;
+int SFP      = 0;
+int SDP      = 0;
+int SAP      = 0;
+int STP      = 0;
 /* exons to print */
-int    EFP      = 0;
-int    EIP      = 0;
-int    ETP      = 0;
-int    EXP      = 0;
-int    ESP      = 0;
-int    EOP      = 0;
+int EFP      = 0;
+int EIP      = 0;
+int ETP      = 0;
+int EXP      = 0;
+int ESP      = 0;
+int EOP      = 0;
 /* introns to print */
-int    PRINTINT = 0;
+int PRINTINT = 0;
 /* Partial or full prediction engine */
-int    GENAMIC  = 1;
-int    GENEID   = 1;
+int GENAMIC  = 1;
+int GENEID   = 1;
 /* Only forward or reverse prediction engine */
-int    FWD      = 1;
-int    RVS      = 1;
+int FWD      = 1;
+int RVS      = 1;
 /* switch ORF prediction on */
-int    scanORF  = 0;
+int scanORF  = 0;
 /* Input annotations or homology to protein information/reads to UTR prediction */
-int    EVD      = 0;
-int    SRP      = 0;
-int    UTR      = 0;
+int EVD      = 0;
+int SRP      = 0;
+int UTR      = 0;
 /* Output formats */
-int    GFF      = 0;
-int    GFF3     = 0;
-int    X10      = 0;
-int    XML      = 0;
-int    cDNA     = 0;
-int    PSEQ     = 0;
-int    tDNA     = 0;
+int GFF      = 0;
+int GFF3     = 0;
+int X10      = 0;
+int XML      = 0;
+int cDNA     = 0;
+int PSEQ     = 0;
+int tDNA     = 0;
 /* Verbose flag (memory/processing information) */
-int    BEG      = 0;
-int    VRB      = 0;
+int BEG      = 0;
+int VRB      = 0;
 /* Score for regions not-supported by protein homology */
-int   NO_SCORE;
+int NO_SCORE;
 /* Force single prediction: 1 gene */
-int    SGE                        = 0;
+int SGE                        = 0;
 /* Detection of PolyPTracts in Acceptors */
-int    PPT                        = 0;
+int PPT                        = 0;
 /* Detection of BranchPoints in Acceptors */
-int    BP                         = 0;
+int BP                         = 0;
 /* Detection of recursive splice sites */
-int    RSS                        = 0;
+int RSS                        = 0;
 /* Detection of U12 introns */
 int U12                        = 0;
 /* Detection of U12gtag sites (acceptor uses BranchPoint)*/
@@ -105,7 +105,7 @@ int BKGD_SUBTRACT_FLANK_LENGTH = 0;
 /* Splice classes: the number of compatible splice site combinations used in genamic for joining exons */
 unsigned short SPLICECLASSES = 1;
 
-// 20200218 bug? makes sense for a single contig fasta only 
+/* 20200218 bug? makes sense for a single contig fasta only */
 /* User defined lower limit */
 long LOW = 0;
 /* User defined upper limit */
@@ -146,88 +146,88 @@ account *m;
                             geneid MAIN program
 ************************************************************************/
 
-int main(int    argc,
-         char  *argv[]){
+int main(int  argc,
+         char *argv[]){
 
     /* DNA sequence data structures */
-    FILE       *fasta_fptr;
-    char       *Sequence;
-    char       *sequence_rev;
-    long        fasta_seq_size;
-    long        contig_seq_size;
+    FILE *fasta_fptr;
+    char *Sequence;
+    char *sequence_rev;
+    long fasta_seq_size;
+    long contig_seq_size;
 
     /* Current split ends */
-    long        seq_split_left;
-    long        seq_split_right;
-    long        seq_split_limit_upper;
-    long        seq_split_limit_lower;
+    long seq_split_left;
+    long seq_split_right;
+    long seq_split_limit_upper;
+    long seq_split_limit_lower;
 
     /* Forward sense data structures */
-    packSites  *allSites_frw;
-    packExons  *allExons_frw;
+    packSites *allSites_frw;
+    packExons *allExons_frw;
 
     /* Reverse sense data structures */
-    packSites  *allSites_rev;
-    packExons  *allExons_rev;
+    packSites *allSites_rev;
+    packExons *allExons_rev;
 
     /* Structures for sorting sites */
-    site       *donor_sites;
-    site       *acceptor_sites;
-    site       *ts_sites = NULL;
-    site       *te_sites = NULL;
+    site *donor_sites;
+    site *acceptor_sites;
+    site *ts_sites = NULL;
+    site *te_sites = NULL;
 
     /* Table to sort predicted exons by acceptor */
-    exonGFF    *exons;
-    long        exons_number;
+    exonGFF *exons;
+    long    exons_number;
 
     /* External information: reannotation */
-    packExternalInformation  *external;
-    packEvidence             *evidence;
-    packHSP                  *hsp;
+    packExternalInformation *external;
+    packEvidence            *evidence;
+    packHSP                 *hsp;
 
     /* Best partial predicted genes */
-    packGenes  *genes;
+    packGenes *genes;
 
     /* Dumpster for backup operations between splits */
-    packDump   *dumpster;
+    packDump *dumpster;
 
     /* Amino acid dictionary (genetic code) */
-    dict       *dAA;
+    dict *dAA;
 
     /* geneid prediction parameters: data structures */
-    gparam     *gp = NULL;
-    gparam    **isochores;
+    gparam *gp = NULL;
+    gparam **isochores;
 
     /* Input Filenames */
-    char        fasta_fn[FILENAMELENGTH]     = "";
-    char        param_fn[FILENAMELENGTH]     = "";
-    char        exons_gff_fn[FILENAMELENGTH]  = "";
-    char        blastHSP_gff_fn[FILENAMELENGTH]      = "";
+    char fasta_fn[FILENAMELENGTH]        = "";
+    char param_fn[FILENAMELENGTH]        = "";
+    char exons_gff_fn[FILENAMELENGTH]    = "";
+    char blastHSP_gff_fn[FILENAMELENGTH] = "";
 
     /* contig_name sequence name */
-    char        contig_name[CONTIG_NAME_MAX_LENGTH];
-    char        next_contig_name[CONTIG_NAME_MAX_LENGTH];
+    char contig_name[CONTIG_NAME_MAX_LENGTH];
+    char next_contig_name[CONTIG_NAME_MAX_LENGTH];
 
     /* Measure of GC content to select the isochore */
-    packGC     *GC_info_frw;
-    packGC     *GC_info_rev;
-    int         inigc;
-    int         endgc;
-    int         seq_split_len;
-    float        GC_fraction;
-    int         isochore_current;
-    int         isochores_number;
-    int         reading;
-    int         lastSplit;
-    char        mess[MAXSTRING];
+    packGC *GC_info_frw;
+    packGC *GC_info_rev;
+    int    inigc;
+    int    endgc;
+    int    seq_split_len;
+    float  GC_fraction;
+    int    isochore_current;
+    int    isochores_number;
+    int    reading;
+    int    lastSplit;
+    char   mess[MAXSTRING];
 
     /* Start memory trace -- for debugging memory leaks */
     /* mtrace(); */
 
     /** 0. Starting and reading options, parameters and sequence... **/
-    exons_number   = 0;
-    evidence = NULL;
-    hsp      = NULL;
+    exons_number = 0;
+    evidence     = NULL;
+    hsp          = NULL;
 
     /* 0.a. Previous checkpoint about length in splits and overlapping */
     if (LENGTHSi <= OVERLAP) {
@@ -272,20 +272,20 @@ int main(int    argc,
 
     /* 1.a. Mandatory geneid data structures */
     printMess("Request Memory Sequence\n");
-    Sequence   = (char *) RequestMemorySequence(fasta_seq_size);
-    sequence_rev  = (char *) RequestMemorySequence(fasta_seq_size);
+    Sequence     = (char *) RequestMemorySequence(fasta_seq_size);
+    sequence_rev = (char *) RequestMemorySequence(fasta_seq_size);
 
     printMess("Request Memory Sites\n");
-    allSites_frw   = (packSites *) RequestMemorySites();
+    allSites_frw = (packSites *) RequestMemorySites();
     allSites_rev = (packSites *) RequestMemorySites();
 
     printMess("Request Memory Exons\n");
-    allExons_frw   = (packExons *) RequestMemoryExons();
+    allExons_frw = (packExons *) RequestMemoryExons();
     allExons_rev = (packExons *) RequestMemoryExons();
 
     printMess("Request Memory Sort Exons\n");
 
-    exons         = (exonGFF *) RequestMemorySortExons();
+    exons = (exonGFF *) RequestMemorySortExons();
 
     printMess("Request Memory Sort Sites\n");
     donor_sites    = (site *) RequestMemorySortSites();      /* Temporary structure for sorting donor sites */
@@ -297,12 +297,12 @@ int main(int    argc,
     }
 
     printMess("Request Memory Isochores, etc.\n");
-    isochores = (gparam **) RequestMemoryIsochoresParams();
-    GC_info_frw    = (packGC *) RequestMemoryGC();
-    GC_info_rev  = (packGC *) RequestMemoryGC();
-    dAA       = (dict *) RequestMemoryAaDictionary();
+    isochores   = (gparam **) RequestMemoryIsochoresParams();
+    GC_info_frw = (packGC *) RequestMemoryGC();
+    GC_info_rev = (packGC *) RequestMemoryGC();
+    dAA         = (dict *) RequestMemoryAaDictionary();
     printMess("Request Memory External\n");
-    external  = (packExternalInformation *) RequestMemoryExternalInformation();
+    external    = (packExternalInformation *) RequestMemoryExternalInformation();
 
     /* 1.b. Backup information might be necessary between splits */
     if (fasta_seq_size > LENGTHSi) {
@@ -362,6 +362,7 @@ int main(int    argc,
         /** A.3. Input DNA sequences (perhaps more than one) **/
         if ((fasta_fptr = fopen(fasta_fn, "rb")) == NULL) {
             printError("The input sequence file can not be accessed");
+            exit(EXIT_FAILURE);
         }
 
         /* reading the locusname of sequence (in Fasta format) */
@@ -429,11 +430,11 @@ int main(int    argc,
                 seq_split_limit_lower = 0;
             }
 
-            seq_split_left        = seq_split_limit_lower;
-            seq_split_right       = MIN(seq_split_left + LENGTHSi - 1, contig_seq_size - 1);
-            seq_split_right       = MIN(seq_split_right, seq_split_limit_upper);
+            seq_split_left  = seq_split_limit_lower;
+            seq_split_right = MIN(seq_split_left + LENGTHSi - 1, contig_seq_size - 1);
+            seq_split_right = MIN(seq_split_right, seq_split_limit_upper);
             /* Check to see if we are on last split */
-            lastSplit = (seq_split_right == seq_split_limit_upper);
+            lastSplit       = (seq_split_right == seq_split_limit_upper);
             sprintf(mess, "Running on range %ld to %ld\n",
                     seq_split_limit_lower, seq_split_limit_upper);
             printMess(mess);
@@ -447,11 +448,11 @@ int main(int    argc,
                 /*
                  * inigc     = seq_split_left - seq_split_left; //error, 20200218
                  */
-                inigc     = 0;
-                endgc     = seq_split_right - seq_split_left;
+                inigc       = 0;
+                endgc       = seq_split_right - seq_split_left;
 
                 GC_fraction = ComputeGC(GC_info_frw, inigc, endgc);
-                
+
                 sprintf(mess, "XXX GC content in [%ld-%ld] is %f", seq_split_left, seq_split_right, GC_fraction);
                 printMess(mess);
 
@@ -491,29 +492,29 @@ int main(int    argc,
                     /* Reverse strand predictions */
                     sprintf(mess,
                             "Running Reverse  %s: %ld - %ld(%ld - %ld)",
-                            contig_name, 
+                            contig_name,
                             contig_seq_size - 1 - seq_split_right,
                             contig_seq_size - 1 - seq_split_left, seq_split_left, seq_split_right);
                     printMess(mess);
 
-                    manager(sequence_rev, 
+                    manager(sequence_rev,
                             contig_seq_size,
-                            allSites_rev, 
+                            allSites_rev,
                             allExons_rev,
                             contig_seq_size - 1 - seq_split_right,
                             contig_seq_size - 1 - seq_split_left,
                             contig_seq_size - 1 - seq_split_limit_upper,
                             contig_seq_size - 1 - seq_split_limit_lower,
                             REVERSE,
-                            external, 
-                            hsp, 
+                            external,
+                            hsp,
                             gp,
-                            isochores, 
+                            isochores,
                             isochores_number,
-                            GC_info_rev, 
-                            acceptor_sites, 
-                            donor_sites, 
-                            ts_sites, 
+                            GC_info_rev,
+                            acceptor_sites,
+                            donor_sites,
+                            ts_sites,
                             te_sites);
 
                     /* normalised positions: according to forward sense reading */
@@ -565,7 +566,7 @@ int main(int    argc,
                 printMess(mess);
 
                 /* Merge predicted exons with some evidence exons */
-                SortExons(allExons_frw, 
+                SortExons(allExons_frw,
                           allExons_rev,
                           external,
                           evidence,
@@ -590,16 +591,16 @@ int main(int    argc,
                        exons,
                        exons_number,
                        contig_name,
-                       seq_split_left, 
-                       seq_split_right, 
-                       seq_split_limit_lower, 
+                       seq_split_left,
+                       seq_split_right,
+                       seq_split_limit_lower,
                        Sequence,
                        gp,
                        dAA,
                        gene_name_prefix);
 
                 /* recompute stats about splice sites and exons */
-                updateTotals(m, 
+                updateTotals(m,
                              allSites_frw,
                              allSites_rev,
                              allExons_frw,
@@ -628,9 +629,9 @@ int main(int    argc,
                 }
 
                 /* Computing new boundaries: next fragment in current sequence */
-                seq_split_left       += LENGTHSi - OVERLAP;
-                seq_split_right        = MIN(seq_split_left + LENGTHSi - 1, seq_split_limit_upper);
-                lastSplit = (seq_split_right == seq_split_limit_upper);
+                seq_split_left += LENGTHSi - OVERLAP;
+                seq_split_right = MIN(seq_split_left + LENGTHSi - 1, seq_split_limit_upper);
+                lastSplit       = (seq_split_right == seq_split_limit_upper);
             } /* processing next fragment */
 
             /* A.6. Full sequence processed: displaying best predicted gene */
@@ -640,10 +641,10 @@ int main(int    argc,
                            (EVD && evidence != NULL) ?
                            m->totalExons + evidence->nvExons :
                            m->totalExons,
-                           contig_name, 
-                           Sequence, 
-                           gp, 
-                           dAA, 
+                           contig_name,
+                           Sequence,
+                           gp,
+                           dAA,
                            gene_name_prefix);
 
                 /* Reset best genes data structures for next input sequence */
@@ -677,7 +678,7 @@ int main(int    argc,
         reading = IniReadSequence(fasta_fptr, contig_name);
 
         if (reading != EOF) {
-            reading        = ReadSequence(fasta_fptr, Sequence, next_contig_name);
+            reading         = ReadSequence(fasta_fptr, Sequence, next_contig_name);
             contig_seq_size = FetchSequence(Sequence, sequence_rev);
         }
 
@@ -695,6 +696,7 @@ int main(int    argc,
         if (external->nSequences > 1) {
             sprintf(mess, "Exons in more than one different contig were detected (%ld sequences)\n", external->nSequences);
             printError(mess);
+            exit(EXIT_FAILURE);
         }
 
         if (external->nvExons > 0) {

@@ -30,17 +30,18 @@
 #include "geneid.h"
 
 /* Obtaining the amino acid sequence from an exon (given a reading frame) */
-int Translate(long   p1,
-              long   p2,
-              short  fra,
-              short  rmd,
+int Translate(long  p1,
+              long  p2,
+              short fra,
+              short rmd,
               char  *s,
               dict  *dAA,
-              char   sAux[]){
-    int   nAA;
-    int   nAux;
-    long  i;
-    char  codon[LENGTHCODON + 1];
+              char  sAux[]){
+
+    int  nAA;
+    int  nAux;
+    long i;
+    char codon[LENGTHCODON + 1];
 
     /* Saving first uncomplete codon in the exon (frame) */
     for (i = 0, nAux = 0; i < fra; i++) {
@@ -82,28 +83,28 @@ int Translate(long   p1,
 }
 
 /* Translate gene sequence into the protein */
-void TranslateGene(exonGFF  *e,
-                   char     *s,
-                   dict     *dAA,
-                   long      nExons,
+void TranslateGene(exonGFF *e,
+                   char    *s,
+                   dict    *dAA,
+                   long    nExons,
                    int     **tAA,
-                   char     *prot,
-                   long     *nAA){
-    long   i;
-    short  j;
-    int    totalAA;
-    int    currAA;
-    char   sAux[MAXAA];
+                   char    *prot,
+                   long    *nAA){
+    long  i;
+    short j;
+    int   totalAA;
+    int   currAA;
+    char  sAux[MAXAA];
     char  *rs;
-    long   p1;
-    long   p2;
-    char   codon[LENGTHCODON + 1];
-    char   aa;
-    short  currFrame;
-    short  currRmd;
-    int    lAux;
-    char   rmdProt[LENGTHCODON + 1];
-    int    lastExon = 1;
+    long  p1;
+    long  p2;
+    char  codon[LENGTHCODON + 1];
+    char  aa;
+    short currFrame;
+    short currRmd;
+    int   lAux;
+    char  rmdProt[LENGTHCODON + 1];
+    int   lastExon = 1;
 
     /* A. Translating a forward sense exon: Terminal > Internal >.. First */
     if (e->Strand == '+') {
@@ -381,17 +382,17 @@ void TranslateGene(exonGFF  *e,
 
 /* Extract the genomic (CDS) sequence of a predicted gene */
 /* Returns the length of the genomic sequence produced */
-void GetcDNA(exonGFF  *e,
-             char     *s,
-             long      nExons,
-             char     *cDNA,
-             long     *nNN){
-    char  *tmpDNA;
-    long   p1;
-    long   p2;
-    char  *rs;
-    int    i;
-    long   j;
+void GetcDNA(exonGFF *e,
+             char    *s,
+             long    nExons,
+             char    *cDNA,
+             long    *nNN){
+    char *tmpDNA;
+    long p1;
+    long p2;
+    char *rs;
+    int  i;
+    long j;
 
     if ((tmpDNA = (char *) calloc(MAXCDNA, sizeof(char))) == NULL) {
         printError("Not enough memory: producing CDS DNA");
@@ -476,17 +477,17 @@ void GetcDNA(exonGFF  *e,
 
 /* Extract the genomic (exonic) sequence of a predicted gene */
 /* Returns the length of the genomic sequence produced */
-void GetTDNA(exonGFF  *e,
-             char     *s,
-             long      nExons,
-             char     *cDNA,
-             long     *nNN){
-    char  *tmpDNA;
-    long   p1;
-    long   p2;
-    char  *rs;
-    int    i;
-    long   j;
+void GetTDNA(exonGFF *e,
+             char    *s,
+             long    nExons,
+             char    *cDNA,
+             long    *nNN){
+    char *tmpDNA;
+    long p1;
+    long p2;
+    char *rs;
+    int  i;
+    long j;
 
     if ((tmpDNA = (char *) calloc(MAXCDNA, sizeof(char))) == NULL) {
         printError("Not enough memory: producing exonic DNA");

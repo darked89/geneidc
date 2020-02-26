@@ -77,11 +77,11 @@ long fDump(exonGFF *E){
 }
 
 /* Save the new exon into the hash table */
-void setExonDumpHash(exonGFF   *E, 
-                     dumpHash  *h){
-    dumpNode  *p;
-    dumpNode  *n;
-    long       i;
+void setExonDumpHash(exonGFF  *E,
+                     dumpHash *h){
+    dumpNode *p;
+    dumpNode *n;
+    long     i;
 
     /* Computing hash value */
     i = fDump(E);
@@ -122,12 +122,12 @@ void setExonDumpHash(exonGFF   *E,
 }
 
 /* Finding an exon. Returns the address or NULL pointer */
-exonGFF *getExonDumpHash(exonGFF   *E, 
-                         dumpHash  *h){
-    long       i;
-    int        found = 0;
-    exonGFF   *exon;
-    dumpNode  *p;
+exonGFF *getExonDumpHash(exonGFF  *E,
+                         dumpHash *h){
+    long     i;
+    int      found = 0;
+    exonGFF  *exon;
+    dumpNode *p;
 
     exon = NULL;
     i    = fDump(E);

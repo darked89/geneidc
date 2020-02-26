@@ -30,14 +30,14 @@
 #include "geneid.h"
 
 /* Maximum allowed number of sites and exons to save */
-extern long  MAXBACKUPSITES, MAXBACKUPEXONS;
+extern long MAXBACKUPSITES, MAXBACKUPEXONS;
 
 /* The number of compatible splice classes */
 extern short SPLICECLASSES;
 
 /* Increase counters modulus a long number */
-long IncrMod(long  x, 
-             long  Modulus){
+long IncrMod(long x,
+             long Modulus){
     long z;
 
     z = x + 1;
@@ -51,47 +51,47 @@ long IncrMod(long  x,
 
 /* Saving exon information (features) into the dumpster */
 
-exonGFF *backupExon(exonGFF   *E, 
-                    exonGFF   *Prev, 
-                    packDump  *d){
+exonGFF *backupExon(exonGFF  *E,
+                    exonGFF  *Prev,
+                    packDump *d){
 
     /* back-up acceptor */
     d->dumpSites[d->ndumpSites].Position        = E->Acceptor->Position;
     d->dumpSites[d->ndumpSites].Score           = E->Acceptor->Score;
-    d->dumpSites[d->ndumpSites].ScoreAccProfile  = E->Acceptor->ScoreAccProfile;
+    d->dumpSites[d->ndumpSites].ScoreAccProfile = E->Acceptor->ScoreAccProfile;
     d->dumpSites[d->ndumpSites].ScorePPT        = E->Acceptor->ScorePPT;
     d->dumpSites[d->ndumpSites].ScoreBP         = E->Acceptor->ScoreBP;
     d->dumpSites[d->ndumpSites].PositionBP      = E->Acceptor->PositionBP;
     d->dumpSites[d->ndumpSites].PositionPPT     = E->Acceptor->PositionPPT;
     d->dumpSites[d->ndumpSites].class           = E->Acceptor->class;
-    
-    // error, overlapping memory below:
+
+    /* error, overlapping memory below: */
     strcpy(d->dumpSites[d->ndumpSites].subtype, E->Acceptor->subtype);
     strcpy(d->dumpSites[d->ndumpSites].type, E->Acceptor->type);
-    
+
     d->dumpExons[d->ndumpExons].Acceptor = &(d->dumpSites[d->ndumpSites]);
     d->ndumpSites                        = IncrMod(d->ndumpSites, MAXBACKUPSITES);
 
     /* back-up donor */
     d->dumpSites[d->ndumpSites].Position        = E->Donor->Position;
     d->dumpSites[d->ndumpSites].Score           = E->Donor->Score;
-    d->dumpSites[d->ndumpSites].ScoreAccProfile  = E->Donor->ScoreAccProfile;
+    d->dumpSites[d->ndumpSites].ScoreAccProfile = E->Donor->ScoreAccProfile;
     d->dumpSites[d->ndumpSites].ScorePPT        = E->Donor->ScorePPT;
     d->dumpSites[d->ndumpSites].ScoreBP         = E->Donor->ScoreBP;
     d->dumpSites[d->ndumpSites].PositionBP      = E->Donor->PositionBP;
     d->dumpSites[d->ndumpSites].PositionPPT     = E->Donor->PositionPPT;
     d->dumpSites[d->ndumpSites].class           = E->Donor->class;
-    // error, overlapping memory below:
-    
+    /* error, overlapping memory below: */
+
     strcpy(d->dumpSites[d->ndumpSites].subtype, E->Donor->subtype);
     strcpy(d->dumpSites[d->ndumpSites].type, E->Donor->type);
-    
+
     d->dumpExons[d->ndumpExons].Donor = &(d->dumpSites[d->ndumpSites]);
     d->ndumpSites                     = IncrMod(d->ndumpSites, MAXBACKUPSITES);
 
     /* back-up exon properties */
     strcpy(d->dumpExons[d->ndumpExons].Type, E->Type);
-    
+
     d->dumpExons[d->ndumpExons].Frame        = E->Frame;
     d->dumpExons[d->ndumpExons].Strand       = E->Strand;
     d->dumpExons[d->ndumpExons].Score        = E->Score;
@@ -100,11 +100,11 @@ exonGFF *backupExon(exonGFF   *E,
     d->dumpExons[d->ndumpExons].R            = E->R;
     d->dumpExons[d->ndumpExons].GeneScore    = E->GeneScore;
     d->dumpExons[d->ndumpExons].Remainder    = E->Remainder;
-    
+
     strcpy(d->dumpExons[d->ndumpExons].Group, E->Group);
-    
-    d->dumpExons[d->ndumpExons].offset1       = E->offset1;
-    d->dumpExons[d->ndumpExons].offset2       = E->offset2;
+
+    d->dumpExons[d->ndumpExons].offset1      = E->offset1;
+    d->dumpExons[d->ndumpExons].offset2      = E->offset2;
     d->dumpExons[d->ndumpExons].lValue       = E->lValue;
     d->dumpExons[d->ndumpExons].rValue       = E->rValue;
     d->dumpExons[d->ndumpExons].evidence     = E->evidence;
@@ -116,14 +116,14 @@ exonGFF *backupExon(exonGFF   *E,
 
 /* Saving all about a gene: exons, sites, properties */
 
-exonGFF *backupGene(exonGFF   *E, 
-                    packDump  *d){
+exonGFF *backupGene(exonGFF  *E,
+                    packDump *d){
 
     exonGFF *PrevExon;
     exonGFF *ResExon;
 
     /* Ghost exon doesn't need backup */
-    if ((E->Strand == '*')) { 
+    if ((E->Strand == '*')) {
         /* ||(E->Strand != '+')||(E->Strand != '-')) */
         ResExon = E;
     }
@@ -149,7 +149,7 @@ exonGFF *backupGene(exonGFF   *E,
 
 /* It saves the information about partial genes (packGenes) */
 void BackupGenes(packGenes *pg,
-                 int        gp_nclass,
+                 int       gp_nclass,
                  packDump  *my_dumpster){
     int i;
     int frame_number;
@@ -159,7 +159,7 @@ void BackupGenes(packGenes *pg,
     for (i = 0; i < gp_nclass; i++) {
         for (frame_number = 0; frame_number < FRAMES; frame_number++) {
             for (splice_class_number = 0; splice_class_number < SPLICECLASSES; splice_class_number++) {
-                // 20200228 debug
+                /* 20200228 debug */
                 /*
                 printf("BackupGenes:  i = %d\n" , i );
                 printf("BackupGenes:  frame_number = %d\n" , frame_number );
@@ -176,20 +176,20 @@ void BackupGenes(packGenes *pg,
 
 /* It saves information about d-exons: exons needed the next iteration */
 
-void BackupArrayD(packGenes  *pg,
-                  long        accSearch,
-                  gparam     *gp, 
-                  packDump   *dumpster){
-    int    i;
-    long   j;
-    long   jUpdate;
-    long   jMaxdist;
-    long   MinDist;
-    long   MaxDist;
-    long   nBackups = 0;
-    short  remainder;
-    short  donorclass;
-    char   mess[MAXSTRING];
+void BackupArrayD(packGenes *pg,
+                  long      accSearch,
+                  gparam    *gp,
+                  packDump  *dumpster){
+    int   i;
+    long  j;
+    long  jUpdate;
+    long  jMaxdist;
+    long  MinDist;
+    long  MaxDist;
+    long  nBackups = 0;
+    short remainder;
+    short donorclass;
+    char  mess[MAXSTRING];
 
     /* Traversing sort-by-donor array to save some genes (assembling rules) */
     /* These exons have to be beyond the point accSearch (preserve ordering) */
@@ -254,13 +254,13 @@ void BackupArrayD(packGenes  *pg,
 }
 
 /* Reset counters and pointers for the next input sequence */
-void cleanGenes(packGenes *pg, 
-                int        nclass, 
+void cleanGenes(packGenes *pg,
+                int       nclass,
                 packDump  *dumpster){
 
-    int  aux;
-    int  aux2;
-    int  aux3;
+    int aux;
+    int aux2;
+    int aux3;
 
 /*   for(aux=0; aux<nclass; aux++) */
     for (aux = 0; aux < nclass; aux++) {

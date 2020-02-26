@@ -36,22 +36,22 @@ extern int TRANS[];
 extern long NUMSITES;
 extern int  UTR;
 
-long  BuildDonors(char                     *s,
-                  short                     class,
-                  char                     *type,
-                  char                     *subtype,
-                  profile                   *p,
-                  site                     *st,
-                  long                      l1,
-                  long                      l2,
-                  long                      ns,
-                  long                      nsites,
-                  int                       Strand,
-                  packExternalInformation  *external
+long  BuildDonors(char                    *s,
+                  short                   class,
+                  char                    *type,
+                  char                    *subtype,
+                  profile                 *p,
+                  site                    *st,
+                  long                    l1,
+                  long                    l2,
+                  long                    ns,
+                  long                    nsites,
+                  int                     Strand,
+                  packExternalInformation *external
                   ){
     int   i;
     int   j;
-    float  score;
+    float score;
     long  is;
     long  left;
     long  right;

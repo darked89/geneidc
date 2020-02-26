@@ -30,8 +30,8 @@
 #include "geneid.h"
 
 /* Normalising positions on the reverse (and complemented) sequence */
-void RecomputePositions(packSites  *allSites, 
-                        long        l){
+void RecomputePositions(packSites *allSites,
+                        long      l){
     long i;
 
     for (i = 0; i < allSites->nStartCodons; i++) {

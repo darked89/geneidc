@@ -67,24 +67,25 @@ void UpdateSiteList(struct siteitem **p, site *InputSite){
 
 /* Sort all of predicted sites by placing them in an array of lists */
 /* corresponding every list to a beginning position for predicted sites */
-void SortSites(site  *Sites, 
-               long   numSites, 
-               site  *sortedSites,
-               long   l1, 
-               long   l2){
+void SortSites(site *Sites,
+               long numSites,
+               site *sortedSites,
+               long l1,
+               long l2){
+
 /*    struct siteitem **SiteList, *q; */
-    struct siteitem  **SiteList;
-    struct siteitem   *q;
-    long               i;
-    long               pos;
-    long               n;
+    struct siteitem **SiteList;
+    struct siteitem *q;
+    long            i;
+    long            pos;
+    long            n;
 /*   int offset; */
-    long               l;
-    long               left;
-    long               right;
+    long            l;
+    long            left;
+    long            right;
 /*   long room; */
 /*   char mess[MAXSTRING]; */
-    long               HowMany;
+    long HowMany;
 
     /* 0. Creating the array for sorting: 1 - Length of fragment */
     left  = l1;

@@ -34,24 +34,24 @@
 /* extern long NUMEXONS; */
 extern long MAXBACKUPSITES;
 
-long BuildUTRExons(site     *Start, 
-                   long      nStarts,
-                   site     *Donor, 
-                   long      nDonors,
-                   int       MaxDonors,
-                   int       MaxExonLength, 
-                   long      cutPoint,
-                   char     *ExonType,
-                   exonGFF  *Exon, 
-                   long      nexons){
-   
+long BuildUTRExons(site    *Start,
+                   long    nStarts,
+                   site    *Donor,
+                   long    nDonors,
+                   int     MaxDonors,
+                   int     MaxExonLength,
+                   long    cutPoint,
+                   char    *ExonType,
+                   exonGFF *Exon,
+                   long    nexons){
+
     /* Best exons built by using the current start codon */
-    exonGFF  *LocalExon;
-    int       nLocalExons;
-    int       LowestLocalExon;
-    float      LowestLocalScore;
+    exonGFF *LocalExon;
+    int     nLocalExons;
+    int     LowestLocalExon;
+    float   LowestLocalScore;
     /* Maximum allowed number of predicted initial exons per fragment */
-    long      HowMany;
+    long    HowMany;
 /*   char mess[MAXSTRING]; */
 /*   int Frame; */
 /*   int js; */
@@ -61,7 +61,7 @@ long BuildUTRExons(site     *Start,
     long  k;
     long  ks;
     int   l;
-    float  pen = 0.002;
+    float pen = 0.002;
     /* Final number of predicted UTR exons */
     long  nExon;
 
