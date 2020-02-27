@@ -188,7 +188,7 @@ A. DEFINITIONS
 #define FASTALINE 60
 
 /* Maximum length for strings (mess)        */
-#define MAXSTRING 100
+#define MAXSTRING 2000
 
 /* Mark rules up as blocking in Gene model  */
 #define BLOCK 1
