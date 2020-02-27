@@ -33,18 +33,18 @@ extern long NUMSITES, NUMU12SITES, NUMEXONS, NUMU12EXONS, NUMU12U12EXONS, MAXBAC
 extern int  U12;
 /* Computing the memory required to execute geneid */
 void beggar(long L){
-    float memTotal;
-    float memSites;
-    float memExons;
-    float memEvi;
-    float memHSP;
-    float memGC;
-    float memGenes;
-    float memParams;
-    float memSequence;
-    float memBackup;
-    int   numprofiles   = 16;
-    int   spliceclasses = 1;
+    double memTotal;
+    double memSites;
+    double memExons;
+    double memEvi;
+    double memHSP;
+    double memGC;
+    double memGenes;
+    double memParams;
+    double memSequence;
+    double memBackup;
+    int    numprofiles   = 16;
+    int    spliceclasses = 1;
 
     if (U12) {
         spliceclasses = 3;
@@ -82,9 +82,9 @@ void beggar(long L){
 
     /* Statistical model: profiles, Markov model, Markov tmp, exon values,  */
     /* isochores and gene model */
-    memParams = (numprofiles * (sizeof(profile) + AVG_DIM * AVG_ORDER * sizeof(float)))
-                + (6 * OLIGO_DIM * sizeof(float))
-                + (6 * LENGTHSi * sizeof(float))
+    memParams = (numprofiles * (sizeof(profile) + AVG_DIM * AVG_ORDER * sizeof(double)))
+                + (6 * OLIGO_DIM * sizeof(double))
+                + (6 * LENGTHSi * sizeof(double))
                 + (4 * sizeof(paramexons));
 
     memParams += MAXISOCHORES * sizeof(gparam *);
@@ -116,15 +116,15 @@ void beggar(long L){
     printf("AMOUNT of MEMORY required by current geneid configuration\n");
     printf("---------------------------------------------------------\n\n");
 
-    printf("Sites\t\t\t: %.2f Mb\n", (float) memSites / (float) MEGABYTE);
-    printf("Exons\t\t\t: %.2f Mb\n", (float) memExons / (float) MEGABYTE);
-    printf("Evidences\t\t: %.2f Mb\n", (float) memEvi / (float) MEGABYTE);
-    printf("Homology\t\t: %.2f Mb\n", (float) memHSP / (float) MEGABYTE);
-    printf("G+C info\t\t: %.2f Mb\n", (float) memGC / (float) MEGABYTE);
-    printf("Genes\t\t\t: %.2f Mb\n", (float) memGenes / (float) MEGABYTE);
-    printf("Statistical model\t: %.2f Mb\n", (float) memParams / (float) MEGABYTE);
-    printf("Backup operations\t: %.2f Mb\n", (float) memBackup / (float) MEGABYTE);
-    printf("Input sequence\t\t: %.2f Mb\n", (float) memSequence / (float) MEGABYTE);
+    printf("Sites\t\t\t: %.2f Mb\n", (double) memSites / (double) MEGABYTE);
+    printf("Exons\t\t\t: %.2f Mb\n", (double) memExons / (double) MEGABYTE);
+    printf("Evidences\t\t: %.2f Mb\n", (double) memEvi / (double) MEGABYTE);
+    printf("Homology\t\t: %.2f Mb\n", (double) memHSP / (double) MEGABYTE);
+    printf("G+C info\t\t: %.2f Mb\n", (double) memGC / (double) MEGABYTE);
+    printf("Genes\t\t\t: %.2f Mb\n", (double) memGenes / (double) MEGABYTE);
+    printf("Statistical model\t: %.2f Mb\n", (double) memParams / (double) MEGABYTE);
+    printf("Backup operations\t: %.2f Mb\n", (double) memBackup / (double) MEGABYTE);
+    printf("Input sequence\t\t: %.2f Mb\n", (double) memSequence / (double) MEGABYTE);
 
     printf("---------------------------------------------------------\n\n");
     printf("TOTAL AMOUNT\t\t: %.2f Mb\n",

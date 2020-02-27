@@ -38,17 +38,17 @@ extern long NUMSITES;
 extern int BP;
 extern int PPT;
 
-float ComputeU12BranchProfile(char    *s,
-                            long    positionAcc,
-                            long    limitRight,
-                            profile *p,
-                            site    *splicesite){
-    float maxScore;
-    float score;
-    int   index;
-    int   Opt;
-    long  end;
-    long  i, j;
+double ComputeU12BranchProfile(char    *s,
+                               long    positionAcc,
+                               long    limitRight,
+                               profile *p,
+                               site    *splicesite){
+    double maxScore;
+    double score;
+    int    index;
+    int    Opt;
+    long   end;
+    long   i, j;
 
     maxScore = -INF;
     /*      char mess[MAXSTRING];  */
@@ -73,8 +73,8 @@ float ComputeU12BranchProfile(char    *s,
             }
         }
 
-        score = score - p->penalty_factor * (((float) (labs(i + p->offset - Opt)) / ((float) (p->acc_context - p->offset - p->opt_dist))) * ((float) (labs(i + p->offset
-                                                                                                                                                         - Opt)) / ((float) (p->acc_context - p->offset - p->opt_dist))));
+        score = score - p->penalty_factor * (((double) (labs(i + p->offset - Opt)) / ((double) (p->acc_context - p->offset - p->opt_dist))) * ((double) (labs(i + p->offset
+                                                                                                                                                              - Opt)) / ((double) (p->acc_context - p->offset - p->opt_dist))));
 
         if (score >= maxScore) {
             maxScore               = score;
@@ -84,16 +84,16 @@ float ComputeU12BranchProfile(char    *s,
     return maxScore;
 }
 
-float ComputePPTProfile(char    *s,
-                      long    positionAcc,
-                      long    limitRight,
-                      profile  *p,
-                      site    *splicesite){
-    float maxScore;
-    float score;
-    int   index;
-    long  end;
-    long  i, j;
+double ComputePPTProfile(char    *s,
+                         long    positionAcc,
+                         long    limitRight,
+                         profile *p,
+                         site    *splicesite){
+    double maxScore;
+    double score;
+    int    index;
+    long   end;
+    long   i, j;
 
     maxScore = -INF;
 
@@ -144,17 +144,17 @@ long  BuildU12Acceptors(char    *s,
                         long    l2,
                         long    ns,
                         long    nsites){
-    int   i, j;
-    char  *sOriginal;
-    float score;
-    float scoreBP;
-    float scorePPT;
-    float scoreAcc;
+    int    i, j;
+    char   *sOriginal;
+    double score;
+    double scoreBP;
+    double scorePPT;
+    double scoreAcc;
     /*   long ns,is; */
-    long  is;
-    long  left, right;
-    int   index;
-    float cutoff;
+    long   is;
+    long   left, right;
+    int    index;
+    double cutoff;
 
     /* Back-up the origin of the sequence */
     sOriginal = s;

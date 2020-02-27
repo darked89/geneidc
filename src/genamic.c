@@ -30,10 +30,10 @@
 #include "geneid.h"
 
 /* Complete gene prediction (sites and exons) or only assembling */
-extern int   GENEID;
-extern int   RSS;
-extern float U12_SPLICE_SCORE_THRESH;
-extern float U12_EXON_SCORE_THRESH;
+extern int    GENEID;
+extern int    RSS;
+extern double U12_SPLICE_SCORE_THRESH;
+extern double U12_EXON_SCORE_THRESH;
 
 void genamic(exonGFF   *E,
              long      nExons,
@@ -82,9 +82,16 @@ void genamic(exonGFF   *E,
     printMess("Sorting exons by donor...");
 
     /* Build a set of sorting exons by donor functions */
-    BuildSort(gp->D, gp->nc, gp->ne,
-              gp->UC, gp->DE, gp->nclass,
-              pg->km, pg->d, E, nExons);
+    BuildSort(gp->D,
+              gp->nc,
+              gp->ne,
+              gp->UC,
+              gp->DE,
+              gp->nclass,
+              pg->km,
+              pg->d,
+              E,
+              nExons);
 
     /* 2. Genamic Algorithm in linear time (size of input) */
     printMess("Assembling Genes...");

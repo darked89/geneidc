@@ -32,10 +32,10 @@
 /* Sequence is used to save information to prevent Stop codons in frame */
 /* Maximum allowed number of generic exons (divided by RINTER) */
 /* extern long NUMEXONS; */
-extern long  MAXBACKUPSITES;
-extern int   RSS;
-extern float RSSDON;
-extern float RSSACC;
+extern long   MAXBACKUPSITES;
+extern int    RSS;
+extern double RSSDON;
+extern double RSSACC;
 
 long BuildZeroLengthExons(site    *Acceptor,
                           long    nAcceptors,
@@ -57,9 +57,9 @@ long BuildZeroLengthExons(site    *Acceptor,
         int  Frame[FRAMES];
     } *LocalExon;
 
-    int   nLocalExons;
-    int   LowestLocalExon;
-    float LowestLocalScore;
+    int    nLocalExons;
+    int    LowestLocalExon;
+    double LowestLocalScore;
     /* char mess[MAXSTRING]; */
 
     /* Boolean array of windows: closed or opened */

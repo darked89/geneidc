@@ -109,16 +109,16 @@ long HI  = 0;
 char GenePrefix[MAXSTRING] = "";
 
 /* Increase/decrease exon weight value (exon score) */
-float EW                      = NOVALUE;
-float U12EW                   = 0;
-float EvidenceEW              = 0;
-float U12_SPLICE_SCORE_THRESH = -1000;
-float U12_EXON_SCORE_THRESH   = -1000;
+double EW                      = NOVALUE;
+double U12EW                   = 0;
+double EvidenceEW              = 0;
+double U12_SPLICE_SCORE_THRESH = -1000;
+double U12_EXON_SCORE_THRESH   = -1000;
 
 /* Detection of recursive splice sites */
-float RSSMARKOVSCORE = 0;
-float RSSDON         = RDT;
-float RSSACC         = RAT;
+double RSSMARKOVSCORE = 0;
+double RSSDON         = RDT;
+double RSSACC         = RAT;
 
 /* Generic maximum values: sites, exons and backup elements */
 long NUMSITES;
@@ -196,10 +196,10 @@ int main(int  argc,
     /* Measure of C+G content to select the isochore */
     packGC *GCInfo;
     packGC *GCInfo_r;
-    long    inigc;
-    long    endgc;
-    double  percentGC;
-    int     currentIsochore;
+    long   inigc;
+    long   endgc;
+    double percentGC;
+    int    currentIsochore;
     int    nIsochores;
     int    reading;
     int    lastSplit;
@@ -564,11 +564,16 @@ int main(int  argc,
                     if (!lastSplit) {
                         /* backup of unused genes */
                         printMess("Back-up of d-genes");
-                        BackupArrayD(genes, l2 - OVERLAP, gp, dumpster);
+                        BackupArrayD(genes,
+                                     l2 - OVERLAP,
+                                     gp,
+                                     dumpster);
 
                         /* back-up best partial genes */
                         printMess("Back-up of best partial genes\n");
-                        BackupGenes(genes, gp->nclass, dumpster);
+                        BackupGenes(genes,
+                                    gp->nclass,
+                                    dumpster);
                     }
                 }
 

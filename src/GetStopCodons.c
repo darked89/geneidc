@@ -40,9 +40,9 @@ long GetStopCodons(char    *s,
                    site    *sc,
                    long    l1,
                    long    l2){
-    long  ns, is;
-    float score;
-    int   i, j;
+    long   ns, is;
+    double score;
+    int    i, j;
 
     /* Strings defining Stop codons */
     static char *stop[] =

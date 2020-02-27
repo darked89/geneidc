@@ -29,23 +29,23 @@
 
 #include "geneid.h"
 
-extern float NO_SCORE;
-extern int   PPT;
-extern int   BP;
-extern int   U12GTAG;
-extern int   U12ATAC;
-extern int   U2GCAG;
-extern int   U2GTA;
-extern int   U2GTG;
-extern int   U2GTY;
-extern int   SGE;
-extern short SPLICECLASSES;
-extern float U12_SPLICE_SCORE_THRESH;
-extern float U12_EXON_SCORE_THRESH;
-extern float U12EW;
-extern float RSSMARKOVSCORE;
-extern float RSSDON;
-extern float RSSACC;
+extern double NO_SCORE;
+extern int    PPT;
+extern int    BP;
+extern int    U12GTAG;
+extern int    U12ATAC;
+extern int    U2GCAG;
+extern int    U2GTA;
+extern int    U2GTG;
+extern int    U2GTY;
+extern int    SGE;
+extern short  SPLICECLASSES;
+extern double U12_SPLICE_SCORE_THRESH;
+extern double U12_EXON_SCORE_THRESH;
+extern double U12EW;
+extern double RSSMARKOVSCORE;
+extern double RSSDON;
+extern double RSSACC;
 
 /* Numeric values: read one line skipping comments and empty lines */
 void readLine(FILE *File, char *line){
@@ -93,7 +93,7 @@ void SetProfile(profile *p, FILE *RootFile, char *signal){
                 /* Reading A,C,G and T: creating N transition */
                 readLine(RootFile, line);
 
-                if ((sscanf(line, "%*d %*s %f", &(p->transitionValues[i][j]))) != 1) {
+                if ((sscanf(line, "%*d %*s %lf", &(p->transitionValues[i][j]))) != 1) {
                     sprintf(mess, "Wrong format: Transition values in %s profile",
                             signal);
                     printError(mess);
@@ -101,21 +101,21 @@ void SetProfile(profile *p, FILE *RootFile, char *signal){
 
                 readLine(RootFile, line);
 
-                if ((sscanf(line, "%*d %*s %f", &(p->transitionValues[i][j + 1]))) != 1) {
+                if ((sscanf(line, "%*d %*s %lf", &(p->transitionValues[i][j + 1]))) != 1) {
                     sprintf(mess, "Wrong format: Transition values in %s profile", signal);
                     printError(mess);
                 }
 
                 readLine(RootFile, line);
 
-                if ((sscanf(line, "%*d %*s %f", &(p->transitionValues[i][j + 2]))) != 1) {
+                if ((sscanf(line, "%*d %*s %lf", &(p->transitionValues[i][j + 2]))) != 1) {
                     sprintf(mess, "Wrong format: Transition values in %s profile", signal);
                     printError(mess);
                 }
 
                 readLine(RootFile, line);
 
-                if ((sscanf(line, "%*d %*s %f", &(p->transitionValues[i][j + 3]))) != 1) {
+                if ((sscanf(line, "%*d %*s %lf", &(p->transitionValues[i][j + 3]))) != 1) {
                     sprintf(mess, "Wrong format: Transition values in %s profile", signal);
                     printError(mess);
                 }
@@ -135,28 +135,28 @@ void SetProfile(profile *p, FILE *RootFile, char *signal){
                 for (j = 0; j < p->dimensionTrans - 5; j = j + 5) {
                     readLine(RootFile, line);
 
-                    if ((sscanf(line, "%*d %*s %f", &(p->transitionValues[i][j]))) != 1) {
+                    if ((sscanf(line, "%*d %*s %lf", &(p->transitionValues[i][j]))) != 1) {
                         sprintf(mess, "Wrong format: Transition values in %s profile", signal);
                         printError(mess);
                     }
 
                     readLine(RootFile, line);
 
-                    if ((sscanf(line, "%*d %*s %f", &(p->transitionValues[i][j + 1]))) != 1) {
+                    if ((sscanf(line, "%*d %*s %lf", &(p->transitionValues[i][j + 1]))) != 1) {
                         sprintf(mess, "Wrong format: Transition values in %s profile", signal);
                         printError(mess);
                     }
 
                     readLine(RootFile, line);
 
-                    if ((sscanf(line, "%*d %*s %f", &(p->transitionValues[i][j + 2]))) != 1) {
+                    if ((sscanf(line, "%*d %*s %lf", &(p->transitionValues[i][j + 2]))) != 1) {
                         sprintf(mess, "Wrong format: Transition values in %s profile", signal);
                         printError(mess);
                     }
 
                     readLine(RootFile, line);
 
-                    if ((sscanf(line, "%*d %*s %f", &(p->transitionValues[i][j + 3]))) != 1) {
+                    if ((sscanf(line, "%*d %*s %lf", &(p->transitionValues[i][j + 3]))) != 1) {
                         sprintf(mess, "Wrong format: Transition values in %s profile", signal);
                         printError(mess);
                     }
@@ -195,28 +195,28 @@ void SetProfile(profile *p, FILE *RootFile, char *signal){
                     for (y = 0; y < 20; y = y + 5) {
                         readLine(RootFile, line);
 
-                        if ((sscanf(line, "%*d %*s %f", &(p->transitionValues[i][j + y]))) != 1) {
+                        if ((sscanf(line, "%*d %*s %lf", &(p->transitionValues[i][j + y]))) != 1) {
                             sprintf(mess, "Wrong format: Transition values in %s profile", signal);
                             printError(mess);
                         }
 
                         readLine(RootFile, line);
 
-                        if ((sscanf(line, "%*d %*s %f", &(p->transitionValues[i][j + 1 + y]))) != 1) {
+                        if ((sscanf(line, "%*d %*s %lf", &(p->transitionValues[i][j + 1 + y]))) != 1) {
                             sprintf(mess, "Wrong format: Transition values in %s profile", signal);
                             printError(mess);
                         }
 
                         readLine(RootFile, line);
 
-                        if ((sscanf(line, "%*d %*s %f", &(p->transitionValues[i][j + 2 + y]))) != 1) {
+                        if ((sscanf(line, "%*d %*s %lf", &(p->transitionValues[i][j + 2 + y]))) != 1) {
                             sprintf(mess, "Wrong format: Transition values in %s profile", signal);
                             printError(mess);
                         }
 
                         readLine(RootFile, line);
 
-                        if ((sscanf(line, "%*d %*s %f", &(p->transitionValues[i][j + 3 + y]))) != 1) {
+                        if ((sscanf(line, "%*d %*s %lf", &(p->transitionValues[i][j + 3 + y]))) != 1) {
                             sprintf(mess, "Wrong format: Transition values in %s profile", signal);
                             printError(mess);
                         }
@@ -299,7 +299,7 @@ void ReadProfile(FILE *RootFile, profile *p, char *signal, int H){
     p->acc_context    = ACCEPTOR_CONTEXT;
     p->dist           = MIN_U12BPACC_DIST;
     p->opt_dist       = OPT_U12BP_DIST;
-    p->penalty_factor = (float) U12BP_PENALTY_SCALING_FACTOR;
+    p->penalty_factor = (double) U12BP_PENALTY_SCALING_FACTOR;
 
     /* Definition parameters: Length, offset, cutoff and order (Markov chain) */
     if (H == 1) {
@@ -307,7 +307,7 @@ void ReadProfile(FILE *RootFile, profile *p, char *signal, int H){
     }
 
     readLine(RootFile, line);
-    numProfileParams = sscanf(line, "%d %d %f %d %f %f %d %d %d %f",
+    numProfileParams = sscanf(line, "%d %d %lf %d %lf %lf %d %d %d %lf",
                               &(p->dimension),
                               &(p->offset),
                               &(p->cutoff),
@@ -544,12 +544,12 @@ void ReadProfileSpliceSites(FILE *RootFile, gparam *gp){
 /* Read information about signal and exon prediction in one isochore */
 /* - isochores are specific DNA regions according to the G+C content - */
 void ReadIsochore(FILE *RootFile, gparam *gp){
-    float lscore;
-    int   OligoLength_1;
-    int   i, j, f;
-    char  line[MAXLINE];
-    char  mess[MAXSTRING];
-    char  header[MAXSTRING];
+    double lscore;
+    int    OligoLength_1;
+    int    i, j, f;
+    char   line[MAXLINE];
+    char   mess[MAXSTRING];
+    char   header[MAXSTRING];
 
     /* 1. read boundaries of isochores */
     readHeader(RootFile, line);
@@ -570,7 +570,7 @@ void ReadIsochore(FILE *RootFile, gparam *gp){
     readHeader(RootFile, line);
     readLine(RootFile, line);
 
-    if ((sscanf(line, "%f %f %f %f\n",
+    if ((sscanf(line, "%lf %lf %lf %lf\n",
                 &(gp->Initial->ExonCutoff),
                 &(gp->Internal->ExonCutoff),
                 &(gp->Terminal->ExonCutoff),
@@ -589,7 +589,7 @@ void ReadIsochore(FILE *RootFile, gparam *gp){
     readHeader(RootFile, line);
     readLine(RootFile, line);
 
-    if ((sscanf(line, "%f %f %f %f\n",
+    if ((sscanf(line, "%lf %lf %lf %lf\n",
                 &(gp->Initial->OligoCutoff),
                 &(gp->Internal->OligoCutoff),
                 &(gp->Terminal->OligoCutoff),
@@ -608,7 +608,7 @@ void ReadIsochore(FILE *RootFile, gparam *gp){
     readHeader(RootFile, line);
     readLine(RootFile, line);
 
-    if ((sscanf(line, "%f %f %f %f\n",
+    if ((sscanf(line, "%lf %lf %lf %lf\n",
                 &(gp->Initial->siteFactor),
                 &(gp->Internal->siteFactor),
                 &(gp->Terminal->siteFactor),
@@ -627,7 +627,7 @@ void ReadIsochore(FILE *RootFile, gparam *gp){
     readHeader(RootFile, line);
     readLine(RootFile, line);
 
-    if ((sscanf(line, "%f %f %f %f\n",
+    if ((sscanf(line, "%lf %lf %lf %lf\n",
                 &(gp->Initial->exonFactor),
                 &(gp->Internal->exonFactor),
                 &(gp->Terminal->exonFactor),
@@ -646,7 +646,7 @@ void ReadIsochore(FILE *RootFile, gparam *gp){
     readHeader(RootFile, line);
     readLine(RootFile, line);
 
-    if ((sscanf(line, "%f %f %f %f\n",
+    if ((sscanf(line, "%lf %lf %lf %lf\n",
                 &(gp->Initial->HSPFactor),
                 &(gp->Internal->HSPFactor),
                 &(gp->Terminal->HSPFactor),
@@ -675,7 +675,7 @@ void ReadIsochore(FILE *RootFile, gparam *gp){
         if (!strcasecmp(header, sRSSMARKOVSCORE)) {
             readLine(RootFile, line);
 
-            if ((sscanf(line, "%f\n", &(RSSMARKOVSCORE))) != 1) {
+            if ((sscanf(line, "%lf\n", &(RSSMARKOVSCORE))) != 1) {
                 printError("Wrong format: RSSMARKOVSCORE value scores (number/type)");
             }
 
@@ -687,7 +687,7 @@ void ReadIsochore(FILE *RootFile, gparam *gp){
         if (!strcasecmp(header, sRSS_DONOR_SCORE_CUTOFF)) {
             readLine(RootFile, line);
 
-            if ((sscanf(line, "%f\n", &(RSSDON))) != 1) {
+            if ((sscanf(line, "%lf\n", &(RSSDON))) != 1) {
                 printError("Wrong format: RSSDON value scores (number/type)");
             }
 
@@ -699,7 +699,7 @@ void ReadIsochore(FILE *RootFile, gparam *gp){
         if (!strcasecmp(header, sRSS_ACCEPTOR_SCORE_CUTOFF)) {
             readLine(RootFile, line);
 
-            if ((sscanf(line, "%f\n", &(RSSACC))) != 1) {
+            if ((sscanf(line, "%lf\n", &(RSSACC))) != 1) {
                 printError("Wrong format: RSSACC value scores (number/type)");
             }
 
@@ -711,7 +711,7 @@ void ReadIsochore(FILE *RootFile, gparam *gp){
         if (!strcasecmp(header, sU12_SPLICE_SCORE_THRESH)) {
             readLine(RootFile, line);
 
-            if ((sscanf(line, "%f\n", &(U12_SPLICE_SCORE_THRESH))) != 1) {
+            if ((sscanf(line, "%lf\n", &(U12_SPLICE_SCORE_THRESH))) != 1) {
                 printError("Wrong format: U12_SPLICE_SCORE_THRESH value scores (number/type)");
             }
 
@@ -724,7 +724,7 @@ void ReadIsochore(FILE *RootFile, gparam *gp){
         if (!strcasecmp(header, sU12_EXON_SCORE_THRESH)) {
             readLine(RootFile, line);
 
-            if ((sscanf(line, "%f\n", &(U12_EXON_SCORE_THRESH))) != 1) {
+            if ((sscanf(line, "%lf\n", &(U12_EXON_SCORE_THRESH))) != 1) {
                 printError("Wrong format: U12_EXON_SCORE_THRESH value scores (number/type)");
             }
 
@@ -737,7 +737,7 @@ void ReadIsochore(FILE *RootFile, gparam *gp){
         if (!strcasecmp(header, sU12_EXON_WEIGHT)) {
             readLine(RootFile, line);
 
-            if ((sscanf(line, "%f\n", &(U12EW))) != 1) {
+            if ((sscanf(line, "%lf\n", &(U12EW))) != 1) {
                 printError("Wrong format: U12_EXON_WEIGHT value score (number/type)");
             }
 
@@ -755,7 +755,7 @@ void ReadIsochore(FILE *RootFile, gparam *gp){
     }
     readLine(RootFile, line);
 
-    if ((sscanf(line, "%f %f %f %f\n",
+    if ((sscanf(line, "%lf %lf %lf %lf\n",
                 &(gp->Initial->ExonWeight),
                 &(gp->Internal->ExonWeight),
                 &(gp->Terminal->ExonWeight),
@@ -798,7 +798,7 @@ void ReadIsochore(FILE *RootFile, gparam *gp){
     printMess("Reading Markov Initial likelihood matrix");
 
     /* Computing the right number of initial values to read */
-    gp->OligoDim = (int) pow((float) 4, (float) gp->OligoLength);
+    gp->OligoDim = (int) pow((double) 4, (double) gp->OligoLength);
 
     sprintf(mess, "Used oligo array size: %ld", gp->OligoDim * 3);
     printMess(mess);
@@ -807,7 +807,7 @@ void ReadIsochore(FILE *RootFile, gparam *gp){
     for (j = 0; j < gp->OligoDim * 3; j++) {
         readLine(RootFile, line);
 
-        if ((sscanf(line, "%*s %d %d %f", &i, &f, &lscore)) != 3) {
+        if ((sscanf(line, "%*s %d %d %lf", &i, &f, &lscore)) != 3) {
             sprintf(mess, "Wrong format/nunber (%s): Initial Markov value", line);
             printError(mess);
         }
@@ -819,7 +819,7 @@ void ReadIsochore(FILE *RootFile, gparam *gp){
     printMess("Reading Markov Transition likelihood matrix");
 
     OligoLength_1  = gp->OligoLength + 1;
-    gp->OligoDim_1 = (int) pow((float) 4, (float) OligoLength_1);
+    gp->OligoDim_1 = (int) pow((double) 4, (double) OligoLength_1);
 
     sprintf(mess, "Used oligo array size: %ld", gp->OligoDim_1 * 3);
     printMess(mess);
@@ -828,7 +828,7 @@ void ReadIsochore(FILE *RootFile, gparam *gp){
     for (j = 0; j < gp->OligoDim_1 * 3; j++) {
         readLine(RootFile, line);
 
-        if ((sscanf(line, "%*s %d %d %f", &i, &f, &lscore)) != 3) {
+        if ((sscanf(line, "%*s %d %d %lf", &i, &f, &lscore)) != 3) {
             sprintf(mess, "Wrong format/number (%s): Transition Markov value", line);
             printError(mess);
         }
@@ -896,7 +896,7 @@ int readparam(char *name, gparam **isochores){
     readHeader(RootFile, line);
     readLine(RootFile, line);
 
-    if ((sscanf(line, "%f\n",
+    if ((sscanf(line, "%lf\n",
                 &(NO_SCORE))) != 1) {
         printError("Wrong format: NO_SCORE value scores (number/type)");
     }

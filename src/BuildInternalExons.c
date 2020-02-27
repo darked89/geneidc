@@ -54,9 +54,9 @@ long BuildInternalExons(site    *Acceptor,
         int  Frame[FRAMES];
     } *LocalExon;
 
-    int   nLocalExons;
-    int   LowestLocalExon;
-    float LowestLocalScore;
+    int    nLocalExons;
+    int    LowestLocalExon;
+    double LowestLocalScore;
 
     /* Boolean array of windows: closed or opened */
     int  Frame[FRAMES];

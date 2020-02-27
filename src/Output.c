@@ -333,14 +333,14 @@ void OutputStats(char *Locus){
 void OutputTime(){
     time_t tEnd;
     int    t;
-    float  caux;
+    double caux;
     char   mess[MAXSTRING];
 
     /* Final time */
     /* Real time */
     (void) time(&tEnd);
     /* CPU time */
-    caux = (float) clock() / (float) CLOCKS_PER_SEC;
+    caux = (double) clock() / (double) CLOCKS_PER_SEC;
 
     t    = (int) tEnd - m->tStart;
 
@@ -354,6 +354,6 @@ void OutputTime(){
     sprintf(mess, "CPU time: \t%.3f secs", caux);
     printRes(mess);
 
-    sprintf(mess, "Total time: \t%d secs(%.2f mins)\n\n", t, (float) t / MINUTE);
+    sprintf(mess, "Total time: \t%d secs(%.2f mins)\n\n", t, (double) t / MINUTE);
     printRes(mess);
 }

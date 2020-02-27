@@ -33,7 +33,8 @@
 extern long NUMEXONS;
 extern int  RSS;
 extern int  EVD;
-extern int  FWD, RVS;
+extern int  FWD;
+extern int  RVS;
 extern int  scanORF;
 
 /* Artificial initial gene feature: force complete gene prediction */

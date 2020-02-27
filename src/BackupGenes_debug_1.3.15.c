@@ -58,7 +58,6 @@ exonGFF *backupExon(exonGFF  *E,
     int source_size = 0;
 
     /* back-up acceptor */
-    
 
     d->dumpSites[d->ndumpSites].Position        = E->Acceptor->Position;
     d->dumpSites[d->ndumpSites].Score           = E->Acceptor->Score;
@@ -74,14 +73,14 @@ exonGFF *backupExon(exonGFF  *E,
     source_size = sizeof(E->Acceptor->subtype);
     printf("AAA1 source size: %d\n", source_size);
     printf("AAA1 dest size: %d\n", destin_size);
-    
+
     strcpy(d->dumpSites[d->ndumpSites].subtype, E->Acceptor->subtype);
-    
+
     source_size = sizeof(E->Acceptor->type);
     destin_size = sizeof(d->dumpSites[d->ndumpSites].type);
     printf("AAA2 source size: %d\n", source_size);
-    printf("AAA2 dest size: %d\n", destin_size);   
-    
+    printf("AAA2 dest size: %d\n", destin_size);
+
     strcpy(d->dumpSites[d->ndumpSites].type, E->Acceptor->type);
 
     d->dumpExons[d->ndumpExons].Acceptor = &(d->dumpSites[d->ndumpSites]);
@@ -96,21 +95,20 @@ exonGFF *backupExon(exonGFF  *E,
     d->dumpSites[d->ndumpSites].PositionBP      = E->Donor->PositionBP;
     d->dumpSites[d->ndumpSites].PositionPPT     = E->Donor->PositionPPT;
     d->dumpSites[d->ndumpSites].class           = E->Donor->class;
-    
+
     /* error, overlapping memory below: in 1.4.5 */
     source_size = sizeof(E->Donor->subtype);
     destin_size = sizeof(d->dumpSites[d->ndumpSites].subtype);
     printf("AAA3 source size: %d\n", source_size);
-    printf("AAA3 dest size: %d\n", destin_size); 
-    
+    printf("AAA3 dest size: %d\n", destin_size);
+
     strcpy(d->dumpSites[d->ndumpSites].subtype, E->Donor->subtype);
-    
-    
+
     source_size = sizeof(E->Donor->type);
     destin_size = sizeof(d->dumpSites[d->ndumpSites].type);
     printf("AAA4 source size: %d\n", source_size);
     printf("AAA4 dest size: %d\n", destin_size);
-        
+
     strcpy(d->dumpSites[d->ndumpSites].type, E->Donor->type);
 
     d->dumpExons[d->ndumpExons].Donor = &(d->dumpSites[d->ndumpSites]);
@@ -139,14 +137,14 @@ exonGFF *backupExon(exonGFF  *E,
 
     d->dumpExons[d->ndumpExons].GeneScore    = E->GeneScore;
     d->dumpExons[d->ndumpExons].Remainder    = E->Remainder;
-    
-    source_size = sizeof(E->Group);
-    destin_size = sizeof(d->dumpExons[d->ndumpExons].Group);
+
+    source_size                              = sizeof(E->Group);
+    destin_size                              = sizeof(d->dumpExons[d->ndumpExons].Group);
     printf("BBB1 source size: %d\n", source_size);
     printf("BBB1 dest size: %d\n", destin_size);
     printf("BBB1 destin content: %s\n", d->dumpExons[d->ndumpExons].Type);
     printf("BBB1 source content: %s\n", E->Group);
-    
+
     strcpy(d->dumpExons[d->ndumpExons].Group, E->Group);
 
     d->dumpExons[d->ndumpExons].offset1      = E->offset1;
