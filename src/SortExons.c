@@ -33,7 +33,8 @@
 extern long NUMEXONS;
 extern int  RSS;
 extern int  EVD;
-extern int  FWD, RVS;
+extern int  FWD
+extern int  RVS;
 extern int  scanORF;
 
 /* Artificial initial gene feature: force complete gene prediction */
@@ -134,8 +135,8 @@ void InsertBeginExon(exonGFF *Exons,
     Exons[1].Remainder    = 0;
     strcpy(Exons[1].Group, NOGROUP);
     Exons[1].evidence     = 0;
-    Exons[1].offset1      = 0;
-    Exons[1].offset2      = 0;
+    Exons[1].offset1       = 0;
+    Exons[1].offset2       = 0;
     Exons[1].lValue       = 0;
     Exons[1].rValue       = 0;
     Exons[1].selected     = 0;

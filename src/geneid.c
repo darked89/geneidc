@@ -564,11 +564,16 @@ int main(int  argc,
                     if (!lastSplit) {
                         /* backup of unused genes */
                         printMess("Back-up of d-genes");
-                        BackupArrayD(genes, l2 - OVERLAP, gp, dumpster);
+                        BackupArrayD(genes, 
+                                     l2 - OVERLAP, 
+                                     gp, 
+                                     dumpster);
 
                         /* back-up best partial genes */
                         printMess("Back-up of best partial genes\n");
-                        BackupGenes(genes, gp->nclass, dumpster);
+                        BackupGenes(genes, 
+                                    gp->nclass, 
+                                    dumpster);
                     }
                 }
 

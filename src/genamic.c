@@ -82,9 +82,16 @@ void genamic(exonGFF   *E,
     printMess("Sorting exons by donor...");
 
     /* Build a set of sorting exons by donor functions */
-    BuildSort(gp->D, gp->nc, gp->ne,
-              gp->UC, gp->DE, gp->nclass,
-              pg->km, pg->d, E, nExons);
+    BuildSort(gp->D, 
+              gp->nc, 
+              gp->ne,
+              gp->UC, 
+              gp->DE, 
+              gp->nclass,
+              pg->km, 
+              pg->d, 
+              E, 
+              nExons);
 
     /* 2. Genamic Algorithm in linear time (size of input) */
     printMess("Assembling Genes...");
