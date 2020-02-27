@@ -356,6 +356,7 @@ B. DATA TYPES
 *************************************************************************/
 
 typedef struct s_node *pnode;
+
 typedef struct s_node
 {
     char  s[MAXSTRING];
@@ -416,6 +417,7 @@ typedef struct s_packSites
 } packSites;
 
 typedef struct s_exonGFF *pexonGFF;
+
 typedef struct s_exonGFF
 {
     site     *Acceptor;
