@@ -763,11 +763,10 @@ packGenes *RequestMemoryGenes(){
      * Too many pointers
     */
 
-
     if ((pg->Ga = (exonGFF ****) calloc(MAXENTRY, sizeof(exonGFF ***))) == NULL) {
         printError("Not enough memory: Ga array of genes");
         exit(EXIT_FAILURE);
-    } 
+    }
 
     /* Initialize Ga-exons: everybody looking at the Ghost exon */
     /* MAXENTRY represents the maximum number of gene classes */
@@ -823,6 +822,8 @@ packGenes *RequestMemoryGenes(){
 packDump *RequestMemoryDumpster(){
     packDump *d;
     long     HowMany;
+
+    int      destin_size = 0;
 
     /* 0. Allocating memory for dumpster */
     if ((d
