@@ -282,3 +282,11 @@ TODO
 
 ### Geneid publications
 TODO
+
+
+### extras
+
+<a href="https://scan.coverity.com/projects/geneidc">
+  <img alt="Coverity Scan Build Status"
+       src="https://scan.coverity.com/projects/31497/badge.svg"/>
+</a>
